@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import bco.scheduler.exception.ResourceNotFoundException;
 import bco.scheduler.model.Technician;
@@ -23,6 +24,7 @@ import bco.scheduler.repository.TechnicianRepository;
 
 @RestController
 @RequestMapping("/api/v1")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TechnicianController {
     @Autowired
     private TechnicianRepository technicianRepository;
