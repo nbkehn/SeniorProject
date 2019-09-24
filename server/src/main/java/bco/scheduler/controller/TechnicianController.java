@@ -55,7 +55,7 @@ public class TechnicianController {
         technician.setLastName(technicianDetails.getLastName());
         technician.setFirstName(technicianDetails.getFirstName());
         technician.setPhone(technicianDetails.getPhone());
-        technician.setInHouse((boolean) technicianDetails.getInHouse());
+        technician.setInHouse(technicianDetails.isInHouse());
         final Technician updatedTechnician = technicianRepository.save(technician);
         return ResponseEntity.ok(updatedTechnician);
     }
