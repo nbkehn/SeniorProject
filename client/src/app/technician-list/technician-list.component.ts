@@ -37,4 +37,8 @@ export class TechnicianListComponent implements OnInit {
   technicianDetails(id: number){
     this.router.navigate(['details', id]);
   }
+
+  editTechnician(id: number) {
+    this.router.navigate(['edit', id]);
+  }
 }

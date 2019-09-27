@@ -21,8 +21,10 @@
         <td>{{technician.email}}</td>
         <td>{{technician.phone}}</td>
         <td>{{technician.inHouse}}</td>
-        <td><button (click)="deleteTechnician(technician.id)" class="btn btn-danger">Delete</button>
+        <td>
+          <button (click)="deleteTechnician(technician.id)" class="btn btn-danger">Delete</button>
           <button (click)="technicianDetails(technician.id)" class="btn btn-info" style="margin-left: 10px">Details</button>
+          <button (click)="editTechnician(technician.id)" class="btn btn-edit" style="margin-left: 10px">Edit</button>
         </td>
       </tr>
       </tbody>

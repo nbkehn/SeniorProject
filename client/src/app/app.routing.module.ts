@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'technician', pathMatch: 'full' },
   { path: 'technicians', component: TechnicianListComponent },
   { path: 'add', component: CreateTechnicianComponent },
+  { path: 'edit/:id', component: CreateTechnicianComponent },
   { path: 'details/:id', component: TechnicianDetailsComponent },
 ];
 
