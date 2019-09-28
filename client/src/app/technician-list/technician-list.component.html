@@ -1,10 +1,13 @@
 <div class="panel panel-primary">
+  <!-- the title for the page-->
   <div class="panel-heading">
     <h2>Technician List</h2>
   </div>
+  <!-- the actual body of the page-->
   <div class="panel-body">
     <table class="table table-striped">
       <thead>
+      <!--column headers for the table-->
       <tr>
         <th>Firstname</th>
         <th>Lastname</th>
@@ -15,6 +18,7 @@
       </tr>
       </thead>
       <tbody>
+      <!-- each row of the table that is populated with data from every technician (essentially a for loop going through every techician and printing)-->
       <tr *ngFor="let technician of technicians | async">
         <td>{{technician.firstName}}</td>
         <td>{{technician.lastName}}</td>
@@ -22,6 +26,7 @@
         <td>{{technician.phone}}</td>
         <td>{{technician.inHouse}}</td>
         <td>
+          <!-- button options for each row so that the user can edit/delete that techician with a click of a button-->
           <button (click)="deleteTechnician(technician.id)" class="btn btn-danger">Delete</button>
           <button (click)="technicianDetails(technician.id)" class="btn btn-info" style="margin-left: 10px">Details</button>
           <button (click)="editTechnician(technician.id)" class="btn btn-edit" style="margin-left: 10px">Edit</button>

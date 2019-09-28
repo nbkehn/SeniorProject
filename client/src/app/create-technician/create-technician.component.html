@@ -1,35 +1,44 @@
 <h3>{{title}}</h3>
+<!-- only shows the following if the entry has not already been submitted-->
 <div [hidden]="submitted" style="width: 400px;">
+  <!-- the ngSubmit calls on the data from the ngModel, which is required. The ngModel automatically populates the technician object with relevant data-->
   <form (ngSubmit)="onSubmit()">
+    <!-- form component for the technician's first name -->
     <div class="form-group">
       <label for="name">First Name</label>
       <input type="text" class="form-control" id="firstName" required [(ngModel)]="technician.firstName" name="firstName">
     </div>
 
+    <!-- form component for the technician's last name -->
     <div class="form-group">
       <label for="name">Last Name</label>
       <input type="text" class="form-control" id="lastName" required [(ngModel)]="technician.lastName" name="lastName">
     </div>
 
+    <!-- form component for the technician's email -->
     <div class="form-group">
       <label for="name">Email</label>
       <input type="text" class="form-control" id="email" required [(ngModel)]="technician.email" name="email">
     </div>
 
+    <!-- form component for the technician's phone number -->
     <div class="form-group">
       <label for="name">Phone Number</label>
       <input type="text" class="form-control" id="phone" required [(ngModel)]="technician.phone" name="phone">
     </div>
 
+    <!-- form component for whether the technician is in house (the other option for the user is to leave it unchecked for subcontractors) -->
     <div class="form-group">
       <label for="name">In House</label>
       <input type="checkbox" class="form-control" id="inHouse" required [(ngModel)]="technician.inHouse" name="inHouse">
     </div>
 
+    <!-- form component for the submit button -->
     <button type="submit" class="btn btn-success">Submit</button>
   </form>
 </div>
 
+<!-- the success message that will only show when the form is submitted -->
 <div [hidden]="!submitted">
   <h4>You submitted successfully!</h4>
   <!-- <button class="btn btn-success" (click)="newTechnician()">Add</button> -->
