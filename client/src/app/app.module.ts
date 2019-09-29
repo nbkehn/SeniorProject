@@ -3,13 +3,13 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app.routing.module';
 import { AppComponent } from './app.component';
-import { CreateTechnicianComponent } from './create-technician/create-technician.component';
+import { ModifyTechnicianComponent } from './modify-technician/modify-technician.component';
 import { TechnicianListComponent } from './technician-list/technician-list.component';
 import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
-    CreateTechnicianComponent,
+    ModifyTechnicianComponent,
     TechnicianListComponent
   ],
   imports: [

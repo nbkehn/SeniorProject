@@ -4,11 +4,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-create-technician',
-  templateUrl: './create-technician.component.html',
-  styleUrls: ['./create-technician.component.less']
+  selector: 'app-modify-technician',
+  templateUrl: './modify-technician.component.html',
+  styleUrls: ['./modify-technician.component.less']
 })
-export class CreateTechnicianComponent implements OnInit {
+export class ModifyTechnicianComponent implements OnInit {
   // the technician's ID in the database
   id: number;
   // the technician object to create and store data into
