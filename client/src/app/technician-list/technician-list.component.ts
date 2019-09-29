@@ -51,14 +51,6 @@ export class TechnicianListComponent implements OnInit {
   }
 
   /**
-   * changes the view to the details page for the details of a given technician
-   * @param id the id of the technician whose details to view
-   */
-  technicianDetails(id: number){
-    this.router.navigate(['details', id]);
-  }
-
-  /**
    * reroutes the page to the edit page with the id passed in through the router
    * @param id the id of the technician to edit
    */

@@ -1,4 +1,3 @@
-import { TechnicianDetailsComponent } from './technician-details/technician-details.component';
 import { CreateTechnicianComponent } from './create-technician/create-technician.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -9,7 +8,6 @@ const routes: Routes = [
   { path: 'technicians', component: TechnicianListComponent },
   { path: 'add', component: CreateTechnicianComponent },
   { path: 'edit/:id', component: CreateTechnicianComponent },
-  { path: 'details/:id', component: TechnicianDetailsComponent },
 ];
 
 @NgModule({
