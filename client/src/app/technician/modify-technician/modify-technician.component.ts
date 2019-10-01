@@ -1,3 +1,10 @@
+/**
+ * Angular component for creating and editing technicians
+ *
+ * @package technician
+ * @author Noah Trimble
+ * @modifiedBy Soumya Bagade
+ */
 import { TechnicianService } from '../technician.service';
 import { Technician } from '../technician';
 import { Component, OnInit } from '@angular/core';
@@ -20,9 +27,9 @@ export class ModifyTechnicianComponent implements OnInit {
 
   /**
    * Creates the instance of the component
-   * @param route 
-   * @param technicianService 
-   * @param router 
+   * @param route
+   * @param technicianService
+   * @param router
    */
   constructor(private route: ActivatedRoute,
               private technicianService: TechnicianService,
@@ -41,7 +48,7 @@ export class ModifyTechnicianComponent implements OnInit {
     // changes the title depending on whether the technician has been stored in the database and is now being edited (Edit Technician) or created as a new one (Create Technician)
     this.title = this.id ? 'Edit Technician' : 'Create Technician';
 
-    // if the id is not null, it means that the technician has already been stored and is now being edited. 
+    // if the id is not null, it means that the technician has already been stored and is now being edited.
     // tries to get the technician from the database and logs whether the technician could be retrieved from the database in the console
     if (this.id) {
       this.technicianService.getTechnician(this.id)
@@ -75,7 +82,7 @@ export class ModifyTechnicianComponent implements OnInit {
   }
 
   /**
-   * This method is called on submit. 
+   * This method is called on submit.
    * It changes the submitted boolean to true (which shows the success message and hides the form).
    * It then calls on the save method to save the entry to the database.
    */

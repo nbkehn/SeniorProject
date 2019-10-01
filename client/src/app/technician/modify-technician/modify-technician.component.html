@@ -1,4 +1,12 @@
-<!-- the page to add or edit the technician-->
+<!--
+/**
+ * Technician add/edit form page
+ *
+ * @package technician
+ * @author Noah Trimble
+ * @modifiedBy Soumya Bagade
+ */
+-->
 <!-- title, which will change depending on whether it is the add or edit page-->
 <h3>{{title}}</h3>
 <!-- only shows the following if the entry has not already been submitted-->
@@ -43,5 +51,4 @@
 <!-- the success message that will only show when the form is submitted -->
 <div [hidden]="!submitted">
   <h4>You submitted successfully!</h4>
-  <!-- <button class="btn btn-success" (click)="newTechnician()">Add</button> -->
 </div>

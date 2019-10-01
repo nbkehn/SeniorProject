@@ -1,7 +1,12 @@
-import { ModifyTechnicianComponent } from './modify-technician/modify-technician.component';
+/**
+ * Defines routing paths
+ *
+ * @author Noah Trimble
+ */
+import { ModifyTechnicianComponent } from './technician/modify-technician/modify-technician.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TechnicianListComponent } from './technician-list/technician-list.component';
+import { TechnicianListComponent } from './technician/technician-list/technician-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'technician', pathMatch: 'full' },

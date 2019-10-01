@@ -1,3 +1,8 @@
+/**
+ * Base angular component
+ *
+ * @author Noah Trimble
+ */
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,5 +11,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
+  // Landing page's title
   title = 'BCO Installation Scheduler';
 }
