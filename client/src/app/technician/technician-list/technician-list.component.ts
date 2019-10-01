@@ -13,8 +13,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: "app-technician-list",
-  templateUrl: "./technician-list.component.html",
-  styleUrls: ["./technician-list.component.less"]
+  templateUrl: "./technician-list.component.html"
 })
 export class TechnicianListComponent implements OnInit {
   // the list of technicians

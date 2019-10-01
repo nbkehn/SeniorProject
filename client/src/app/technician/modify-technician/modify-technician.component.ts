@@ -12,8 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-modify-technician',
-  templateUrl: './modify-technician.component.html',
-  styleUrls: ['./modify-technician.component.less']
+  templateUrl: './modify-technician.component.html'
 })
 export class ModifyTechnicianComponent implements OnInit {
   // the technician's ID in the database
@@ -78,7 +77,7 @@ export class ModifyTechnicianComponent implements OnInit {
       : this.technicianService.updateTechnician(this.id, this.technician);
     response.subscribe(data => console.log(data), error => console.log(error));
     // resets the page back to the technicians list
-    this.gotoList();
+    //this.gotoList();
   }
 
   /**
