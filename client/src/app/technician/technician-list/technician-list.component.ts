@@ -53,11 +53,11 @@ export class TechnicianListComponent implements OnInit {
     this.technicianService.deleteTechnician(id)
       .subscribe(
         data => {
-          this.alertService.success('The technician was deleted successfully.', false);
+          this.alertService.success('Technician was deleted successfully.', false);
           this.reloadData();
         },
         error => {
-          this.alertService.error('The technician could not be deleted.', false);
+          this.alertService.error('Technician could not be deleted.', false);
         });
   }
 

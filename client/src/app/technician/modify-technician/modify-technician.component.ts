@@ -53,9 +53,11 @@ export class ModifyTechnicianComponent implements OnInit {
     if (this.id) {
       this.technicianService.getTechnician(this.id)
         .subscribe(data => {
-          console.log(data);
           this.technician = data;
-        }, error => console.log(error));
+        },
+            error => {
+          this.alertService.error('Technician could not be loaded.', false);
+        });
     }
   }
 
