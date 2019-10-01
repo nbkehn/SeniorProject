@@ -31,7 +31,7 @@ public class TechnicianController {
 
     @GetMapping("/technicians")
     public List<Technician> getAllTechnicians() {
-        return technicianRepository.findAll();
+        return ResponseEntity.ok().body(technicianRepository.findAll());
     }
 
     @GetMapping("/technicians/{id}")
@@ -44,7 +44,9 @@ public class TechnicianController {
 
     @PostMapping("/technicians")
     public Technician createTechnician(@Valid @RequestBody Technician technician) {
-        return technicianRepository.save(technician);
+        technicianRepository.save(technician);
+        return ResponseEntity.ok().body(technician);
+
     }
 
     @PutMapping("/technicians/{id}")
@@ -69,8 +71,6 @@ public class TechnicianController {
                 .orElseThrow(() -> new ResourceNotFoundException("Technician not found for this id :: " + technicianId));
 
         technicianRepository.delete(technician);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
+        return ResponseEntity.ok();
     }
 }
