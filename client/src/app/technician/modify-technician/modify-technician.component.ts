@@ -9,6 +9,7 @@ import { TechnicianService } from '../technician.service';
 import { Technician } from '../technician';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AlertService } from '../../alert/alert.service';
 
 @Component({
   selector: 'app-modify-technician',
@@ -19,8 +20,6 @@ export class ModifyTechnicianComponent implements OnInit {
   id: number;
   // the technician object to create and store data into
   technician: Technician = new Technician();
-  // whether the technician has been added to/updated in the database
-  submitted = false;
   // the title for the page
   title: string;
 
@@ -29,10 +28,12 @@ export class ModifyTechnicianComponent implements OnInit {
    * @param route
    * @param technicianService
    * @param router
+   * @param alertService
    */
   constructor(private route: ActivatedRoute,
               private technicianService: TechnicianService,
-              private router: Router) { }
+              private router: Router,
+              private alertService: AlertService) { }
 
   /**
    * initializes the components and populates the form with technician data if it is being edited (instead of created)
@@ -52,18 +53,10 @@ export class ModifyTechnicianComponent implements OnInit {
     if (this.id) {
       this.technicianService.getTechnician(this.id)
         .subscribe(data => {
-          console.log(data)
+          console.log(data);
           this.technician = data;
         }, error => console.log(error));
     }
-  }
-
-  /**
-   * This initializes the technician object and sets the submitted flag to false (because it's a new entry)
-   */
-  newTechnician(): void {
-    this.submitted = false;
-    this.technician = new Technician();
   }
 
   /**
@@ -75,18 +68,23 @@ export class ModifyTechnicianComponent implements OnInit {
     // if the technician has been created before, it updates the technician
     let response = !this.id ? this.technicianService.createTechnician(this.technician)
       : this.technicianService.updateTechnician(this.id, this.technician);
-    response.subscribe(data => console.log(data), error => console.log(error));
-    // resets the page back to the technicians list
-    //this.gotoList();
+    response.subscribe(
+      data => {
+        // Display success message and go back to list
+        this.alertService.success('Technician saved successfully.', true);
+        this.gotoList();
+      },
+      error => {
+        // Display error message on error and remain in form
+        this.alertService.error('The technician could not be saved.', false);
+      });
   }
 
   /**
    * This method is called on submit.
-   * It changes the submitted boolean to true (which shows the success message and hides the form).
-   * It then calls on the save method to save the entry to the database.
+   * Calls on the save method to save the entry to the database.
    */
   onSubmit() {
-    this.submitted = true;
     this.save();
   }
 

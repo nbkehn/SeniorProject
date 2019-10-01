@@ -12,11 +12,17 @@ import { AppComponent } from './app.component';
 import { ModifyTechnicianComponent } from './technician/modify-technician/modify-technician.component';
 import { TechnicianListComponent } from './technician/technician-list/technician-list.component';
 import { HttpClientModule } from '@angular/common/http';
+
+// import alert service and component
+import { AlertComponent } from './alert/alert/alert.component';
+import { AlertService } from './alert/alert.service';
+
 @NgModule({
   declarations: [
     AppComponent,
     ModifyTechnicianComponent,
-    TechnicianListComponent
+    TechnicianListComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +30,9 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    AlertService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

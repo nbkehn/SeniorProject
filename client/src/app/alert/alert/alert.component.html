@@ -1,0 +1,12 @@
+<!--
+/**
+ * Alert template
+ *
+ * @package alert
+ * @source https://github.com/cornflourblue/angular2-alert-notifications
+ */
+-->
+<div *ngFor="let alert of alerts" class="{{ cssClass(alert) }} alert-dismissable">
+  {{alert.message}}
+  <a class="close" (click)="removeAlert(alert)">&times;</a>
+</div>

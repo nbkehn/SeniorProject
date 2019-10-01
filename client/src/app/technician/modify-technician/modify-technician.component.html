@@ -9,8 +9,7 @@
 -->
 <!-- title, which will change depending on whether it is the add or edit page-->
 <h3>{{title}}</h3>
-<!-- only shows the following if the entry has not already been submitted-->
-<div class="form-container" [hidden]="submitted">
+<div class="form-container">
   <!-- the ngSubmit calls on the data from the ngModel, which is required. The ngModel automatically populates the technician object with relevant data-->
   <form (ngSubmit)="onSubmit()">
     <!-- form component for the technician's first name -->
@@ -46,9 +45,4 @@
     <!-- form component for the submit button -->
     <button type="submit" class="btn btn-success">Submit</button>
   </form>
-</div>
-
-<!-- the success message that will only show when the form is submitted -->
-<div [hidden]="!submitted">
-  <h4>You submitted successfully!</h4>
 </div>
