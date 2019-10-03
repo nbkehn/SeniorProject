@@ -30,8 +30,8 @@ public class TechnicianController {
     private TechnicianRepository technicianRepository;
 
     @GetMapping("/technicians")
-    public List<Technician> getAllTechnicians() {
-        return ResponseEntity.ok().body(technicianRepository.findAll());
+    public ResponseEntity<List<Technician>> getAllTechnicians() {
+        return ResponseEntity.ok(technicianRepository.findAll());
     }
 
     @GetMapping("/technicians/{id}")
@@ -39,13 +39,13 @@ public class TechnicianController {
             throws ResourceNotFoundException {
         Technician technician = technicianRepository.findById(technicianId)
                 .orElseThrow(() -> new ResourceNotFoundException("Technician not found for this id :: " + technicianId));
-        return ResponseEntity.ok().body(technician);
+        return ResponseEntity.ok(technician);
     }
 
     @PostMapping("/technicians")
-    public Technician createTechnician(@Valid @RequestBody Technician technician) {
+    public ResponseEntity<Technician> createTechnician(@Valid @RequestBody Technician technician) {
         technicianRepository.save(technician);
-        return ResponseEntity.ok().body(technician);
+        return ResponseEntity.ok(technician);
 
     }
 
@@ -60,17 +60,17 @@ public class TechnicianController {
         technician.setFirstName(technicianDetails.getFirstName());
         technician.setPhone(technicianDetails.getPhone());
         technician.setInHouse(technicianDetails.isInHouse());
-        final Technician updatedTechnician = technicianRepository.save(technician);
-        return ResponseEntity.ok(updatedTechnician);
+        
+        return ResponseEntity.ok(technicianRepository.save(technician));
     }
 
     @DeleteMapping("/technicians/{id}")
-    public Map<String, Boolean> deleteTechnician(@PathVariable(value = "id") Long technicianId)
+    public ResponseEntity<Technician> deleteTechnician(@PathVariable(value = "id") Long technicianId)
             throws ResourceNotFoundException {
         Technician technician = technicianRepository.findById(technicianId)
                 .orElseThrow(() -> new ResourceNotFoundException("Technician not found for this id :: " + technicianId));
 
         technicianRepository.delete(technician);
-        return ResponseEntity.ok();
+        return ResponseEntity.ok(technician);
     }
 }
