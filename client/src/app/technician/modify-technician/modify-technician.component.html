@@ -11,35 +11,63 @@
 <h3>{{title}}</h3>
 <div class="form-container">
   <!-- the ngSubmit calls on the data from the ngModel, which is required. The ngModel automatically populates the technician object with relevant data-->
-  <form (ngSubmit)="onSubmit()">
+  <form #technicianForm="ngForm" (ngSubmit)="technicianForm.valid && onSubmit()">
     <!-- form component for the technician's first name -->
     <div class="form-group">
-      <label for="name">First Name</label>
-      <input type="text" class="form-control" id="firstName" required [(ngModel)]="technician.firstName" name="firstName">
+      <label for="firstName">First Name</label>
+      <input type="text" class="form-control" id="firstName" required [(ngModel)]="technician.firstName" name="firstName" #firstName="ngModel">
+      <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched || technicianForm.submitted)"
+           class="alert alert-danger">
+        <div *ngIf="firstName.errors.required">
+          This field is required.
+        </div>
+      </div>
     </div>
 
     <!-- form component for the technician's last name -->
     <div class="form-group">
-      <label for="name">Last Name</label>
-      <input type="text" class="form-control" id="lastName" required [(ngModel)]="technician.lastName" name="lastName">
+      <label for="lastName">Last Name</label>
+      <input type="text" class="form-control" id="lastName" required [(ngModel)]="technician.lastName" name="lastName" #lastName="ngModel">
+      <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched || technicianForm.submitted)"
+           class="alert alert-danger">
+        <div *ngIf="lastName.errors.required">
+          This field is required.
+        </div>
+      </div>
     </div>
 
     <!-- form component for the technician's email -->
     <div class="form-group">
-      <label for="name">Email</label>
-      <input type="text" class="form-control" id="email" required [(ngModel)]="technician.email" name="email">
+      <label for="email">Email</label>
+      <input type="text" class="form-control" id="email" required [(ngModel)]="technician.email" name="email" #email="ngModel">
+      <div *ngIf="email.invalid && (email.dirty || email.touched || technicianForm.submitted)"
+           class="alert alert-danger">
+        <div *ngIf="email.errors.required">
+          This field is required.
+        </div>
+      </div>
     </div>
 
     <!-- form component for the technician's phone number -->
     <div class="form-group">
-      <label for="name">Phone Number</label>
-      <input type="text" class="form-control" id="phone" required [(ngModel)]="technician.phone" name="phone">
+      <label for="phone">Phone Number</label>
+      <input type="text" class="form-control" id="phone" required [(ngModel)]="technician.phone"
+             name="phone" #phone="ngModel" pattern="[0-9]{3}-?[0-9]{3}-?[0-9]{4}" placeholder="888-888-8888">
+      <div *ngIf="phone.invalid && (phone.dirty || phone.touched || technicianForm.submitted)"
+           class="alert alert-danger">
+        <div *ngIf="phone.errors.required">
+          This field is required.
+        </div>
+        <div *ngIf="phone.errors.pattern">
+          Phone number must be in the format: 888-888-8888 or 8888888888
+        </div>
+      </div>
     </div>
 
     <!-- form component for whether the technician is in house (the other option for the user is to leave it unchecked for subcontractors) -->
     <div class="form-group">
-      <label for="name">In House</label>
-      <input type="checkbox" class="form-control" id="inHouse" required [(ngModel)]="technician.inHouse" name="inHouse">
+      <label for="inHouse">In House</label>
+      <input type="checkbox" class="form-control" id="inHouse" [(ngModel)]="technician.inHouse" name="inHouse">
     </div>
 
     <!-- form component for the submit button -->
