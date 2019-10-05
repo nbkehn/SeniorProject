@@ -6,3 +6,25 @@
 @brand__indent: 20px;
 @brand__indent__small: 10px;
 @brand__indent__xsmall: 5px;
+
+@brand__color__green: green;
+@brand__color__red: red;
+@brand__color__white: #fff;
+
+@brand__background-color__confirm: @brand__color__green;
+@brand__background-color__cancel: @brand__color__red;
+
+@brand__font-color__button: @brand__color__white;
+
+
+.clearfix {
+  &:before,
+  &:after {
+    content:"";
+    display:table;
+  }
+
+  &:after {
+    clear: both;
+  }
+}
