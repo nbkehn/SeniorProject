@@ -15,7 +15,8 @@
     <!-- form component for the technician's first name -->
     <div class="form-group">
       <label for="firstName">First Name</label>
-      <input type="text" class="form-control" id="firstName" required [(ngModel)]="technician.firstName" name="firstName" #firstName="ngModel">
+      <input type="text" class="form-control" id="firstName" required [(ngModel)]="technician.firstName"
+             name="firstName" #firstName="ngModel">
       <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched || technicianForm.submitted)"
            class="alert alert-danger">
         <div *ngIf="firstName.errors.required">
@@ -27,7 +28,8 @@
     <!-- form component for the technician's last name -->
     <div class="form-group">
       <label for="lastName">Last Name</label>
-      <input type="text" class="form-control" id="lastName" required [(ngModel)]="technician.lastName" name="lastName" #lastName="ngModel">
+      <input type="text" class="form-control" id="lastName" required [(ngModel)]="technician.lastName"
+             name="lastName" #lastName="ngModel">
       <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched || technicianForm.submitted)"
            class="alert alert-danger">
         <div *ngIf="lastName.errors.required">
@@ -39,11 +41,15 @@
     <!-- form component for the technician's email -->
     <div class="form-group">
       <label for="email">Email</label>
-      <input type="text" class="form-control" id="email" required [(ngModel)]="technician.email" name="email" #email="ngModel">
+      <input type="email" class="form-control" id="email" required [(ngModel)]="technician.email"
+             name="email" #email="ngModel" email>
       <div *ngIf="email.invalid && (email.dirty || email.touched || technicianForm.submitted)"
            class="alert alert-danger">
         <div *ngIf="email.errors.required">
           This field is required.
+        </div>
+        <div *ngIf="email.errors.email">
+          Please enter a valid email.
         </div>
       </div>
     </div>
@@ -59,7 +65,7 @@
           This field is required.
         </div>
         <div *ngIf="phone.errors.pattern">
-          Phone number must be in the format: 888-888-8888 or 8888888888
+          Phone number must be in one of the following formats: 888-888-8888 or 8888888888
         </div>
       </div>
     </div>
