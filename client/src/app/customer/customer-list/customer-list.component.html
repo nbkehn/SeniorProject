@@ -1,0 +1,66 @@
+<!--
+/**
+ * Customer listing page
+ *
+ * @package customer
+ * @author Noah Trimble
+ * @modifiedBy Soumya Bagade
+ */
+-->
+<div class="panel panel-primary">
+  <!-- the title for the page-->
+  <div class="panel-heading">
+    <h2>Customer List</h2>
+  </div>
+  <div class="panel-actions">
+    <button routerLink="/customer/add" class="btn btn-primary panel-action">Add Customer</button>
+  </div>
+  <!-- the actual body of the page-->
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+      <!--column headers for the table-->
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Communication Preference</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- each row of the table that is populated with data from every customer (essentially a for loop going through every customer and printing)-->
+      <tr *ngFor="let customer of customers | async">
+        <td>{{customer.firstName}}</td>
+        <td>{{customer.lastName}}</td>
+        <td>{{customer.email}}</td>
+        <td>{{customer.phone}}</td>
+        <td>{{customer.address}}</td>
+        <td>{{translateCommunicationPreference(customer.communicationPreference)}}</td>
+        <td>
+          <!-- button options for each row so that the user can edit/delete that customer with a click of a button-->
+          <button (click)="editCustomer(customer.id)" class="btn btn-primary">Edit</button>
+          <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(customer.id, true).open()"
+                  class="btn btn-danger btn-delete">Delete</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Delete confirmation modal -->
+<ngx-smart-modal #deleteConfirmation identifier="deleteConfirmation" class="delete-confirmation-modal confirmation-modal">
+  <h2>Confirm Delete</h2>
+  <p>Are you sure you want to delete this customer?</p>
+  <div class="actions-container">
+    <div class="btn-container">
+      <button (click)="deleteConfirmation.close()" class="btn btn-cancel">No</button>
+    </div>
+    <div class="btn-container">
+      <button (click)="deleteCustomer(deleteConfirmation.getData()); deleteConfirmation.close()" class="btn btn-confirm">Yes</button>
+    </div>
+  </div>
+</ngx-smart-modal>
