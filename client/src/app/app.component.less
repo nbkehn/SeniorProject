@@ -6,7 +6,24 @@
 @import 'styles/brand.less';
 @import 'styles/listing.less';
 @import 'styles/form.less';
+@import 'styles/nav.less';
 
 .page-title {
   text-align: center;
+}
+
+.panel-actions {
+  .clearfix();
+  padding: @brand__indent__small;
+  background-color: rgba(0,0,0,.05);
+  margin-top: @brand__indent;
+
+  .panel-action {
+    float: right;
+    margin-left: @brand__indent__small;
+  }
+}
+
+.panel-body {
+  margin-top: @brand__indent;
 }

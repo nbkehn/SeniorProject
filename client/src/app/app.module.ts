@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 // import alert service and component
 import { AlertComponent } from './alert/alert/alert.component';
 import { AlertService } from './alert/alert.service';
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { AlertService } from './alert/alert.service';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [
     AlertService

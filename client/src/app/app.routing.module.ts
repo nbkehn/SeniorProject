@@ -9,10 +9,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { TechnicianListComponent } from './technician/technician-list/technician-list.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'technician', pathMatch: 'full' },
-  { path: 'technicians', component: TechnicianListComponent },
-  { path: 'add', component: ModifyTechnicianComponent },
-  { path: 'edit/:id', component: ModifyTechnicianComponent },
+  { path: '', redirectTo: 'appointment', pathMatch: 'full' },
+  { path: 'technician/index', component: TechnicianListComponent },
+  { path: 'technician/add', component: ModifyTechnicianComponent },
+  { path: 'technician/edit/:id', component: ModifyTechnicianComponent },
 ];
 
 @NgModule({

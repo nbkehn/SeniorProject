@@ -6,3 +6,19 @@
 @brand__indent: 20px;
 @brand__indent__small: 10px;
 @brand__indent__xsmall: 5px;
+
+@brand__color__light-grey: lightgrey;
+
+@brand__font-color__disabled: @brand__color__light-grey;
+
+.clearfix {
+  &:before,
+  &:after {
+    content:"";
+    display:table;
+  }
+
+  &:after {
+    clear: both;
+  }
+}
