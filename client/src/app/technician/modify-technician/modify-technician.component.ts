@@ -94,6 +94,6 @@ export class ModifyTechnicianComponent implements OnInit {
    * Resets the page back to the technicians list instead of the add technician page
    */
   gotoList() {
-    this.router.navigate(['/technicians']);
+    this.router.navigate(['/technician/index']);
   }
 }

@@ -17,6 +17,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AlertComponent } from './alert/alert/alert.component';
 import { AlertService } from './alert/alert.service';
 import {NgxSmartModalModule} from "ngx-smart-modal";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import {NgxSmartModalModule} from "ngx-smart-modal";
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    NgxSmartModalModule.forRoot()
+    NgxSmartModalModule.forRoot(),
+    NgbModule
   ],
   providers: [
     AlertService

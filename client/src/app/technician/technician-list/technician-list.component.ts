@@ -69,6 +69,6 @@ export class TechnicianListComponent implements OnInit {
    * @param id the id of the technician to edit
    */
   editTechnician(id: number) {
-    this.router.navigate(['edit', id]);
+    this.router.navigate(['/technician/edit', id]);
   }
 }
