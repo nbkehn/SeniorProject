@@ -1,8 +1,8 @@
 <!--
 /**
- * RSA listing page
+ * User listing page
  *
- * @package rsa
+ * @package user
  * @author Noah Trimble
  * @modifiedBy Soumya Bagade
  */
@@ -10,10 +10,10 @@
 <div class="panel panel-primary">
   <!-- the title for the page-->
   <div class="panel-heading">
-    <h2>RSA List</h2>
+    <h2>User List</h2>
   </div>
   <div class="panel-actions">
-    <button routerLink="/rsa/add" class="btn btn-primary panel-action">Add RSA</button>
+    <button routerLink="/user/add" class="btn btn-primary panel-action">Add User</button>
   </div>
   <!-- the actual body of the page-->
   <div class="panel-body">
@@ -25,20 +25,22 @@
         <th>Lastname</th>
         <th>Email</th>
         <th>Phone</th>
+        <th>Username</th>
         <th>Actions</th>
       </tr>
       </thead>
       <tbody>
-      <!-- each row of the table that is populated with data from every rsa (essentially a for loop going through every rsa and printing)-->
-      <tr *ngFor="let rsa of rsas | async">
-        <td>{{rsa.firstName}}</td>
-        <td>{{rsa.lastName}}</td>
-        <td>{{rsa.email}}</td>
-        <td>{{rsa.phone}}</td>
+      <!-- each row of the table that is populated with data from every user (essentially a for loop going through every user and printing)-->
+      <tr *ngFor="let user of users | async">
+        <td>{{user.firstName}}</td>
+        <td>{{user.lastName}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.phone}}</td>
+        <td>{{user.username}}</td>
         <td>
-          <!-- button options for each row so that the user can edit/delete that rsa with a click of a button-->
-          <button (click)="editRSA(rsa.id)" class="btn btn-primary">Edit</button>
-          <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(rsa.id, true).open()"
+          <!-- button options for each row so that the user can edit/delete that user with a click of a button-->
+          <button (click)="editUser(user.id)" class="btn btn-primary">Edit</button>
+          <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(user.id, true).open()"
                   class="btn btn-danger btn-delete">Delete</button>
         </td>
       </tr>
@@ -50,13 +52,13 @@
 <!-- Delete confirmation modal -->
 <ngx-smart-modal #deleteConfirmation identifier="deleteConfirmation" class="delete-confirmation-modal confirmation-modal">
   <h2>Confirm Delete</h2>
-  <p>Are you sure you want to delete this RSA?</p>
+  <p>Are you sure you want to delete this user?</p>
   <div class="actions-container">
     <div class="btn-container">
       <button (click)="deleteConfirmation.close()" class="btn btn-cancel">No</button>
     </div>
     <div class="btn-container">
-      <button (click)="deleteRSA(deleteConfirmation.getData()); deleteConfirmation.close()" class="btn btn-confirm">Yes</button>
+      <button (click)="deleteUser(deleteConfirmation.getData()); deleteConfirmation.close()" class="btn btn-confirm">Yes</button>
     </div>
   </div>
 </ngx-smart-modal>

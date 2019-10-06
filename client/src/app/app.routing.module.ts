@@ -11,6 +11,8 @@ import {CustomerListComponent} from "./customer/customer-list/customer-list.comp
 import {ModifyCustomerComponent} from "./customer/modify-customer/modify-customer.component";
 import {RsaListComponent} from "./rsa/rsa-list/rsa-list.component";
 import {ModifyRsaComponent} from "./rsa/modify-rsa/modify-rsa.component";
+import {UserListComponent} from "./user/user-list/user-list.component";
+import {ModifyUserComponent} from "./user/modify-user/modify-user.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'appointment/index', pathMatch: 'full' },
@@ -22,7 +24,10 @@ const routes: Routes = [
   { path: 'customer/edit/:id', component: ModifyCustomerComponent },
   { path: 'rsa/index', component:  RsaListComponent },
   { path: 'rsa/add', component: ModifyRsaComponent },
-  { path: 'rsa/edit/:id', component: ModifyRsaComponent }
+  { path: 'rsa/edit/:id', component: ModifyRsaComponent },
+  { path: 'user/index', component:  UserListComponent },
+  { path: 'user/add', component: ModifyUserComponent },
+  { path: 'user/edit/:id', component: ModifyUserComponent }
 ];
 
 @NgModule({

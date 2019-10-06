@@ -22,6 +22,9 @@ import {ModifyCustomerComponent} from "./customer/modify-customer/modify-custome
 import {CustomerListComponent} from "./customer/customer-list/customer-list.component";
 import {ModifyRsaComponent} from "./rsa/modify-rsa/modify-rsa.component";
 import {RsaListComponent} from "./rsa/rsa-list/rsa-list.component";
+import {ModifyUserComponent} from "./user/modify-user/modify-user.component";
+import {UserListComponent} from "./user/user-list/user-list.component";
+import {MustMatchDirective} from "./user/validator/must-match-directive";
 
 
 @NgModule({
@@ -33,7 +36,10 @@ import {RsaListComponent} from "./rsa/rsa-list/rsa-list.component";
     ModifyCustomerComponent,
     CustomerListComponent,
     ModifyRsaComponent,
-    RsaListComponent
+    RsaListComponent,
+    ModifyUserComponent,
+    UserListComponent,
+    MustMatchDirective
   ],
   imports: [
     BrowserModule,
