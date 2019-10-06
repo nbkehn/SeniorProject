@@ -40,7 +40,7 @@
         <td>
           <!-- button options for each row so that the user can edit/delete that technician with a click of a button-->
           <button (click)="editTechnician(technician.id)" class="btn btn-primary">Edit</button>
-          <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(technician.id).open()"
+          <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(technician.id, true).open()"
                   class="btn btn-danger btn-delete">Delete</button>
         </td>
       </tr>
