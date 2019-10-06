@@ -20,6 +20,8 @@ import {NgxSmartModalModule} from "ngx-smart-modal";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {ModifyCustomerComponent} from "./customer/modify-customer/modify-customer.component";
 import {CustomerListComponent} from "./customer/customer-list/customer-list.component";
+import {ModifyRsaComponent} from "./rsa/modify-rsa/modify-rsa.component";
+import {RsaListComponent} from "./rsa/rsa-list/rsa-list.component";
 
 
 @NgModule({
@@ -29,7 +31,9 @@ import {CustomerListComponent} from "./customer/customer-list/customer-list.comp
     TechnicianListComponent,
     AlertComponent,
     ModifyCustomerComponent,
-    CustomerListComponent
+    CustomerListComponent,
+    ModifyRsaComponent,
+    RsaListComponent
   ],
   imports: [
     BrowserModule,
