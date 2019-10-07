@@ -40,7 +40,7 @@ public class User extends Person {
 
     /**
      * gets username
-     * @return username username
+     * @return username
      */
     @Column(name = "username", nullable = true)
     public String getUsername() {
@@ -48,10 +48,29 @@ public class User extends Person {
     }
 
     /**
+     * sets username
+     * @param username username
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
+    /**
+     * gets password hash
+     * @return password hash
+     */
+    @Column(name = "passwordHash", nullable = true)
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    /**
      * sets password hash
-     * @param passwordHash
+     * @param passwordHash passwordHash
      */
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
+    
+    
 }

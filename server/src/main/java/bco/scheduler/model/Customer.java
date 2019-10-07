@@ -7,6 +7,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.JoinColumn;
+import javax.persistence.CascadeType;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
+
 
 
 /**
@@ -17,11 +21,12 @@ import javax.persistence.JoinColumn;
 public class Customer extends Person {
 
     /** customer communication preference */
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "comPref", nullable = true)
     private CommunicationType comPref;
     
     /** customer address */
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "address")
     private Address address;
     
