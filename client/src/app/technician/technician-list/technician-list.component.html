@@ -12,6 +12,9 @@
   <div class="panel-heading">
     <h2>Technician List</h2>
   </div>
+  <div class="panel-actions">
+    <button routerLink="/technician/add" class="btn btn-primary panel-action">Add Technician</button>
+  </div>
   <!-- the actual body of the page-->
   <div class="panel-body">
     <table class="table table-striped">
@@ -37,10 +40,25 @@
         <td>
           <!-- button options for each row so that the user can edit/delete that technician with a click of a button-->
           <button (click)="editTechnician(technician.id)" class="btn btn-primary">Edit</button>
-          <button (click)="deleteTechnician(technician.id)" class="btn btn-danger btn-delete">Delete</button>
+          <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(technician.id, true).open()"
+                  class="btn btn-danger btn-delete">Delete</button>
         </td>
       </tr>
       </tbody>
     </table>
   </div>
 </div>
+
+<!-- Delete confirmation modal -->
+<ngx-smart-modal #deleteConfirmation identifier="deleteConfirmation" class="delete-confirmation-modal confirmation-modal">
+  <h2>Confirm Delete</h2>
+  <p>Are you sure you want to delete this technician?</p>
+  <div class="actions-container">
+    <div class="btn-container">
+      <button (click)="deleteConfirmation.close()" class="btn btn-cancel">No</button>
+    </div>
+    <div class="btn-container">
+      <button (click)="deleteTechnician(deleteConfirmation.getData()); deleteConfirmation.close()" class="btn btn-confirm">Yes</button>
+    </div>
+  </div>
+</ngx-smart-modal>

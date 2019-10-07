@@ -11,6 +11,7 @@ import { Technician } from "../technician";
 import { Component, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
 import {AlertService} from "../../alert/alert.service";
+import {NgxSmartModalService} from "ngx-smart-modal";
 
 @Component({
   selector: "app-technician-list",
@@ -25,10 +26,12 @@ export class TechnicianListComponent implements OnInit {
    * @param technicianService the service for the technician component
    * @param router the router to route the technicians to each page
    * @param alertService serivce used to add alert messages
+   * @param ngxSmartModalService service used to create modals
    */
   constructor(private technicianService: TechnicianService,
               private router: Router,
-              private alertService: AlertService) {}
+              private alertService: AlertService,
+              private ngxSmartModalService: NgxSmartModalService) {}
 
   /**
    * reloads the data on initialize of the page to ensure that the page has the most updated details
@@ -66,6 +69,6 @@ export class TechnicianListComponent implements OnInit {
    * @param id the id of the technician to edit
    */
   editTechnician(id: number) {
-    this.router.navigate(['edit', id]);
+    this.router.navigate(['/technician/edit', id]);
   }
 }
