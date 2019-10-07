@@ -44,8 +44,7 @@ public class RSAController {
 
     @PostMapping("/rsas")
     public ResponseEntity<RSA> createRSA(@Valid @RequestBody RSA rsa) {
-        rsaRepository.save(rsa);
-        return ResponseEntity.ok(rsa);
+        return ResponseEntity.ok(rsaRepository.save(rsa));
 
     }
 

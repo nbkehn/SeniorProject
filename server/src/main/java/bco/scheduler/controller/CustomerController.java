@@ -44,9 +44,7 @@ public class CustomerController {
 
     @PostMapping("/customers")
     public ResponseEntity<Customer> createCustomer(@Valid @RequestBody Customer customer) {
-        customerRepository.save(customer);
-        return ResponseEntity.ok(customer);
-
+        return ResponseEntity.ok(customerRepository.save(customer));
     }
 
     @PutMapping("/customers/{id}")
@@ -59,6 +57,8 @@ public class CustomerController {
         customer.setLastName(customerDetails.getLastName());
         customer.setFirstName(customerDetails.getFirstName());
         customer.setPhone(customerDetails.getPhone());
+        customer.setCommunicationPreference(customerDetails.getCommunicationPreference());
+        customer.setAddress(customerDetails.getAddress());
         
         return ResponseEntity.ok(customerRepository.save(customer));
     }

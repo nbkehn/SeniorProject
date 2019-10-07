@@ -21,14 +21,15 @@ import javax.persistence.EnumType;
 public class Customer extends Person {
 
     /** customer communication preference */
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "comPref", nullable = true)
-    private CommunicationType comPref;
+    @Enumerated
+    @Column(name = "communication_preference", nullable = true)
+    private CommunicationType communicationPreference;
     
     /** customer address */
-    @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "address")
-    private Address address;
+//    @OneToOne(cascade = {CascadeType.ALL})
+//    @JoinColumn(name = "address")
+    @Column(name = "address", nullable = true)
+    private String address;
     
     /** default constructor */
     public Customer() {}
@@ -40,11 +41,12 @@ public class Customer extends Person {
      * @param lastName customer last name
      * @param email customer email
      * @param phone customer phone
-     * @param inHouse customer in house
+     * @param communication type prefered communication method
+     * @param address customer address
      */
-    public Customer(String firstName, String lastName, String email, String phone, CommunicationType comPref, Address address) {
+    public Customer(String firstName, String lastName, String email, String phone, CommunicationType communicationPreference, String address) {
         super(firstName, lastName, email, phone);
-        this.comPref = comPref;
+        this.communicationPreference = communicationPreference;
         this.address = address;
     }
 
@@ -52,23 +54,23 @@ public class Customer extends Person {
      * gets communication preference
      * @return communication preference
      */
-    public CommunicationType getComPref() {
-        return comPref;
+    public CommunicationType getCommunicationPreference() {
+        return communicationPreference;
     }
 
     /**
      * sets communication preference
      * @param comPref 
      */
-    public void setComPref(CommunicationType comPref) {
-        this.comPref = comPref;
+    public void setCommunicationPreference(CommunicationType communicationPreference) {
+        this.communicationPreference = communicationPreference;
     }
     
     /**
      * gets address
      * @return address
      */
-    public Address getAddress() {
+    public String getAddress() {
         return address;
     }
 
@@ -76,7 +78,7 @@ public class Customer extends Person {
      * sets address
      * @param address address 
      */
-    public void setAddress(Address address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 }

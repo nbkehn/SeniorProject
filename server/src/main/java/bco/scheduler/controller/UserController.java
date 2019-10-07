@@ -44,8 +44,7 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        userRepository.save(user);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(userRepository.save(user));
 
     }
 
