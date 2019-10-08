@@ -1,6 +1,5 @@
 package bco.scheduler.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import bco.scheduler.exception.ResourceNotFoundException;
 import bco.scheduler.model.Customer;
 import bco.scheduler.repository.CustomerRepository;
+import bco.scheduler.model.CommunicationType;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -57,7 +57,7 @@ public class CustomerController {
         customer.setLastName(customerDetails.getLastName());
         customer.setFirstName(customerDetails.getFirstName());
         customer.setPhone(customerDetails.getPhone());
-        customer.setCommunicationPreference(customerDetails.getCommunicationPreference());
+        customer.setCommunicationPreference(CommunicationType.values()[customerDetails.getCommunicationPreference()]);
         customer.setAddress(customerDetails.getAddress());
         
         return ResponseEntity.ok(customerRepository.save(customer));
