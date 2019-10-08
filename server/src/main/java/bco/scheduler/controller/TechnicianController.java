@@ -44,8 +44,7 @@ public class TechnicianController {
 
     @PostMapping("/technicians")
     public ResponseEntity<Technician> createTechnician(@Valid @RequestBody Technician technician) {
-        technicianRepository.save(technician);
-        return ResponseEntity.ok(technician);
+        return ResponseEntity.ok(technicianRepository.save(technician));
 
     }
 
