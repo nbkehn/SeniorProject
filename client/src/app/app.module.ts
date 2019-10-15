@@ -2,6 +2,7 @@
  * Angular module dependencies
  *
  * @author Noah Trimble
+ * @author Soumya Bagade
  */
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -25,6 +26,8 @@ import {RsaListComponent} from "./rsa/rsa-list/rsa-list.component";
 import {ModifyUserComponent} from "./user/modify-user/modify-user.component";
 import {UserListComponent} from "./user/user-list/user-list.component";
 import {MustMatchDirective} from "./user/validator/must-match-directive";
+import {TemplateListComponent} from "./template/template-list/template-list.component";
+import {ModifyTemplateComponent} from "./template/modify-template/modify-template.component";
 
 
 @NgModule({
@@ -39,7 +42,9 @@ import {MustMatchDirective} from "./user/validator/must-match-directive";
     RsaListComponent,
     ModifyUserComponent,
     UserListComponent,
-    MustMatchDirective
+    MustMatchDirective,
+    TemplateListComponent,
+    ModifyTemplateComponent
   ],
   imports: [
     BrowserModule,

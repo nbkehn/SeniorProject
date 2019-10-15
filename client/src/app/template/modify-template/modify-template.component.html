@@ -1,0 +1,60 @@
+<!--
+/**
+ * Template add/edit form page
+ *
+ * @package template
+ * @author Noah Trimble
+ * @modifiedBy Soumya Bagade
+ */
+-->
+<!-- title, which will change depending on whether it is the add or edit page-->
+<div class="panel-heading">
+  <h2>{{pageTitle}}</h2>
+</div>
+<div class="panel-actions">
+  <!-- form component for the submit button -->
+  <button type="submit" class="btn btn-primary panel-action" form="template-form">Save</button>
+</div>
+<div class="panel-body">
+  <div class="form-container">
+    <!-- the ngSubmit calls on the data from the ngModel, which is required. The ngModel automatically populates the template object with relevant data-->
+    <form #templateForm="ngForm" (ngSubmit)="templateForm.valid && onSubmit()" id="template-form">
+      <!-- form component for the template's title -->
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" required [(ngModel)]="template.title"
+               name="title" #title="ngModel">
+        <div *ngIf="title.invalid && (title.dirty || title.touched || templateForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="title.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
+
+      <!-- form component for the template's subject -->
+      <div class="form-group">
+        <label for="subject">Subject</label>
+        <input type="subject" class="form-control" id="subject" required [(ngModel)]="template.subject"
+               name="subject" #subject="ngModel" email>
+      </div>
+
+      <!-- form component for the template's content -->
+      <div class="form-group">
+        <label for="content">Content</label>
+        
+        <textarea class="form-control" id="content" rows="7" required [(ngModel)]="template.content"
+        name="content" #content="ngModel"></textarea>
+        <!--input type="text" class="form-control" id="content" required [(ngModel)]="template.content"
+               name="content" #content="ngModel"-->
+        <div *ngIf="content.invalid && (content.dirty || content.touched || templateForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="content.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
