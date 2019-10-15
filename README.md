@@ -40,7 +40,7 @@ USE team16f2019;
   
 #### Build Gradle (starting in project directory)
 cd server <br>
-./gradlew build <br>
+./gradlew build (no ./ for Windows) <br>
 
 #### Run Gradle
 java -jar build/libs/scheduler-0.0.1-SNAPSHOT.jar <br>
