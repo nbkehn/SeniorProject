@@ -19,7 +19,7 @@ sudo apt-get install mysql-server <br>
 
 #### Start MySQL
 sudo /etc/init.d/mysql start <br>
-Windows: cd "C:\Program Files\MySQL\MySQL Server *version*\bin\" <br>
+Windows: cd "C:\Program Files\MySQL\MySQL Server *version* \bin\" <br>
 
 #### Enter MySQL
 sudo /usr/bin/mysql -u root -p <br>
@@ -35,7 +35,7 @@ exit; <br>
 - rename application.properties.template --> application.properties
 
 #### Sign in to MySql
-mysql -u *username* -p;
+mysql -u *username* -p; (no semicolon for Windows) <br>
 USE team16f2019;
   
 #### Build Gradle (starting in project directory)
