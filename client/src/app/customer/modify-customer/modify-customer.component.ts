@@ -22,6 +22,10 @@ export class ModifyCustomerComponent implements OnInit {
   customer: Customer = new Customer();
   // the title for the page
   title: string;
+  // object keys
+  objectKeys;
+  // Communication preferences
+  preferences;
 
   /**
    * Creates the instance of the component
@@ -39,6 +43,11 @@ export class ModifyCustomerComponent implements OnInit {
    * initializes the components and populates the form with customer data if it is being edited (instead of created)
    */
   ngOnInit() {
+    // initialize communication preferences
+    this.preferences = [];
+    this.objectKeys = Object.keys;
+    this.setPreferences();
+
     // initializes a new customer
     this.customer = new Customer();
 
@@ -59,6 +68,20 @@ export class ModifyCustomerComponent implements OnInit {
           this.alertService.error('Customer could not be loaded.', false);
         });
     }
+  }
+
+  /**
+   * Set communication preferences
+   */
+  setPreferences() {
+    this.customerService.getCommunicationPreferenceOptions()
+      .subscribe(
+        data => {
+          this.preferences = data;
+        },
+        error => {
+          this.alertService.error('Communication preferences could not be loaded.', false);
+        });
   }
 
   /**
@@ -95,13 +118,5 @@ export class ModifyCustomerComponent implements OnInit {
    */
   gotoList() {
     this.router.navigate(['/customer/index']);
-  }
-
-  /**
-   * Get communication preference options
-   * @return communication preference options
-   */
-  getCommunicationPreferenceOptions() {
-    return this.customerService.getCommunicationPreferenceOptions();
   }
 }

@@ -81,9 +81,9 @@ public class CustomerController {
     @GetMapping("/customers/communicationType")
     public ResponseEntity<Map<CommunicationType, String>> getCommunicationTypes() {
         Map<CommunicationType, String> map = new HashMap<CommunicationType, String>();
-        map.put(CommunicationType.EMAIL, "Email");
-        map.put(CommunicationType.TEXT, "Text");
-        map.put(CommunicationType.EMAIL_AND_TEXT, "Email And Text");
+        for (CommunicationType communicationType : CommunicationType.values()) {
+            map.put(communicationType, communicationType.getName());
+        }
         return ResponseEntity.ok(map);
     }
 }

@@ -14,8 +14,6 @@ import { Observable } from 'rxjs';
 export class CustomerService {
   // Base URL for each request
   private baseUrl = 'http://localhost:8080/api/v1/customers';
-  // Communication preferences
-  private communicationPreferences;
 
   /**
    * Constructor for CustomerService
@@ -73,27 +71,6 @@ export class CustomerService {
    * @return communication preference options
    */
   getCommunicationPreferenceOptions() {
-    if (typeof this.communicationPreferences === 'undefined') {
-      this.http.get(`${this.baseUrl}/communicationType`)
-        .subscribe(data => {
-            this.communicationPreferences = data;
-          },
-          error => {
-            this.communicationPreferences = {}
-          });
-    }
-
-    let preferences = [];
-
-    if (typeof this.communicationPreferences !== 'undefined') {
-      let self = this;
-      Object.keys(this.communicationPreferences).forEach(function(key, index) {
-        preferences.push({
-          id: key, name: self.communicationPreferences[key]
-        });
-      }, this.communicationPreferences);
-    }
-
-    return preferences;
+    return this.http.get(`${this.baseUrl}/communicationType`);
   }
 }
