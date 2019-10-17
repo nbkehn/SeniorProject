@@ -7,7 +7,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {CommunicationPreference} from "./customer";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +14,8 @@ import {CommunicationPreference} from "./customer";
 export class CustomerService {
   // Base URL for each request
   private baseUrl = 'http://localhost:8080/api/v1/customers';
+  // Communication preferences
+  private communicationPreferences;
 
   /**
    * Constructor for CustomerService
@@ -72,10 +73,27 @@ export class CustomerService {
    * @return communication preference options
    */
   getCommunicationPreferenceOptions() {
-    return [
-      {id: CommunicationPreference.Email, name: 'Email'},
-      {id: CommunicationPreference.Text, name: 'Text'},
-      {id: CommunicationPreference.Both, name: 'Email and Text'}
-    ];
+    if (typeof this.communicationPreferences === 'undefined') {
+      this.http.get(`${this.baseUrl}/communicationType`)
+        .subscribe(data => {
+            this.communicationPreferences = data;
+          },
+          error => {
+            this.communicationPreferences = {}
+          });
+    }
+
+    let preferences = [];
+
+    if (typeof this.communicationPreferences !== 'undefined') {
+      let self = this;
+      Object.keys(this.communicationPreferences).forEach(function(key, index) {
+        preferences.push({
+          id: key, name: self.communicationPreferences[key]
+        });
+      }, this.communicationPreferences);
+    }
+
+    return preferences;
   }
 }
