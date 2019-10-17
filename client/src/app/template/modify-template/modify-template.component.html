@@ -4,7 +4,7 @@
  *
  * @package template
  * @author Noah Trimble
- * @modifiedBy Soumya Bagade
+ * @author Soumya Bagade 
  */
 -->
 <!-- title, which will change depending on whether it is the add or edit page-->
@@ -35,8 +35,8 @@
       <!-- form component for the template's subject -->
       <div class="form-group">
         <label for="subject">Subject</label>
-        <input type="subject" class="form-control" id="subject" required [(ngModel)]="template.subject"
-               name="subject" #subject="ngModel" email>
+        <input type="subject" class="form-control" id="subject" [(ngModel)]="template.subject"
+               name="subject" #subject="ngModel">
       </div>
 
       <!-- form component for the template's content -->
@@ -45,8 +45,6 @@
         
         <textarea class="form-control" id="content" rows="7" required [(ngModel)]="template.content"
         name="content" #content="ngModel"></textarea>
-        <!--input type="text" class="form-control" id="content" required [(ngModel)]="template.content"
-               name="content" #content="ngModel"-->
         <div *ngIf="content.invalid && (content.dirty || content.touched || templateForm.submitted)"
              class="alert alert-danger">
           <div *ngIf="content.errors.required">
