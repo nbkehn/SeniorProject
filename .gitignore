@@ -1,1 +1,3 @@
 server/src/main/resources/application.properties
+server/bin/main/application.properties.template
+server/bin/
