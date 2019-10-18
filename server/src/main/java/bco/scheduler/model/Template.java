@@ -27,7 +27,7 @@ public class Template {
     @Column(name = "subject", nullable = true)
     private String subject;
     /** template content */
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", columnDefinition="TEXT", nullable = false)
     private String content;
     
     /** default constructor */
