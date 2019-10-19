@@ -96,10 +96,10 @@ public class ReminderController {
      * @return array of times to send
      */
     @GetMapping("/reminders/timeToSend")
-    public ResponseEntity<Map<TimeToSend, String>> getTimesToSend() {
-        Map<TimeToSend, String> map = new HashMap<TimeToSend, String>();
+    public ResponseEntity<Map<Integer, String>> getTimesToSend() {
+        Map<Integer, String> map = new HashMap<Integer, String>();
         for (TimeToSend timeToSend : TimeToSend.values()) {
-            map.put(timeToSend, timeToSend.getName());
+            map.put(timeToSend.getOffset(), timeToSend.getName());
         }
         return ResponseEntity.ok(map);
     }

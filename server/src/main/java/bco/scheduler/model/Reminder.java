@@ -16,9 +16,8 @@ public class Reminder {
     private long id;
 
     /** time to send reminder */
-    @Enumerated
     @Column(name = "time_to_send", nullable = false, unique = true)
-    private TimeToSend timeToSend;
+    private int timeToSend;
 
     /** chosen text template's ID */
     @Column(name="text_template_id", nullable = false)
@@ -37,7 +36,7 @@ public class Reminder {
      * @param textTemplateId text template id to use
      * @param emailTemplateId email template id to use
      */
-    public Reminder(TimeToSend timeToSend, long textTemplateId, long emailTemplateId) {
+    public Reminder(int timeToSend, long textTemplateId, long emailTemplateId) {
         this.timeToSend = timeToSend;
         this.textTemplateId = textTemplateId;
         this.emailTemplateId = emailTemplateId;
@@ -63,7 +62,7 @@ public class Reminder {
      * Get time to send
      * @return time to send
      */
-    public TimeToSend getTimeToSend() {
+    public int getTimeToSend() {
         return timeToSend;
     }
 
@@ -71,7 +70,7 @@ public class Reminder {
      * Set time to send
      * @param timeToSend time to send
      */
-    public void setTimeToSend(TimeToSend timeToSend) {
+    public void setTimeToSend(int timeToSend) {
         this.timeToSend = timeToSend;
     }
 
