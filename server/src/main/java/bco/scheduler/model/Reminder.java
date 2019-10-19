@@ -20,17 +20,13 @@ public class Reminder {
     @Column(name = "time_to_send", nullable = false, unique = true)
     private TimeToSend timeToSend;
 
-    /** chosen email template */
-    @OneToOne
-    @JoinColumn(name="text_template_id", nullable = false)
-    @MapsId
-    private Template textTemplate;
+    /** chosen text template's ID */
+    @Column(name="text_template_id", nullable = false)
+    private long textTemplateId;
 
-    /** chosen email template */
-    @OneToOne
-    @JoinColumn(name="email_template_id", nullable = false)
-    @MapsId
-    private Template emailTemplate;
+    /** chosen email template's ID */
+    @Column(name="email_template_id", nullable = false)
+    private long emailTemplateId;
 
     /** default constructor */
     public Reminder() {}
@@ -38,13 +34,13 @@ public class Reminder {
     /**
      * Reminder constructor
      * @param timeToSend time to send reminder
-     * @param textTemplate text template to use
-     * @param emailTemplate email template to use
+     * @param textTemplateId text template id to use
+     * @param emailTemplateId email template id to use
      */
-    public Reminder(TimeToSend timeToSend, Template textTemplate, Template emailTemplate) {
+    public Reminder(TimeToSend timeToSend, long textTemplateId, long emailTemplateId) {
         this.timeToSend = timeToSend;
-        this.textTemplate = textTemplate;
-        this.emailTemplate = emailTemplate;
+        this.textTemplateId = textTemplateId;
+        this.emailTemplateId = emailTemplateId;
     }
 
     /**
@@ -80,34 +76,34 @@ public class Reminder {
     }
 
     /**
-     * Get text template
-     * @return text template
+     * Get text template id
+     * @return text template id
      */
-    public Template getTextTemplate() {
-        return textTemplate;
+    public long getTextTemplateId() {
+        return textTemplateId;
     }
 
     /**
-     * Set text template
-     * @param textTemplate text template
+     * Set text template id
+     * @param textTemplateId text template id
      */
-    public void setTextTemplate(Template textTemplate) {
-        this.textTemplate = textTemplate;
+    public void setTextTemplateId(long textTemplateId) {
+        this.textTemplateId = textTemplateId;
     }
 
     /**
-     * Get email template
-     * @return email template
+     * Get email template id
+     * @return email template id
      */
-    public Template getEmailTemplate() {
-        return emailTemplate;
+    public long getEmailTemplateId() {
+        return emailTemplateId;
     }
 
     /**
-     * Set email template
-     * @param emailTemplate email template
+     * Set email template id
+     * @param emailTemplateId email template id
      */
-    public void setEmailTemplate(Template emailTemplate) {
-        this.emailTemplate = emailTemplate;
+    public void setEmailTemplateId(long emailTemplateId) {
+        this.emailTemplateId = emailTemplateId;
     }
 }
