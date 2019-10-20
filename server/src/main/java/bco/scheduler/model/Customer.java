@@ -54,11 +54,8 @@ public class Customer extends Person {
      * gets communication preference
      * @return communication preference
      */
-    public int getCommunicationPreference() {
-        if (communicationPreference == null) {
-            return -1;
-        }
-        return communicationPreference.ordinal();
+    public CommunicationType getCommunicationPreference() {
+        return communicationPreference;
     }
 
     /**
