@@ -2,6 +2,7 @@ package bco.scheduler.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import javax.validation.Valid;
 
@@ -57,7 +58,7 @@ public class CustomerController {
         customer.setLastName(customerDetails.getLastName());
         customer.setFirstName(customerDetails.getFirstName());
         customer.setPhone(customerDetails.getPhone());
-        customer.setCommunicationPreference(CommunicationType.values()[customerDetails.getCommunicationPreference()]);
+        customer.setCommunicationPreference(customerDetails.getCommunicationPreference());
         customer.setAddress(customerDetails.getAddress());
         
         return ResponseEntity.ok(customerRepository.save(customer));
@@ -71,5 +72,18 @@ public class CustomerController {
 
         customerRepository.delete(customer);
         return ResponseEntity.ok(customer);
+    }
+
+    /**
+     * Get communication types
+     * @return array of communication types
+     */
+    @GetMapping("/customers/communicationType")
+    public ResponseEntity<Map<CommunicationType, String>> getCommunicationTypes() {
+        Map<CommunicationType, String> map = new HashMap<CommunicationType, String>();
+        for (CommunicationType communicationType : CommunicationType.values()) {
+            map.put(communicationType, communicationType.getName());
+        }
+        return ResponseEntity.ok(map);
     }
 }

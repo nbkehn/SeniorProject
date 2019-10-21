@@ -2,6 +2,7 @@
  * Defines routing paths
  *
  * @author Noah Trimble
+ * @modifiedBy Soumya Bagade
  */
 import { ModifyTechnicianComponent } from './technician/modify-technician/modify-technician.component';
 import { NgModule } from '@angular/core';
@@ -15,6 +16,8 @@ import {RsaListComponent} from "./rsa/rsa-list/rsa-list.component";
 import {ModifyRsaComponent} from "./rsa/modify-rsa/modify-rsa.component";
 import {UserListComponent} from "./user/user-list/user-list.component";
 import {ModifyUserComponent} from "./user/modify-user/modify-user.component";
+import {TemplateListComponent} from "./template/template-list/template-list.component";
+import {ModifyTemplateComponent} from "./template/modify-template/modify-template.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'appointment/index', pathMatch: 'full' },
@@ -32,7 +35,10 @@ const routes: Routes = [
   { path: 'rsa/edit/:id', component: ModifyRsaComponent },
   { path: 'user/index', component:  UserListComponent },
   { path: 'user/add', component: ModifyUserComponent },
-  { path: 'user/edit/:id', component: ModifyUserComponent }
+  { path: 'user/edit/:id', component: ModifyUserComponent },
+  { path: 'template/index', component: TemplateListComponent },
+  { path: 'template/add', component: ModifyTemplateComponent },
+  { path: 'template/edit/:id', component: ModifyTemplateComponent }
 ];
 
 @NgModule({
