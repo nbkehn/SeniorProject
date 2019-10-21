@@ -5,7 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import java.util.List;
+import java.time.ZonedDateTime;
 
 /**
  * Appointment class, stitches together the person components and timeslots
@@ -22,7 +28,7 @@ public class Appointment {
     private long id;
     
     /** technicians */
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "technicians")
     private List<Technician> technicians;
     
@@ -37,7 +43,7 @@ public class Appointment {
     private Customer customer;
     
     /** Time slots */
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "timeslots")
     private List<Timeslot> timeslots;
     
@@ -71,7 +77,7 @@ public class Appointment {
      * sets technicians
      * @param technicians technician list
      */
-    public void setInHouse(List<Technicians> technicians) {
+    public void setTechnicians(List<Technician> technicians) {
         this.technicians = technicians;
     }
     
@@ -119,7 +125,7 @@ public class Appointment {
      * sets time slots
      * @param timeslots timeslots
      */
-    public void setCustomer(List<Timeslot> timeslot) {
+    public void setTimeslots(List<Timeslot> timeslot) {
         this.timeslots = timeslots;
     }
 }

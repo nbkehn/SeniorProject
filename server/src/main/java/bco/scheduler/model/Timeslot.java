@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
 import javax.persistence.Enumerated;
 import javax.persistence.EnumType;
+import java.time.ZonedDateTime;
 
 
 
@@ -42,7 +43,7 @@ public class Timeslot {
      * @param firstName customer first name
      * @param lastName customer last name
      */
-    public Customer(ZonedDateTime startDateTime, ZonedDateTime endDateTime) {
+    public Timeslot(ZonedDateTime startDateTime, ZonedDateTime endDateTime) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
     }

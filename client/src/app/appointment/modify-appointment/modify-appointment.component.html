@@ -1,0 +1,83 @@
+<!--
+/**
+ * Appointment add/edit form page
+ *
+ * @package appointment
+ * @author Connor J. Parke
+ */
+-->
+<!-- title, which will change depending on whether it is the add or edit page-->
+<div class="panel-heading">
+  <h2>{{title}}</h2>
+</div>
+<div class="panel-actions">
+  <!-- form component for the submit button -->
+  <button type="submit" class="btn btn-primary panel-action" form="appointment-form">Save</button>
+</div>
+<div class="panel-body">
+  <div class="form-container">
+    <!-- the ngSubmit calls on the data from the ngModel, which is required. The ngModel automatically populates the appointment object with relevant data-->
+    <form #appointmentForm="ngForm" (ngSubmit)="appointmentForm.valid && onSubmit()" id="appointment-form">
+      <!-- form component for the appointment's timeslots -->
+      <div class="form-group">
+        <label for="timeslots">Timeslots</label>
+        <input type="text" class="form-control" id="timeslots" required [(ngModel)]="appointment.timeslots"
+               name="timeslots" #timeslots="ngModel">
+        <div *ngIf="timeslots.invalid && (timeslots.dirty || timeslots.touched || appointmentForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="timeslots.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
+
+      <!-- form component for the appointment's customer -->
+      <div class="form-group">
+        <label for="customer">Customer</label>
+        <select class="form-control" id="customer" required #communicationPreference="ngModel"
+               [(ngModel)]="appointment.customer" name="customer">
+          <option *ngFor="let customer of getCustomerOptions(); let i = index"
+                  [value]="getCustomerOptions()[i].id">
+            {{getCustomerOptions()[i].firstname}} {{getCustomerOptions()[i].lastname}}
+          </option>
+        </select>
+        <div *ngIf="customer.invalid &&
+                    (customer.dirty || customer.touched || customerForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="customer.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
+
+      <!-- form component for the appointment's technicians -->
+      <div class="form-group">
+        <label for="technicians">Technicians</label>
+        <input type="technicians" class="form-control" id="technicians" required [(ngModel)]="appointment.technicians"
+               name="technicians" #technicians="ngModel">
+        <div *ngIf="technicians.invalid && (technicians.dirty || technicians.touched || appointmentForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="technicians.errors.required">
+            This field is required.
+          </div>
+          <div *ngIf="technicians.errors.technicians">
+            Please enter a valid technicians.
+          </div>
+        </div>
+      </div>
+
+      <!-- form component for the appointment's rsa -->
+      <div class="form-group">
+        <label for="rsa">RSA</label>
+        <input type="text" class="form-control" id="rsa" required [(ngModel)]="appointment.rsa"
+               name="rsa" #rsa="ngModel">
+        <div *ngIf="rsa.invalid && (rsa.dirty || rsa.touched || appointmentForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="rsa.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

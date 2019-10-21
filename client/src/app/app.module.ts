@@ -18,6 +18,8 @@ import { AlertComponent } from './alert/alert/alert.component';
 import { AlertService } from './alert/alert.service';
 import {NgxSmartModalModule} from "ngx-smart-modal";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {ModifyAppointmentComponent} from "./appointment/modify-appointment/modify-appointment.component";
+import {AppointmentListComponent} from "./appointment/appointment-list/appointment-list.component";
 import {ModifyCustomerComponent} from "./customer/modify-customer/modify-customer.component";
 import {CustomerListComponent} from "./customer/customer-list/customer-list.component";
 import {ModifyRsaComponent} from "./rsa/modify-rsa/modify-rsa.component";
@@ -33,6 +35,8 @@ import {MustMatchDirective} from "./user/validator/must-match-directive";
     ModifyTechnicianComponent,
     TechnicianListComponent,
     AlertComponent,
+    ModifyAppointmentComponent,
+    AppointmentListComponent,
     ModifyCustomerComponent,
     CustomerListComponent,
     ModifyRsaComponent,
