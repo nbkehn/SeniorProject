@@ -30,6 +30,7 @@ import {TemplateListComponent} from "./template/template-list/template-list.comp
 import {ModifyTemplateComponent} from "./template/modify-template/modify-template.component";
 import {ReminderListComponent} from "./reminder/reminder-list/reminder-list.component";
 import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminder.component";
+import {CalendarComponent} from './calendar/calendar.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminde
     TemplateListComponent,
     ModifyTemplateComponent,
     ReminderListComponent,
-    ModifyReminderComponent
+    ModifyReminderComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,

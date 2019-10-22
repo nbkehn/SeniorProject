@@ -8,16 +8,18 @@ import { ModifyTechnicianComponent } from './technician/modify-technician/modify
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TechnicianListComponent } from './technician/technician-list/technician-list.component';
-import {CustomerListComponent} from "./customer/customer-list/customer-list.component";
-import {ModifyCustomerComponent} from "./customer/modify-customer/modify-customer.component";
-import {RsaListComponent} from "./rsa/rsa-list/rsa-list.component";
-import {ModifyRsaComponent} from "./rsa/modify-rsa/modify-rsa.component";
-import {UserListComponent} from "./user/user-list/user-list.component";
-import {ModifyUserComponent} from "./user/modify-user/modify-user.component";
-import {TemplateListComponent} from "./template/template-list/template-list.component";
-import {ModifyTemplateComponent} from "./template/modify-template/modify-template.component";
-import {ReminderListComponent} from "./reminder/reminder-list/reminder-list.component";
-import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminder.component";
+import { CustomerListComponent } from "./customer/customer-list/customer-list.component";
+import { ModifyCustomerComponent } from "./customer/modify-customer/modify-customer.component";
+import { RsaListComponent } from "./rsa/rsa-list/rsa-list.component";
+import { ModifyRsaComponent } from "./rsa/modify-rsa/modify-rsa.component";
+import { UserListComponent } from "./user/user-list/user-list.component";
+import { ModifyUserComponent } from "./user/modify-user/modify-user.component";
+import { TemplateListComponent } from "./template/template-list/template-list.component";
+import { ModifyTemplateComponent } from "./template/modify-template/modify-template.component";
+import { ReminderListComponent } from "./reminder/reminder-list/reminder-list.component";
+import { ModifyReminderComponent } from "./reminder/modify-reminder/modify-reminder.component";
+import { CalendarComponent } from './calendar/calendar.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'appointment/index', pathMatch: 'full' },
@@ -38,7 +40,8 @@ const routes: Routes = [
   { path: 'template/edit/:id', component: ModifyTemplateComponent },
   { path: 'reminder/index', component: ReminderListComponent },
   { path: 'reminder/add', component: ModifyReminderComponent },
-  { path: 'reminder/edit/:id', component: ModifyReminderComponent }
+  { path: 'reminder/edit/:id', component: ModifyReminderComponent },
+  { path: 'appointment/index', component: CalendarComponent }
 ];
 
 @NgModule({
