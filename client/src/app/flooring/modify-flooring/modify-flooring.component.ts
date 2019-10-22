@@ -1,62 +1,62 @@
 /**
- * Angular component for creating and editing customers
+ * Angular component for creating and editing technicians
  *
- * @package customer
+ * @package technician
  * @author Noah Trimble
  * @modifiedBy Soumya Bagade
  */
-import { CustomerService } from '../customer.service';
-import { Customer } from '../customer';
+import { FlooringService } from '../flooring.service';
+import { Flooring } from '../flooring';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertService } from '../../alert/alert.service';
 
 @Component({
-  selector: 'app-modify-customer',
-  templateUrl: './modify-customer.component.html'
+  selector: 'app-modify-technician',
+  templateUrl: './modify-technician.component.html'
 })
-export class ModifyCustomerComponent implements OnInit {
-  // the customer's ID in the database
+export class ModifyFlooringComponent implements OnInit {
+  // the technician's ID in the database
   id: number;
-  // the customer object to create and store data into
-  customer: Customer = new Customer();
+  // the technician object to create and store data into
+  technician: Flooring = new Flooring();
   // the title for the page
   title: string;
 
   /**
    * Creates the instance of the component
    * @param route
-   * @param customerService
+   * @param technicianService
    * @param router
    * @param alertService
    */
   constructor(private route: ActivatedRoute,
-              private customerService: CustomerService,
+              private technicianService: FlooringService,
               private router: Router,
               private alertService: AlertService) { }
 
   /**
-   * initializes the components and populates the form with customer data if it is being edited (instead of created)
+   * initializes the components and populates the form with technician data if it is being edited (instead of created)
    */
   ngOnInit() {
-    // initializes a new customer
-    this.customer = new Customer();
+    // initializes a new technician
+    this.technician = new Flooring();
 
     // gets the id from the routing
     this.id = this.route.snapshot.params['id'];
 
-    // changes the title depending on whether the customer has been stored in the database and is now being edited (Edit Customer) or created as a new one (Create Customer)
-    this.title = this.id ? 'Edit Customer' : 'Create Customer';
+    // changes the title depending on whether the technician has been stored in the database and is now being edited (Edit Flooring) or created as a new one (Create Flooring)
+    this.title = this.id ? 'Edit Flooring' : 'Create Flooring';
 
-    // if the id is not null, it means that the customer has already been stored and is now being edited.
-    // tries to get the customer from the database and logs whether the customer could be retrieved from the database in the console
+    // if the id is not null, it means that the technician has already been stored and is now being edited.
+    // tries to get the technician from the database and logs whether the technician could be retrieved from the database in the console
     if (this.id) {
-      this.customerService.getCustomer(this.id)
+      this.technicianService.getFlooring(this.id)
         .subscribe(data => {
-          this.customer = data;
+          this.technician = data;
         },
             error => {
-          this.alertService.error('Customer could not be loaded.', false);
+          this.alertService.error('Flooring could not be loaded.', false);
         });
     }
   }
@@ -66,19 +66,19 @@ export class ModifyCustomerComponent implements OnInit {
    * the console can be accessed in the web page by pressing Fn + F12 on a Windows system
    */
   save() {
-    // saves the customer object to the database -- if the customer hasn't been created before, it saves as a new entry
-    // if the customer has been created before, it updates the customer
-    let response = !this.id ? this.customerService.createCustomer(this.customer)
-      : this.customerService.updateCustomer(this.id, this.customer);
+    // saves the technician object to the database -- if the technician hasn't been created before, it saves as a new entry
+    // if the technician has been created before, it updates the technician
+    let response = !this.id ? this.technicianService.createFlooring(this.technician)
+      : this.technicianService.updateFlooring(this.id, this.technician);
     response.subscribe(
       data => {
         // Display success message and go back to list
-        this.alertService.success('Customer saved successfully.', true);
+        this.alertService.success('Flooring saved successfully.', true);
         this.gotoList();
       },
       error => {
         // Display error message on error and remain in form
-        this.alertService.error('The customer could not be saved.', false);
+        this.alertService.error('The technician could not be saved.', false);
       });
   }
 
@@ -91,17 +91,9 @@ export class ModifyCustomerComponent implements OnInit {
   }
 
   /**
-   * Resets the page back to the customers list instead of the add customer page
+   * Resets the page back to the technicians list instead of the add technician page
    */
   gotoList() {
-    this.router.navigate(['/customer/index']);
-  }
-
-  /**
-   * Get communication preference options
-   * @return communication preference options
-   */
-  getCommunicationPreferenceOptions() {
-    return this.customerService.getCommunicationPreferenceOptions();
+    this.router.navigate(['/technician/index']);
   }
 }

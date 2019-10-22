@@ -14,17 +14,17 @@ import {AlertService} from "../../alert/alert.service";
 import {NgxSmartModalService} from "ngx-smart-modal";
 
 @Component({
-  selector: "app-customer-list",
-  templateUrl: "./customer-list.component.html"
+  selector: "app-flooring-list",
+  templateUrl: "./flooring-list.component.html"
 })
-export class CustomerListComponent implements OnInit {
-  // the list of customers
-  customers: Observable<Flooring[]>;
+export class FlooringListComponent implements OnInit {
+  // the list of floorings
+  floorings: Observable<Flooring[]>;
 
   /**
-   * Constructor for the CustomerListComponent, doesn't really do anything right now
-   * @param customerService the service for the customer component
-   * @param router the router to route the customers to each page
+   * Constructor for the FlooringListComponent, doesn't really do anything right now
+   * @param flooringService the service for the flooring component
+   * @param router the router to route the floorings to each page
    * @param alertService serivce used to add alert messages
    * @param ngxSmartModalService service used to create modals
    */
@@ -41,53 +41,34 @@ export class CustomerListComponent implements OnInit {
   }
 
   /**
-   * reloads the data with the most updated list of customers from the database
-   * calls from the customer service so that it makes the DB call
+   * reloads the data with the most updated list of floorings from the database
+   * calls from the flooring service so that it makes the DB call
    */
   reloadData() {
-    this.customers = this.flooringService.getFlooringList();
+    this.floorings = this.flooringService.getFlooringsList();
   }
 
   /**
-   * deletes the customer from the database and prints the response to the console
-   * @param id the id of the customer to delete
+   * deletes the flooring from the database and prints the response to the console
+   * @param id the id of the flooring to delete
    */
   deleteFlooring(id: number) {
     this.flooringService.deleteFlooring(id)
       .subscribe(
         data => {
-          this.alertService.success('Customer was deleted successfully.', false);
+          this.alertService.success('Flooring was deleted successfully.', false);
           this.reloadData();
         },
         error => {
-          this.alertService.error('Customer could not be deleted.', false);
+          this.alertService.error('Flooring could not be deleted.', false);
         });
   }
 
   /**
    * reroutes the page to the edit page with the id passed in through the router
-   * @param id the id of the customer to edit
+   * @param id the id of the flooring to edit
    */
-  editCustomer(id: number) {
-    this.router.navigate(['/customer/edit', id]);
-  }
-
-  /**
-   * Translate communication preference option id to value
-   * @param id Option id
-   * @return translated communication preference
-   */
-  translateCommunicationPreference(id: number) {
-    let options = this.customerService.getCommunicationPreferenceOptions();
-    let found = options.find(function(option) {
-       return option.id === id;
-    });
-
-    if (typeof found !== 'undefined') {
-      return found.name;
-    }
-    else {
-      return '';
-    }
+  editFlooring(id: number) {
+    this.router.navigate(['/flooring/edit', id]);
   }
 }

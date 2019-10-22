@@ -13,6 +13,8 @@ import {RsaListComponent} from "./rsa/rsa-list/rsa-list.component";
 import {ModifyRsaComponent} from "./rsa/modify-rsa/modify-rsa.component";
 import {UserListComponent} from "./user/user-list/user-list.component";
 import {ModifyUserComponent} from "./user/modify-user/modify-user.component";
+import { ModifyFlooringComponent } from './flooring/modify-flooring/modify-flooring.component';
+import { FlooringListComponent } from './flooring/flooring-list/flooring-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'appointment/index', pathMatch: 'full' },
@@ -27,7 +29,9 @@ const routes: Routes = [
   { path: 'rsa/edit/:id', component: ModifyRsaComponent },
   { path: 'user/index', component:  UserListComponent },
   { path: 'user/add', component: ModifyUserComponent },
-  { path: 'user/edit/:id', component: ModifyUserComponent }
+  { path: 'flooring/edit/:id', component: ModifyFlooringComponent },
+  { path: 'flooring/index', component:  FlooringListComponent },
+  { path: 'flooring/add', component: ModifyFlooringComponent }
 ];
 
 @NgModule({

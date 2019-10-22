@@ -25,6 +25,8 @@ import {RsaListComponent} from "./rsa/rsa-list/rsa-list.component";
 import {ModifyUserComponent} from "./user/modify-user/modify-user.component";
 import {UserListComponent} from "./user/user-list/user-list.component";
 import {MustMatchDirective} from "./user/validator/must-match-directive";
+import { ModifyFlooringComponent } from './flooring/modify-flooring/modify-flooring.component';
+import { FlooringListComponent } from './flooring/flooring-list/flooring-list.component';
 
 
 @NgModule({
@@ -39,7 +41,9 @@ import {MustMatchDirective} from "./user/validator/must-match-directive";
     RsaListComponent,
     ModifyUserComponent,
     UserListComponent,
-    MustMatchDirective
+    MustMatchDirective,
+    ModifyFlooringComponent, 
+    FlooringListComponent
   ],
   imports: [
     BrowserModule,
