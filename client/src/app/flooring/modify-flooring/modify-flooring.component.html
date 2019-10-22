@@ -1,0 +1,108 @@
+<!--
+/**
+ * Customer add/edit form page
+ *
+ * @package flooring
+ * @author Noah Trimble
+ * @modifiedBy Will Duke
+ */
+-->
+<!-- title, which will change depending on whether it is the add or edit page-->
+<div class="panel-heading">
+  <h2>{{title}}</h2>
+</div>
+<div class="panel-actions">
+  <!-- form component for the submit button -->
+  <button type="submit" class="btn btn-primary panel-action" form="customer-form">Save</button>
+</div>
+<div class="panel-body">
+  <div class="form-container">
+    <!-- the ngSubmit calls on the data from the ngModel, which is required. The ngModel automatically populates the customer object with relevant data-->
+    <form #customerForm="ngForm" (ngSubmit)="customerForm.valid && onSubmit()" id="customer-form">
+      <!-- form component for the customer's first name -->
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" class="form-control" id="firstName" required [(ngModel)]="customer.firstName"
+               name="firstName" #firstName="ngModel">
+        <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched || customerForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="firstName.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
+
+      <!-- form component for the customer's last name -->
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" class="form-control" id="lastName" required [(ngModel)]="customer.lastName"
+               name="lastName" #lastName="ngModel">
+        <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched || customerForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="lastName.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
+
+      <!-- form component for the customer's email -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" required [(ngModel)]="customer.email"
+               name="email" #email="ngModel" email>
+        <div *ngIf="email.invalid && (email.dirty || email.touched || customerForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="email.errors.required">
+            This field is required.
+          </div>
+          <div *ngIf="email.errors.email">
+            Please enter a valid email.
+          </div>
+        </div>
+      </div>
+
+      <!-- form component for the customer's phone number -->
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="text" class="form-control" id="phone" required [(ngModel)]="customer.phone"
+               name="phone" #phone="ngModel" pattern="[0-9]{3}-?[0-9]{3}-?[0-9]{4}" placeholder="888-888-8888">
+        <div *ngIf="phone.invalid && (phone.dirty || phone.touched || customerForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="phone.errors.required">
+            This field is required.
+          </div>
+          <div *ngIf="phone.errors.pattern">
+            Phone number must be in one of the following formats: 888-888-8888 or 8888888888
+          </div>
+        </div>
+      </div>
+
+      <!-- form component for the customer's address -->
+      <div class="form-group">
+        <label for="address">Address</label>
+        <textarea class="form-control" id="address" [(ngModel)]="customer.address"
+               name="address">
+        </textarea>
+      </div>
+
+      <!-- form component for customer's communication preference -->
+      <div class="form-group">
+        <label for="communicationPreference">Communication</label>
+        <select class="form-control" id="communicationPreference" required #communicationPreference="ngModel"
+               [(ngModel)]="customer.communicationPreference" name="communicationPreference">
+          <option *ngFor="let option of getCommunicationPreferenceOptions(); let i = index"
+                  [value]="getCommunicationPreferenceOptions()[i].id">
+            {{getCommunicationPreferenceOptions()[i].name}}
+          </option>
+        </select>
+        <div *ngIf="communicationPreference.invalid &&
+                    (communicationPreference.dirty || communicationPreference.touched || customerForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="communicationPreference.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
