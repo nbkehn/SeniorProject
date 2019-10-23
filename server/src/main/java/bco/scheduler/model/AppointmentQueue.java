@@ -24,7 +24,7 @@ public class AppointmentQueue {
     private long reminderId;
 
     /** has the reminder been sent */
-    @Column(name = "is_sent default 0", nullable = false)
+    @Column(name = "is_sent", nullable = false, columnDefinition = "int default 0")
     private boolean isSent;
 
     /** error message if reminder send fails */
