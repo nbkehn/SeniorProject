@@ -1,9 +1,9 @@
 /**
- * Angular component for creating and editing technicians
+ * Angular component for creating and editing flooring
  *
- * @package technician
+ * @package flooring
  * @author Noah Trimble
- * @modifiedBy Soumya Bagade
+ * @modifiedBy Will Duke
  */
 import { FlooringService } from '../flooring.service';
 import { Flooring } from '../flooring';
@@ -12,48 +12,48 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AlertService } from '../../alert/alert.service';
 
 @Component({
-  selector: 'app-modify-technician',
-  templateUrl: './modify-technician.component.html'
+  selector: 'app-modify-flooring',
+  templateUrl: './modify-flooring.component.html'
 })
 export class ModifyFlooringComponent implements OnInit {
-  // the technician's ID in the database
+  // the flooring's ID in the database
   id: number;
-  // the technician object to create and store data into
-  technician: Flooring = new Flooring();
+  // the flooring object to create and store data into
+  flooring: Flooring = new Flooring();
   // the title for the page
   title: string;
 
   /**
    * Creates the instance of the component
    * @param route
-   * @param technicianService
+   * @param flooringService
    * @param router
    * @param alertService
    */
   constructor(private route: ActivatedRoute,
-              private technicianService: FlooringService,
+              private flooringService: FlooringService,
               private router: Router,
               private alertService: AlertService) { }
 
   /**
-   * initializes the components and populates the form with technician data if it is being edited (instead of created)
+   * initializes the components and populates the form with flooring data if it is being edited (instead of created)
    */
   ngOnInit() {
-    // initializes a new technician
-    this.technician = new Flooring();
+    // initializes a new flooring
+    this.flooring = new Flooring();
 
     // gets the id from the routing
     this.id = this.route.snapshot.params['id'];
 
-    // changes the title depending on whether the technician has been stored in the database and is now being edited (Edit Flooring) or created as a new one (Create Flooring)
+    // changes the title depending on whether the flooring has been stored in the database and is now being edited (Edit Flooring) or created as a new one (Create Flooring)
     this.title = this.id ? 'Edit Flooring' : 'Create Flooring';
 
-    // if the id is not null, it means that the technician has already been stored and is now being edited.
-    // tries to get the technician from the database and logs whether the technician could be retrieved from the database in the console
+    // if the id is not null, it means that the flooring has already been stored and is now being edited.
+    // tries to get the flooring from the database and logs whether the flooring could be retrieved from the database in the console
     if (this.id) {
-      this.technicianService.getFlooring(this.id)
+      this.flooringService.getFlooring(this.id)
         .subscribe(data => {
-          this.technician = data;
+          this.flooring = data;
         },
             error => {
           this.alertService.error('Flooring could not be loaded.', false);
@@ -66,10 +66,10 @@ export class ModifyFlooringComponent implements OnInit {
    * the console can be accessed in the web page by pressing Fn + F12 on a Windows system
    */
   save() {
-    // saves the technician object to the database -- if the technician hasn't been created before, it saves as a new entry
-    // if the technician has been created before, it updates the technician
-    let response = !this.id ? this.technicianService.createFlooring(this.technician)
-      : this.technicianService.updateFlooring(this.id, this.technician);
+    // saves the flooring object to the database -- if the flooring hasn't been created before, it saves as a new entry
+    // if the flooring has been created before, it updates the flooring
+    let response = !this.id ? this.flooringService.createFlooring(this.flooring)
+      : this.flooringService.updateFlooring(this.id, this.flooring);
     response.subscribe(
       data => {
         // Display success message and go back to list
@@ -78,7 +78,7 @@ export class ModifyFlooringComponent implements OnInit {
       },
       error => {
         // Display error message on error and remain in form
-        this.alertService.error('The technician could not be saved.', false);
+        this.alertService.error('The flooring could not be saved.', false);
       });
   }
 
@@ -91,9 +91,9 @@ export class ModifyFlooringComponent implements OnInit {
   }
 
   /**
-   * Resets the page back to the technicians list instead of the add technician page
+   * Resets the page back to the floorings list instead of the add flooring page
    */
   gotoList() {
-    this.router.navigate(['/technician/index']);
+    this.router.navigate(['/flooring/index']);
   }
 }
