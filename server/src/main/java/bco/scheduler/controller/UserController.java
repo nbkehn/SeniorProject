@@ -22,18 +22,34 @@ import bco.scheduler.exception.ResourceNotFoundException;
 import bco.scheduler.model.User;
 import bco.scheduler.repository.UserRepository;
 
+/**
+ * user controller
+ * @author Noah Trimble
+ *
+ */
 @RestController
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
+    /** user repository */
     @Autowired
     private UserRepository userRepository;
 
+    /** 
+     * gets all users
+     * @return all users
+     */
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userRepository.findAll());
     }
 
+    /**
+     * gets user by specified id
+     * @param userId user to get
+     * @return user with specified id
+     * @throws ResourceNotFoundException
+     */
     @GetMapping("/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long userId)
             throws ResourceNotFoundException {
@@ -42,12 +58,24 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    /**
+     * creates a user
+     * @param user to be created
+     * @return created user
+     */
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         return ResponseEntity.ok(userRepository.save(user));
 
     }
 
+    /**
+     * updates a user
+     * @param userId user to update
+     * @param userDetails updated user
+     * @return updated user
+     * @throws ResourceNotFoundException
+     */
     @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@PathVariable(value = "id") Long userId,
                                                    @Valid @RequestBody User userDetails) throws ResourceNotFoundException {
@@ -64,6 +92,12 @@ public class UserController {
         return ResponseEntity.ok(userRepository.save(user));
     }
 
+    /**
+     * deletes a user
+     * @param userId user to delete
+     * @return deleted user
+     * @throws ResourceNotFoundException
+     */
     @DeleteMapping("/users/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable(value = "id") Long userId)
             throws ResourceNotFoundException {

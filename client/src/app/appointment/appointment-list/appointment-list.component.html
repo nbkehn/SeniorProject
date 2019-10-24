@@ -20,7 +20,8 @@
       <thead>
       <!--column headers for the table-->
       <tr>
-        <th>Timeslots</th>
+        <th>Start</th>
+        <th>End</th>
         <th>Customer</th>
         <th>Technicians</th>
         <th>RSA</th>
@@ -30,10 +31,11 @@
       <tbody>
       <!-- each row of the table that is populated with data from every appointment (essentially a for loop going through every appointment and printing)-->
       <tr *ngFor="let appointment of appointments | async">
-        <td>{{appointment.timeslots}}</td>
-        <td>{{appointment.customer}}</td>
-        <td>{{appointment.technicians}}</td>
-        <td>{{appointment.rsa}}</td>
+        <td>{{appointment.startDateTime}}</td>
+        <td>{{appointment.endDateTime}}</td>
+        <td>{{translateCustomer(appointment.customer)}}</td>
+        <td>{{translateTechnician(appointment.technicians)}}</td>
+        <td>{{translateRSA(appointment.rsa)}}</td>
         <td>
           <!-- button options for each row so that the user can edit/delete that appointment with a click of a button-->
           <button (click)="editAppointment(appointment.id)" class="btn btn-primary">Edit</button>

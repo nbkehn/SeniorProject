@@ -6,7 +6,8 @@
  */
 export class Appointment {
   id: number;
-  timeslots: Date[];
+  startDateTime: Date;
+  endDateTime: Date;
   customer: number;
   technicians: number[];
   rsa: number;
