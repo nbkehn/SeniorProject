@@ -21,21 +21,15 @@
     <form #flooringForm="ngForm" (ngSubmit)="flooringForm.valid && onSubmit()" id="flooring-form">
       <!-- form component for the flooring's name -->
       <div class="form-group">
-        <label for="firstName">First Name</label>
+        <label for="flooringType">Flooring Type</label>
         <input type="text" class="form-control" id="name" required [(ngModel)]="flooring.name"
-               name="name" #firstName="ngModel">
+               name="name" #flooringType="ngModel">
         <div *ngIf="name.invalid && (name.dirty || name.touched || flooringForm.submitted)"
              class="alert alert-danger">
           <div *ngIf="name.errors.required">
             This field is required.
           </div>
         </div>
-      </div>
-
-      <!-- form component for whether the flooring is in house (the other option for the user is to leave it unchecked for subcontractors) -->
-      <div class="form-group">
-        <label for="inHouse">In House</label>
-        <input type="checkbox" class="form-control" id="inHouse" [(ngModel)]="flooring.inHouse" name="inHouse">
       </div>
     </form>
   </div>
