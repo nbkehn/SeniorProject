@@ -13,8 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
-import java.util.List;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.time.LocalDateTime;
 
 /**
@@ -24,7 +25,8 @@ import java.time.LocalDateTime;
  *
  */
 @Entity
-public class Appointment {   
+public class Appointment {
+    public static final String CLASS_NAME = "appointment";
 
     /** appointment id */
     @Id
@@ -151,5 +153,17 @@ public class Appointment {
      */
     public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
+    }
+
+    /**
+     * Get template variable mappings
+     * @return template variable
+     */
+    public Map<String, String> getTemplateVariables() {
+        Map<String, String> map = new HashMap<>();
+        map.put(CLASS_NAME + ".start_date_time", this.getStartDateTime().format(DateTimeFormatter.ofPattern("EEEE MMMM dd K:m a")));
+        map.put(CLASS_NAME + ".start_day", this.getStartDateTime().format(DateTimeFormatter.ofPattern("EEEE MMMM dd")));
+        map.put(CLASS_NAME + ".start_time", this.getStartDateTime().format(DateTimeFormatter.ofPattern("K:m a")));
+        return map;
     }
 }

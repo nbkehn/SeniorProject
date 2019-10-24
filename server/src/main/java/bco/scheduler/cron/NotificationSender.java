@@ -4,15 +4,15 @@
  */
 package bco.scheduler.cron;
 
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import bco.scheduler.exception.ResourceNotFoundException;
-import bco.scheduler.model.Appointment;
-import bco.scheduler.model.AppointmentQueue;
-import bco.scheduler.model.Reminder;
-import bco.scheduler.model.Template;
+import bco.scheduler.model.*;
 import bco.scheduler.repository.AppointmentQueueRepository;
 import bco.scheduler.repository.AppointmentRepository;
 import bco.scheduler.repository.ReminderRepository;
@@ -46,7 +46,7 @@ public class NotificationSender {
     /**
      * Send appointment notifications
      */
-    @Scheduled(cron = "*/10 * * * *")
+    @Scheduled(cron = "0 */10 * * * *")
     public void sendNotifications() {
         Collection<AppointmentQueue> appointmentQueueItems = appointmentQueueRepository.getReadyToSend();
 
@@ -59,27 +59,51 @@ public class NotificationSender {
 
                 Template emailTemplate = templateRepository.findById(reminder.getEmailTemplateId())
                         .orElseThrow(() -> new ResourceNotFoundException("Template not found."));
+                Customer customer = appointment.getCustomer();
 
-                this.sendEmail(emailTemplate);
+                this.sendEmail(emailTemplate, customer, appointment);
             }
             catch(Exception e) {
                 log.error(e.getMessage());
             }
-
         }
     }
 
     /**
      * Send appointment reminder email
-     * @param Template template to use for email
+     * @param template template to use for email
+     * @param customer customer to send email to
+     * @param appointment appointment data to use
      */
-    private void sendEmail(Template template) {
+    private void sendEmail(Template template, Customer customer, Appointment appointment) {
         SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo("noahtrimble@yahoo.com");
 
-        msg.setSubject(template.getContent());
-        msg.setText(template.getContent());
+        msg.setTo(customer.getEmail());
+        msg.setSubject(template.getSubject());
+        String content = parseContent(template.getContent(), customer, appointment);
+        msg.setText(content);
 
         javaMailSender.send(msg);
+    }
+
+    /**
+     * Replace content variables with actual values
+     * @param content Original content with variables
+     * @param customer Customer attached to appointment
+     * @param appointment Appointment that the reminder is for
+     * @return parsed content string
+     */
+    private String parseContent(String content, Customer customer, Appointment appointment) {
+        Map<String, String> customerTemplateVariables = customer.getTemplateVariables();
+        Map<String, String> appointmentTemplateVariables = appointment.getTemplateVariables();
+        Map<String, String> templateVariables = new HashMap<>();
+        templateVariables.putAll(customerTemplateVariables);
+        templateVariables.putAll(appointmentTemplateVariables);
+
+        for (Map.Entry<String, String> templateVariable : templateVariables.entrySet()) {
+            content = content.replace("${" + templateVariable.getKey() + "}", templateVariable.getValue());
+        }
+
+        return content;
     }
 }

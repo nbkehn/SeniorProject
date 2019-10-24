@@ -10,7 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
 import javax.persistence.Enumerated;
 import javax.persistence.EnumType;
-
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -19,6 +20,7 @@ import javax.persistence.EnumType;
  */
 @Entity
 public class Customer extends Person {
+    public static final String CLASS_NAME = "customer";
 
     /** customer communication preference */
     @Enumerated
@@ -41,7 +43,7 @@ public class Customer extends Person {
      * @param lastName customer last name
      * @param email customer email
      * @param phone customer phone
-     * @param communication type prefered communication method
+     * @param communicationPreference type preferred communication method
      * @param address customer address
      */
     public Customer(String firstName, String lastName, String email, String phone, CommunicationType communicationPreference, String address) {
@@ -80,5 +82,17 @@ public class Customer extends Person {
      */
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    /**
+     * Get template variable mappings
+     * @return template variable
+     */
+    public Map<String, String> getTemplateVariables() {
+        Map<String, String> map = new HashMap<>();
+        map.put(CLASS_NAME + ".name", this.getFirstName() + " " + this.getLastName());
+        map.put(CLASS_NAME + ".first_name", this.getFirstName());
+        map.put(CLASS_NAME + ".last_name", this.getLastName());
+        return map;
     }
 }
