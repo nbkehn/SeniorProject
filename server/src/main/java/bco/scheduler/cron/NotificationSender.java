@@ -4,10 +4,7 @@
  */
 package bco.scheduler.cron;
 
-import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,13 +38,12 @@ public class NotificationSender {
 
     private static final Logger log = LoggerFactory.getLogger(NotificationSender.class);
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-
     /**
      * Send appointment notifications
+     * @return Whether notification was sent successfully
      */
     @Scheduled(cron = "0 */10 * * * *")
-    public void sendNotifications() {
+    public boolean sendNotifications() {
         Collection<AppointmentQueue> appointmentQueueItems = appointmentQueueRepository.getReadyToSend();
 
         for (AppointmentQueue appointmentQueueItem : appointmentQueueItems) {
@@ -62,9 +58,17 @@ public class NotificationSender {
                 Customer customer = appointment.getCustomer();
 
                 this.sendEmail(emailTemplate, customer, appointment);
+
+                // TODO: Send texts
+
+                // Set that the appointment reminder has been sent in the appointment queue
+                // TODO: Remove the item from the appointment queue altogether?
+                //appointmentQueueItem.setSent(true);
+                //appointmentQueueRepository.save(appointmentQueueItem);
             }
             catch(Exception e) {
                 log.error(e.getMessage());
+                return false;
             }
         }
     }
