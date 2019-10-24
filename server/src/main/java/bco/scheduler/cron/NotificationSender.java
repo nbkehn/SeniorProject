@@ -40,10 +40,9 @@ public class NotificationSender {
 
     /**
      * Send appointment notifications
-     * @return Whether notification was sent successfully
      */
     @Scheduled(cron = "0 */10 * * * *")
-    public boolean sendNotifications() {
+    public void sendNotifications() {
         Collection<AppointmentQueue> appointmentQueueItems = appointmentQueueRepository.getReadyToSend();
 
         for (AppointmentQueue appointmentQueueItem : appointmentQueueItems) {
@@ -68,7 +67,6 @@ public class NotificationSender {
             }
             catch(Exception e) {
                 log.error(e.getMessage());
-                return false;
             }
         }
     }
