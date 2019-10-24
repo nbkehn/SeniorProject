@@ -30,6 +30,8 @@ import {UserListComponent} from "./user/user-list/user-list.component";
 import {MustMatchDirective} from "./user/validator/must-match-directive";
 import {TemplateListComponent} from "./template/template-list/template-list.component";
 import {ModifyTemplateComponent} from "./template/modify-template/modify-template.component";
+import {ReminderListComponent} from "./reminder/reminder-list/reminder-list.component";
+import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminder.component";
 
 
 @NgModule({
@@ -48,7 +50,9 @@ import {ModifyTemplateComponent} from "./template/modify-template/modify-templat
     UserListComponent,
     MustMatchDirective,
     TemplateListComponent,
-    ModifyTemplateComponent
+    ModifyTemplateComponent,
+    ReminderListComponent,
+    ModifyReminderComponent
   ],
   imports: [
     BrowserModule,
