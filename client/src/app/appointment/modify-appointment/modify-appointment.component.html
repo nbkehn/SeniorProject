@@ -18,31 +18,45 @@
   <div class="form-container">
     <!-- the ngSubmit calls on the data from the ngModel, which is required. The ngModel automatically populates the appointment object with relevant data-->
     <form #appointmentForm="ngForm" (ngSubmit)="appointmentForm.valid && onSubmit()" id="appointment-form">
-      <!-- form component for the appointment's timeslots -->
+      
+      <!-- form component for the appointment's start datetime -->
       <div class="form-group">
-        <label for="timeslots">Timeslots</label>
-        <input type="text" class="form-control" id="timeslots" required [(ngModel)]="appointment.timeslots"
-               name="timeslots" #timeslots="ngModel">
-        <div *ngIf="timeslots.invalid && (timeslots.dirty || timeslots.touched || appointmentForm.submitted)"
+        <label for="start-datetime">Start Date/Time</label>
+        <input type="datetime-local" class="form-control" id="start-datetime" required [(ngModel)]="appointment.startDateTime"
+               name="start-datetime" #startDateTime="ngModel">
+        <div *ngIf="startDateTime.invalid && (startDateTime.dirty || startDateTime.touched || appointmentForm.submitted)"
              class="alert alert-danger">
-          <div *ngIf="timeslots.errors.required">
+          <div *ngIf="startDateTime.errors.required">
             This field is required.
           </div>
         </div>
       </div>
 
-      <!-- form component for the appointment's customer -->
+      <!-- form component for the appointment's end datetime -->
+      <div class="form-group">
+        <label for="end-datetime">End Date/Time</label>
+        <input type="datetime-local" class="form-control" id="end-datetime" required [(ngModel)]="appointment.endDateTime"
+               name="end-datetime" #endDateTime="ngModel">
+        <div *ngIf="endDateTime.invalid && (endDateTime.dirty || endDateTime.touched || appointmentForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="endDateTime.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
+
+      <!-- form component for appointment's customer -->
       <div class="form-group">
         <label for="customer">Customer</label>
-        <select class="form-control" id="customer" required #communicationPreference="ngModel"
+        <select class="form-control" id="customer" required #customer="ngModel"
                [(ngModel)]="appointment.customer" name="customer">
-          <option *ngFor="let customer of getCustomerOptions(); let i = index"
-                  [value]="getCustomerOptions()[i].id">
-            {{getCustomerOptions()[i].firstname}} {{getCustomerOptions()[i].lastname}}
+          <option *ngFor="let key of objectKeys(customers)"
+                  [value]="key">
+            {{customers[key]}}
           </option>
         </select>
         <div *ngIf="customer.invalid &&
-                    (customer.dirty || customer.touched || customerForm.submitted)"
+                    (customer.dirty || customer.touched || appointmentForm.submitted)"
              class="alert alert-danger">
           <div *ngIf="customer.errors.required">
             This field is required.
@@ -50,28 +64,37 @@
         </div>
       </div>
 
-      <!-- form component for the appointment's technicians -->
+      <!-- form component for appointment's technicians -->
       <div class="form-group">
         <label for="technicians">Technicians</label>
-        <input type="technicians" class="form-control" id="technicians" required [(ngModel)]="appointment.technicians"
-               name="technicians" #technicians="ngModel">
-        <div *ngIf="technicians.invalid && (technicians.dirty || technicians.touched || appointmentForm.submitted)"
+        <select class="form-control" id="technicians" required #technicians="ngModel"
+               [(ngModel)]="appointment.technicians" name="technicians">
+          <option *ngFor="let key of objectKeys(technicianOptions)"
+                  [value]="key">
+            {{technicianOptions[key]}}
+          </option>
+        </select>
+        <div *ngIf="technicians.invalid &&
+                    (technicians.dirty || technicians.touched || appointmentForm.submitted)"
              class="alert alert-danger">
           <div *ngIf="technicians.errors.required">
             This field is required.
           </div>
-          <div *ngIf="technicians.errors.technicians">
-            Please enter a valid technicians.
-          </div>
         </div>
       </div>
 
-      <!-- form component for the appointment's rsa -->
+      <!-- form component for appointment's rsa -->
       <div class="form-group">
         <label for="rsa">RSA</label>
-        <input type="text" class="form-control" id="rsa" required [(ngModel)]="appointment.rsa"
-               name="rsa" #rsa="ngModel">
-        <div *ngIf="rsa.invalid && (rsa.dirty || rsa.touched || appointmentForm.submitted)"
+        <select class="form-control" id="rsa" required #rsa="ngModel"
+               [(ngModel)]="appointment.rsa" name="rsa">
+          <option *ngFor="let key of objectKeys(rsas)"
+                  [value]="key">
+            {{rsas[key]}}
+          </option>
+        </select>
+        <div *ngIf="rsa.invalid &&
+                    (rsa.dirty || rsa.touched || appointmentForm.submitted)"
              class="alert alert-danger">
           <div *ngIf="rsa.errors.required">
             This field is required.

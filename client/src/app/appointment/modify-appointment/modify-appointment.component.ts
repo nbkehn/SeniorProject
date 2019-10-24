@@ -21,6 +21,14 @@ export class ModifyAppointmentComponent implements OnInit {
   appointment: Appointment = new Appointment();
   // the title for the page
   title: string;
+  // object keys
+  objectKeys;
+  // the list of customers
+  customers;
+  // the list of technicians
+  technicianOptions;
+  // the list of rsas
+  rsas;
 
   /**
    * Creates the instance of the component
@@ -38,6 +46,16 @@ export class ModifyAppointmentComponent implements OnInit {
    * initializes the components and populates the form with appointment data if it is being edited (instead of created)
    */
   ngOnInit() {
+    // initialize mapped options
+    this.customers = [];
+    this.technicianOptions = [];
+    this.rsas = [];
+    this.objectKeys = Object.keys;
+    this.setCustomers();
+    this.setTechnicians();
+    this.setRSAs();
+
+
     // initializes a new appointment
     this.appointment = new Appointment();
 
@@ -54,10 +72,52 @@ export class ModifyAppointmentComponent implements OnInit {
         .subscribe(data => {
           this.appointment = data;
         },
-            error => {
+        error => {
           this.alertService.error('Appointment could not be loaded.', false);
         });
     }
+  }
+
+  /**
+   * Set customers
+   */
+  setCustomers() {
+    this.appointmentService.getCustomers()
+      .subscribe(
+        data => {
+          this.customers = data;
+        },
+        error => {
+          this.alertService.error('Customers could not be loaded.', false);
+        });
+  }
+
+  /**
+   * Set technicians
+   */
+  setTechnicians() {
+    this.appointmentService.getTechnicians()
+      .subscribe(
+        data => {
+          this.technicianOptions = data;
+        },
+        error => {
+          this.alertService.error('Technicians could not be loaded.', false);
+        });
+  }
+
+  /**
+   * Set RSAs
+   */
+  setRSAs() {
+    this.appointmentService.getRSAs()
+      .subscribe(
+        data => {
+          this.rsas = data;
+        },
+        error => {
+          this.alertService.error('RSAs could not be loaded.', false);
+        });
   }
 
   /**
@@ -94,13 +154,5 @@ export class ModifyAppointmentComponent implements OnInit {
    */
   gotoList() {
     this.router.navigate(['/appointment/index']);
-  }
-
-    /**
-   * Get communication preference options
-   * @return communication preference options
-   */
-  getCustomerOptions() {
-    return this.appointmentService.getCustomerOptions();
   }
 }

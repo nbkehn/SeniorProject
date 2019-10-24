@@ -64,4 +64,28 @@ export class AppointmentService {
   getAppointmentsList(): Observable<any> {
     return this.http.get(`${this.baseUrl}`);
   }
+
+  /**
+   * Gets customers
+   * @return customers
+   */
+  getCustomers() {
+    return this.http.get(`${this.baseUrl}/customer`);
+  }
+
+  /**
+   * Gets technicians
+   * @return technicians
+   */
+  getTechnicians() {
+    return this.http.get(`${this.baseUrl}/technician`);
+  }
+
+  /**
+   * Gets rsas
+   * @return rsas
+   */
+  getRSAs() {
+    return this.http.get(`${this.baseUrl}/rsa`);
+  }
 }
