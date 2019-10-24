@@ -70,7 +70,7 @@ export class AppointmentService {
    * @return customers
    */
   getCustomers() {
-    return this.http.get(`${this.baseUrl}/customer`);
+    return this.http.get(`${this.baseUrl}/customers`);
   }
 
   /**
@@ -78,7 +78,7 @@ export class AppointmentService {
    * @return technicians
    */
   getTechnicians() {
-    return this.http.get(`${this.baseUrl}/technician`);
+    return this.http.get(`${this.baseUrl}/technicians`);
   }
 
   /**
@@ -86,6 +86,6 @@ export class AppointmentService {
    * @return rsas
    */
   getRSAs() {
-    return this.http.get(`${this.baseUrl}/rsa`);
+    return this.http.get(`${this.baseUrl}/rsas`);
   }
 }

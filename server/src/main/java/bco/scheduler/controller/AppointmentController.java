@@ -126,41 +126,29 @@ public class AppointmentController {
     }
     
     /**
-     * Gets all customers
-     * @return array of customers
+     * returns all customers
+     * @return all customers
      */
-    @GetMapping("/appointments/customer")
-    public ResponseEntity<Map<Long, String>> getCustomers() {
-        Map<Long, String> map = new HashMap<Long, String>();
-        for (Customer customer : customerRepository.findAll()) {
-            map.put(customer.getId(), customer.getLastName() + ", " + customer.getFirstName());
-        }
-        return ResponseEntity.ok(map);
+    @GetMapping("/appointment/customers")
+    public ResponseEntity<List<Customer>> getAllCustomers() {
+        return ResponseEntity.ok(customerRepository.findAll());
     }
     
     /**
-     * Get all technicians
-     * @return array of technicians
+     * gets all technicians
+     * @return all technicians
      */
-    @GetMapping("/appointments/technician")
-    public ResponseEntity<Map<Long, String>> getTechnicians() {
-        Map<Long, String> map = new HashMap<Long, String>();
-        for (Technician technician : technicianRepository.findAll()) {
-            map.put(technician.getId(), technician.getLastName() + ", " + technician.getFirstName());
-        }
-        return ResponseEntity.ok(map);
+    @GetMapping("/appointment/technicians")
+    public ResponseEntity<List<Technician>> getAllTechnicians() {
+        return ResponseEntity.ok(technicianRepository.findAll());
     }
-    
+
     /**
-     * Get all rsas
-     * @return array of rsas
+     * gets all RSAs
+     * @return all RSAs
      */
-    @GetMapping("/appointments/rsa")
-    public ResponseEntity<Map<Long, String>> getRSAs() {
-        Map<Long, String> map = new HashMap<Long, String>();
-        for (RSA rsa : rsaRepository.findAll()) {
-            map.put(rsa.getId(), rsa.getLastName() + ", " + rsa.getFirstName());
-        }
-        return ResponseEntity.ok(map);
+    @GetMapping("/rsas")
+    public ResponseEntity<List<RSA>> getAllRSAs() {
+        return ResponseEntity.ok(rsaRepository.findAll());
     }
 }

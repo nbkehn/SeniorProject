@@ -8,7 +8,7 @@ export class Appointment {
   id: number;
   startDateTime: Date;
   endDateTime: Date;
-  customer: number;
-  technicians: number[];
-  rsa: number;
+  customer: Customer;
+  technicians: Technician[];
+  rsa: RSA;
 }
