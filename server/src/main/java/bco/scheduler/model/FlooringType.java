@@ -71,9 +71,9 @@ public class FlooringType {
 
     /**
      * Sets the flooring type name parameter to the passed string name
-     * @param firstName string representation of the flooring type to set to
+     * @param typeName string representation of the flooring type to set to
      */
-    public void setTypeName(String firstName) {
+    public void setTypeName(String typeName) {
         this.typeName = typeName;
     }
 }
