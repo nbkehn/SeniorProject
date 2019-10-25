@@ -26,4 +26,5 @@ dependencies {
 	runtimeOnly 'mysql:mysql-connector-java'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation group: "com.twilio.sdk", name: "twilio", version: "7.42.0"
 }
