@@ -4,6 +4,7 @@ import bco.scheduler.exception.ResourceNotFoundException;
 import bco.scheduler.model.Reminder;
 import bco.scheduler.model.Template;
 import bco.scheduler.model.TimeToSend;
+import bco.scheduler.repository.AppointmentQueueRepository;
 import bco.scheduler.repository.ReminderRepository;
 import bco.scheduler.repository.TemplateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class ReminderController {
     private ReminderRepository reminderRepository;
     @Autowired
     private TemplateRepository templateRepository;
+    @Autowired
+    private AppointmentQueueRepository appointmentQueueRepository;
 
     /**
      * Used for the GET call for all - returns the complete list of reminders from the DB
@@ -53,7 +56,9 @@ public class ReminderController {
      */
     @PostMapping("/reminders")
     public ResponseEntity<Reminder> createReminder(@Valid @RequestBody Reminder reminder) {
-        return ResponseEntity.ok(reminderRepository.save(reminder));
+        reminder = reminderRepository.save(reminder);
+        appointmentQueueRepository.addNewReminder(reminder.getId());
+        return ResponseEntity.ok(reminder);
     }
 
     /**

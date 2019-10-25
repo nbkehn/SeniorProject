@@ -76,6 +76,22 @@ public class Appointment {
     }
 
     /**
+     * gets id
+     * @return id
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * sets id
+     * @param id
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
      * gets technicians
      * @return technicans list
      */

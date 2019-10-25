@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import bco.scheduler.model.Customer;
-import bco.scheduler.repository.CustomerRepository;
+import bco.scheduler.repository.*;
 
 import bco.scheduler.model.Technician;
-import bco.scheduler.repository.TechnicianRepository;
 
 import bco.scheduler.model.RSA;
-import bco.scheduler.repository.RSARepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import bco.scheduler.exception.ResourceNotFoundException;
 import bco.scheduler.model.Appointment;
-import bco.scheduler.repository.AppointmentRepository;
 
 /**
  * Appointment Controller
@@ -46,6 +43,10 @@ public class AppointmentController {
     /** rsa repository */
     @Autowired
     private RSARepository rsaRepository;
+
+    /** appointment queue repository */
+    @Autowired
+    private AppointmentQueueRepository appointmentQueueRepository;
 
     /**
      * returns all appointments
@@ -84,7 +85,9 @@ public class AppointmentController {
         System.out.println(appointment.getTechnicians());
         System.out.println(appointment.getRSA());
 
-        return ResponseEntity.ok(appointmentRepository.save(appointment));
+        appointment = appointmentRepository.save(appointment);
+        appointmentQueueRepository.addNewAppointment(appointment.getId());
+        return ResponseEntity.ok(appointment);
     }
 
     /**
