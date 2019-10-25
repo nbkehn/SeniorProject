@@ -2,7 +2,6 @@ package bco.scheduler.model;
 
 import javax.persistence.*;
 
-
 /**
  * Reminder object, holds information related to reminders
  * @author Noah Trimble

@@ -6,10 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-
-
 /**
  * Template object, holds information related to templates
+ * 
  * @author Soumya Bagade
  */
 @Entity
