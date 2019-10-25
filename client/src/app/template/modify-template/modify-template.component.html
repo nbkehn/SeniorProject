@@ -4,7 +4,7 @@
  *
  * @package template
  * @author Noah Trimble
- * @author Soumya Bagade 
+ * @author Soumya Bagade
  */
 -->
 <!-- title, which will change depending on whether it is the add or edit page-->
@@ -15,7 +15,7 @@
   <!-- form component for the submit button -->
   <button type="submit" class="btn btn-primary panel-action" form="template-form">Save</button>
 </div>
-<div class="panel-body">
+<div class="panel-body template-form-outer">
   <div class="form-container">
     <!-- the ngSubmit calls on the data from the ngModel, which is required. The ngModel automatically populates the template object with relevant data-->
     <form #templateForm="ngForm" (ngSubmit)="templateForm.valid && onSubmit()" id="template-form">
@@ -42,7 +42,7 @@
       <!-- form component for the template's content -->
       <div class="form-group">
         <label for="content">Content</label>
-        
+
         <textarea class="form-control" id="content" rows="7" required [(ngModel)]="template.content"
         name="content" #content="ngModel"></textarea>
         <div *ngIf="content.invalid && (content.dirty || content.touched || templateForm.submitted)"
@@ -54,5 +54,14 @@
       </div>
 
     </form>
+  </div>
+
+  <div class="template-variable-container">
+    <h5>Available Template Variables</h5>
+    <ul class="template-variable-list">
+      <li *ngFor="let variable of objectKeys(templateVariables)">
+        {{templateVariables[variable]}}: {{variable}}
+      </li>
+    </ul>
   </div>
 </div>

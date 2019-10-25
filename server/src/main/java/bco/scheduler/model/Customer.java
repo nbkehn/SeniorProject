@@ -95,4 +95,16 @@ public class Customer extends Person {
         map.put(CLASS_NAME + ".last_name", this.getLastName());
         return map;
     }
+
+    /**
+     * Get template variable descriptions
+     * @return template variable descriptions
+     */
+    public static Map<String, String> getTemplateVariableDescriptions() {
+        Map<String, String> map = new HashMap<>();
+        map.put("${" + CLASS_NAME + ".name" + "}", "Customer's Full Name");
+        map.put("${" + CLASS_NAME + ".first_name" + "}", "Customer's First Name");
+        map.put("${" + CLASS_NAME + ".last_name" + "}", "Customer's Last Name");
+        return map;
+    }
 }

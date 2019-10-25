@@ -45,8 +45,8 @@ public class NotificationSender {
 
     // TODO: Store these somewhere else
     // Twilio variables
-    public static final String ACCOUNT_SID = "AC197c8ea70d7980b88abeefbf3a03a8ea";
-    public static final String AUTH_TOKEN = "f00b57fccf6cf5e5c762d1b16061f912";
+    private static final String ACCOUNT_SID = "AC197c8ea70d7980b88abeefbf3a03a8ea";
+    private static final String AUTH_TOKEN = "f00b57fccf6cf5e5c762d1b16061f912";
 
     /**
      * Send appointment notifications
@@ -84,9 +84,8 @@ public class NotificationSender {
                 }
 
                 // Set that the appointment reminder has been sent in the appointment queue
-                // TODO: Remove the item from the appointment queue altogether?
-                //appointmentQueueItem.setSent(true);
-                //appointmentQueueRepository.save(appointmentQueueItem);
+                appointmentQueueItem.setSent(true);
+                appointmentQueueRepository.save(appointmentQueueItem);
             }
             catch(Exception e) {
                 appointmentQueueItem.setErrorMessage(e.getMessage());
