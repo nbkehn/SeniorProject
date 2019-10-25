@@ -112,9 +112,8 @@ public class NotificationSender {
         Carrier carrier = carrierRepository.findByName(phoneNumber.getCarrier().get("name")).get(0);
 
         msg.setTo(customer.getPhone() + "@" + carrier.getEmailDomain());
-        msg.setSubject(template.getSubject());
-        String content = parseContent(template.getContent(), customer, appointment);
-        msg.setText(content);
+        msg.setSubject(parseTemplateVariables(template.getSubject(), customer, appointment));
+        msg.setText(parseTemplateVariables(template.getContent(), customer, appointment));
 
         javaMailSender.send(msg);
     }
@@ -129,9 +128,8 @@ public class NotificationSender {
         SimpleMailMessage msg = new SimpleMailMessage();
 
         msg.setTo(customer.getEmail());
-        msg.setSubject(template.getSubject());
-        String content = parseContent(template.getContent(), customer, appointment);
-        msg.setText(content);
+        msg.setSubject(parseTemplateVariables(template.getSubject(), customer, appointment));
+        msg.setText(parseTemplateVariables(template.getContent(), customer, appointment));
 
         javaMailSender.send(msg);
     }
@@ -143,7 +141,7 @@ public class NotificationSender {
      * @param appointment Appointment that the reminder is for
      * @return parsed content string
      */
-    private String parseContent(String content, Customer customer, Appointment appointment) {
+    private String parseTemplateVariables(String content, Customer customer, Appointment appointment) {
         Map<String, String> customerTemplateVariables = customer.getTemplateVariables();
         Map<String, String> appointmentTemplateVariables = appointment.getTemplateVariables();
         Map<String, String> templateVariables = new HashMap<>();
