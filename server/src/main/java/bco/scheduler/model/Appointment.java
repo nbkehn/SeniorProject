@@ -13,8 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
 import java.time.LocalDateTime;
 
 /**
@@ -32,9 +31,9 @@ public class Appointment {
     private long id;
     
     /** technician */
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany
     @JoinColumn(name = "appointment")
-    private List<Technician> technicians;
+    private Set<Technician> technicians;
     
     /** RSA */
     @ManyToOne
@@ -65,19 +64,32 @@ public class Appointment {
      * @param customer appointment customer
      * @param timeslots appointment timeslots
      */
-    public Appointment(LocalDateTime startDateTime, LocalDateTime endDateTime, Customer customer, List<Technician> technicians, RSA rsa) {
+    public Appointment(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        this.customer = customer;
-        this.technicians = technicians;
-        this.rsa = rsa;
+    }
+    
+    /**
+     * gets id
+     * @return id
+     */
+    public long getId() {
+        return id;
+    }
+    
+    /**
+     * sets id
+     * @param id
+     */
+    public void setId(long id) {
+        this.id = id;
     }
 
     /**
      * gets technicians
      * @return technicans list
      */
-    public List<Technician> getTechnicians() {
+    public Set<Technician> getTechnicians() {
         return technicians;
     }
 
@@ -85,7 +97,7 @@ public class Appointment {
      * sets technicians
      * @param technicians technician list
      */
-    public void setTechnicians(List<Technician> technicians) {
+    public void setTechnicians(Set<Technician> technicians) {
         this.technicians = technicians;
     }
     

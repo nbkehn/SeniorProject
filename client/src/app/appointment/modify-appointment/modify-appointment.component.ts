@@ -9,6 +9,9 @@ import { Appointment } from '../appointment';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertService } from '../../alert/alert.service';
+import { CustomerService } from 'src/app/customer/customer.service';
+import { TechnicianService } from 'src/app/technician/technician.service';
+import { RsaService } from 'src/app/rsa/rsa.service';
 
 @Component({
   selector: 'app-modify-appointment',
@@ -21,14 +24,12 @@ export class ModifyAppointmentComponent implements OnInit {
   appointment: Appointment = new Appointment();
   // the title for the page
   title: string;
-  // object keys
-  objectKeys;
   // the list of customers
-  customers;
+  customerOptions;
   // the list of technicians
   technicianOptions;
   // the list of rsas
-  rsas;
+  rsaOptions;
 
   /**
    * Creates the instance of the component
@@ -39,6 +40,9 @@ export class ModifyAppointmentComponent implements OnInit {
    */
   constructor(private route: ActivatedRoute,
               private appointmentService: AppointmentService,
+              private customerService: CustomerService,
+              private technicianService: TechnicianService,
+              private rsaService: RsaService,
               private router: Router,
               private alertService: AlertService) { }
 
@@ -47,14 +51,12 @@ export class ModifyAppointmentComponent implements OnInit {
    */
   ngOnInit() {
     // initialize mapped options
-    this.customers = [];
+    this.customerOptions = [];
     this.technicianOptions = [];
-    this.rsas = [];
-    this.objectKeys = Object.keys;
+    this.rsaOptions = [];
     this.setCustomers();
     this.setTechnicians();
     this.setRSAs();
-
 
     // initializes a new appointment
     this.appointment = new Appointment();
@@ -82,10 +84,10 @@ export class ModifyAppointmentComponent implements OnInit {
    * Set customers
    */
   setCustomers() {
-    this.appointmentService.getCustomers()
+    this.customerService.getCustomersList()
       .subscribe(
         data => {
-          this.customers = data;
+          this.customerOptions = data;
         },
         error => {
           this.alertService.error('Customers could not be loaded.', false);
@@ -96,7 +98,7 @@ export class ModifyAppointmentComponent implements OnInit {
    * Set technicians
    */
   setTechnicians() {
-    this.appointmentService.getTechnicians()
+    this.technicianService.getTechniciansList()
       .subscribe(
         data => {
           this.technicianOptions = data;
@@ -110,10 +112,10 @@ export class ModifyAppointmentComponent implements OnInit {
    * Set RSAs
    */
   setRSAs() {
-    this.appointmentService.getRSAs()
+    this.rsaService.getRSAsList()
       .subscribe(
         data => {
-          this.rsas = data;
+          this.rsaOptions = data;
         },
         error => {
           this.alertService.error('RSAs could not be loaded.', false);
@@ -127,6 +129,7 @@ export class ModifyAppointmentComponent implements OnInit {
   save() {
     // saves the appointment object to the database -- if the appointment hasn't been created before, it saves as a new entry
     // if the appointment has been created before, it updates the appointment
+    debugger;
     let response = !this.id ? this.appointmentService.createAppointment(this.appointment)
       : this.appointmentService.updateAppointment(this.id, this.appointment);
     response.subscribe(

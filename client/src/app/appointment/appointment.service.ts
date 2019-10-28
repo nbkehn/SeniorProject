@@ -7,6 +7,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Appointment } from './appointment';
 @Injectable({
   providedIn: 'root'
 })
@@ -34,7 +35,7 @@ export class AppointmentService {
    * @param appointment Appointment to be created
    * @return newly created appointment
    */
-  createAppointment(appointment: Object): Observable<Object> {
+  createAppointment(appointment: Appointment): Observable<object> {
     return this.http.post(`${this.baseUrl}`, appointment);
   }
 
@@ -44,8 +45,8 @@ export class AppointmentService {
    * @param value Updated date for the appointment
    * @return appointment with updated data
    */
-  updateAppointment(id: number, value: any): Observable<Object> {
-    return this.http.put(`${this.baseUrl}/${id}`, value);
+  updateAppointment(id: number, appointment: Appointment): Observable<object> {
+    return this.http.put(`${this.baseUrl}/${id}`, appointment);
   }
 
   /**
@@ -63,29 +64,5 @@ export class AppointmentService {
    */
   getAppointmentsList(): Observable<any> {
     return this.http.get(`${this.baseUrl}`);
-  }
-
-  /**
-   * Gets customers
-   * @return customers
-   */
-  getCustomers() {
-    return this.http.get(`${this.baseUrl}/customers`);
-  }
-
-  /**
-   * Gets technicians
-   * @return technicians
-   */
-  getTechnicians() {
-    return this.http.get(`${this.baseUrl}/technicians`);
-  }
-
-  /**
-   * Gets rsas
-   * @return rsas
-   */
-  getRSAs() {
-    return this.http.get(`${this.baseUrl}/rsas`);
   }
 }

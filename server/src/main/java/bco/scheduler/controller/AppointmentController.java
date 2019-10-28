@@ -2,6 +2,8 @@ package bco.scheduler.controller;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Map;
 
@@ -76,14 +78,9 @@ public class AppointmentController {
      * @return created appointment
      */
     @PostMapping("/appointments")
-    public ResponseEntity<Appointment> createAppointment(@Valid @RequestBody Appointment appointment) {
-        System.out.println("Post: ");
-        System.out.println(appointment.getStartDateTime());
-        System.out.println(appointment.getEndDateTime());
-        System.out.println(appointment.getCustomer());
-        System.out.println(appointment.getTechnicians());
-        System.out.println(appointment.getRSA());
-
+    public ResponseEntity<Appointment> createAppointment (
+            @Valid @RequestBody Appointment appointment
+    ) {        
         return ResponseEntity.ok(appointmentRepository.save(appointment));
     }
 
@@ -125,30 +122,4 @@ public class AppointmentController {
         return ResponseEntity.ok(appointment);
     }
     
-    /**
-     * returns all customers
-     * @return all customers
-     */
-    @GetMapping("/appointment/customers")
-    public ResponseEntity<List<Customer>> getAllCustomers() {
-        return ResponseEntity.ok(customerRepository.findAll());
-    }
-    
-    /**
-     * gets all technicians
-     * @return all technicians
-     */
-    @GetMapping("/appointment/technicians")
-    public ResponseEntity<List<Technician>> getAllTechnicians() {
-        return ResponseEntity.ok(technicianRepository.findAll());
-    }
-
-    /**
-     * gets all RSAs
-     * @return all RSAs
-     */
-    @GetMapping("/rsas")
-    public ResponseEntity<List<RSA>> getAllRSAs() {
-        return ResponseEntity.ok(rsaRepository.findAll());
-    }
 }

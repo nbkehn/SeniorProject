@@ -33,9 +33,11 @@
       <tr *ngFor="let appointment of appointments | async">
         <td>{{appointment.startDateTime}}</td>
         <td>{{appointment.endDateTime}}</td>
-        <td>{{translateCustomer(appointment.customer)}}</td>
-        <td>{{translateTechnician(appointment.technicians)}}</td>
-        <td>{{translateRSA(appointment.rsa)}}</td>
+        <td>{{appointment.customer?.firstName}} {{appointment.customer?.lastName}} </td>
+        <td>
+          <div *ngFor="let technician of appointment.technicians">{{technician?.firstName}} {{technician?.lastName}}</div>
+        </td>
+        <td>{{appointment.rsa?.firstName}} {{appointment.rsa?.lastName}}</td>
         <td>
           <!-- button options for each row so that the user can edit/delete that appointment with a click of a button-->
           <button (click)="editAppointment(appointment.id)" class="btn btn-primary">Edit</button>
