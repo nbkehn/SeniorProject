@@ -11,13 +11,13 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-class UserTest {
+public class UserTest {
 
     /**
      * Tests that the User object has been made through the constructor
      */
 	@Test
-	void testConstructor() {
+	public void testConstructor() {
         User testUser = new User("John", "Doe", "jdoe@gmail.com", "919-515-3000", "jdoe", "securepassword");
         assertNotNull(testUser);
     }
@@ -26,7 +26,7 @@ class UserTest {
      * tests the getUsername() method
      */
     @Test
-	void testGetUsername() {
+	public void testGetUsername() {
         User testUser = new User("John", "Doe", "jdoe@gmail.com", "919-515-3000", "jdoe", "securepassword");
         assertEquals(testUser.getUsername(), "jdoe");
     }
@@ -35,7 +35,7 @@ class UserTest {
      * tests the setUsername() method
      */
     @Test
-	void testSetUsername() {
+	public void testSetUsername() {
         User testUser = new User("John", "Doe", "jdoe@gmail.com", "919-515-3000", "jdoe", "securepassword");
         testUser.setUsername("johndoe");
         assertEquals(testUser.getUsername(), "johndoe");
@@ -45,7 +45,7 @@ class UserTest {
      * tests the getPasswordHash() method
      */
     @Test
-	void testGetPasswordHash() {
+	public void testGetPasswordHash() {
         User testUser = new User("John", "Doe", "jdoe@gmail.com", "919-515-3000", "jdoe", "securepassword");
         assertEquals(testUser.getPasswordHash(), "securepassword");
     }
@@ -54,7 +54,7 @@ class UserTest {
      * tests the setPasswordHash() method
      */
     @Test
-	void testSetPasswordHash() {
+	public void testSetPasswordHash() {
         User testUser = new User("John", "Doe", "jdoe@gmail.com", "919-515-3000", "jdoe", "securepassword");
         testUser.setPasswordHash("M0r3SecureP@ssw0rd!");
         assertEquals(testUser.getPasswordHash(), "M0r3SecureP@ssw0rd!");

@@ -13,13 +13,13 @@ import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
-class TechnicianTest {
+public class TechnicianTest {
 
     /**
      * Tests that the Technician object has been made through the constructor
      */
 	@Test
-	void testConstructor() {
+	public void testConstructor() {
         Technician testTechnician = new Technician("John", "Doe", "jdoe@gmail.com", "919-515-3000", true);
         assertNotNull(testTechnician);
     }
@@ -28,7 +28,7 @@ class TechnicianTest {
      * tests the getID() and setID() methods
      */
     @Test
-    void testID(){
+    public void testID(){
         Technician testTechnician = new Technician("John", "Doe", "jdoe@gmail.com", "919-515-3000", true);
         testTechnician.setId(1);
         assertEquals(testTechnician.getId(), 1);
@@ -38,16 +38,16 @@ class TechnicianTest {
      * tests the getFirstName() method
      */
     @Test
-	void testGetFirstName() {
+	public void testGetFirstName() {
         Technician testTechnician = new Technician("John", "Doe", "jdoe@gmail.com", "919-515-3000", true);
-        assertEquals(testTechnician.getFirstName(), "jdoe");
+        assertEquals(testTechnician.getFirstName(), "John");
     }
     
     /**
      * tests the setFirstName() method
      */
     @Test
-	void testSetFirstName() {
+	public void testSetFirstName() {
         Technician testTechnician = new Technician("John", "Doe", "jdoe@gmail.com", "919-515-3000", true);
         testTechnician.setFirstName("Joe");
         assertEquals(testTechnician.getFirstName(), "Joe");
@@ -57,7 +57,7 @@ class TechnicianTest {
      * tests the getLastName() method
      */
     @Test
-	void testGetLastName() {
+	public void testGetLastName() {
         Technician testTechnician = new Technician("John", "Doe", "jdoe@gmail.com", "919-515-3000", true);
         assertEquals(testTechnician.getLastName(), "Doe");
     }
@@ -66,7 +66,7 @@ class TechnicianTest {
      * tests the setLastName() method
      */
     @Test
-	void testSetLastName() {
+	public void testSetLastName() {
         Technician testTechnician = new Technician("John", "Doe", "jdoe@gmail.com", "919-515-3000", true);
         testTechnician.setLastName("Deer");
         assertEquals(testTechnician.getLastName(), "Deer");
@@ -76,7 +76,7 @@ class TechnicianTest {
      * tests the getEmail() method
      */
     @Test
-	void testGetEmail() {
+	public void testGetEmail() {
         Technician testTechnician = new Technician("John", "Doe", "jdoe@gmail.com", "919-515-3000", true);
         assertEquals(testTechnician.getEmail(), "jdoe@gmail.com");
     }
@@ -85,7 +85,7 @@ class TechnicianTest {
      * tests the setEmail() method
      */
     @Test
-	void testSetEmail() { 
+	public void testSetEmail() { 
         Technician testTechnician = new Technician("John", "Doe", "jdoe@gmail.com", "919-515-3000", true);
         testTechnician.setEmail("johndoe@gmail.com");
         assertEquals(testTechnician.getEmail(), "johndoe@gmail.com");
@@ -95,7 +95,7 @@ class TechnicianTest {
      * tests the getPhone() method
      */
     @Test
-	void testGetPhone() {
+	public void testGetPhone() {
         Technician testTechnician = new Technician("John", "Doe", "jdoe@gmail.com", "919-515-3000", true);
         assertEquals(testTechnician.getPhone(), "919-515-3000");
     }
@@ -104,7 +104,7 @@ class TechnicianTest {
      * tests the setPhone() method
      */
     @Test
-	void testSetPhone() {
+	public void testSetPhone() {
         Technician testTechnician = new Technician("John", "Doe", "jdoe@gmail.com", "919-515-3000", true);
         testTechnician.setPhone("678-999-8212");
         assertEquals(testTechnician.getPhone(), "678-999-8212");
@@ -114,7 +114,7 @@ class TechnicianTest {
      * tests the isInHouse() method
      */
     @Test
-	void testIsInHouse() {
+	public void testIsInHouse() {
         Technician testTechnician = new Technician("John", "Doe", "jdoe@gmail.com", "919-515-3000", true);
         assertTrue(testTechnician.isInHouse());
     }
@@ -123,7 +123,7 @@ class TechnicianTest {
      * tests the setInHouse() method
      */
     @Test
-	void testSetInHouse() {
+	public void testSetInHouse() {
         Technician testTechnician = new Technician("John", "Doe", "jdoe@gmail.com", "919-515-3000", true);
         assertTrue(testTechnician.isInHouse());
         testTechnician.setInHouse(false);

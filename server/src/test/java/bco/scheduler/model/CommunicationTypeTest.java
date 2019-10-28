@@ -11,13 +11,13 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-class CommunicationTypeTest {
+public class CommunicationTypeTest {
 
     /**
      * Tests that the CommunicationType object has been made through the constructor
      */
 	@Test
-	void testConstructor() {
+	public void testConstructor() {
        CommunicationType test = CommunicationType.EMAIL;
        assertNotNull(test);
     }
@@ -26,7 +26,7 @@ class CommunicationTypeTest {
      * Tests the getName() method
      */
 	@Test
-	void testGetName() {
+	public void testGetName() {
        // test email
        CommunicationType testEmail = CommunicationType.EMAIL;
        assertEquals(testEmail.getName(), "Email");

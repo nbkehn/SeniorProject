@@ -11,13 +11,13 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-class TemplateTest {
+public class TemplateTest {
 
     /**
      * Tests that the Template object has been made through the constructor
      */
 	@Test
-	void testConstructor() {
+	public void testConstructor() {
         Template testTemplate = new Template("title", "subject", "content");
         assertNotNull(testTemplate);
     }
@@ -27,7 +27,7 @@ class TemplateTest {
      * tests the getID() and setID() methods
      */
     @Test
-    void testID(){
+    public void testID(){
         Template testTemplate = new Template("title", "subject", "content");
         testTemplate.setId(1);
         assertEquals(testTemplate.getId(), 1);
@@ -38,7 +38,7 @@ class TemplateTest {
      * tests the getTitle() method
      */
     @Test
-	void testGetTitle() {
+	public void testGetTitle() {
         Template testTemplate = new Template("title", "subject", "content");
         assertEquals(testTemplate.getTitle(), "title");
     }
@@ -47,7 +47,7 @@ class TemplateTest {
      * tests the setTitle() method
      */
     @Test
-	void testSetTitle() {
+	public void testSetTitle() {
         Template testTemplate = new Template("title", "subject", "content");
         testTemplate.setTitle("new title");
         assertEquals(testTemplate.getTitle(), "new title");
@@ -57,7 +57,7 @@ class TemplateTest {
      * tests the getSubject() method
      */
     @Test
-	void testGetSubject() {
+	public void testGetSubject() {
         Template testTemplate = new Template("title", "subject", "content");
         assertEquals(testTemplate.getSubject(), "subject");
     }
@@ -66,7 +66,7 @@ class TemplateTest {
      * tests the setSubject() method
      */
     @Test
-	void testSetSubject() {
+	public void testSetSubject() {
         Template testTemplate = new Template("title", "subject", "content");
         testTemplate.setSubject("new subject");
         assertEquals(testTemplate.getSubject(), "new subject");
@@ -76,7 +76,7 @@ class TemplateTest {
      * tests the getContent() method
      */
     @Test
-	void testGetContent() {
+	public void testGetContent() {
         Template testTemplate = new Template("title", "subject", "content");
         assertEquals(testTemplate.getContent(), "content");
     }
@@ -85,7 +85,7 @@ class TemplateTest {
      * tests the setContent() method
      */
     @Test
-	void testSetContent() {
+	public void testSetContent() {
         Template testTemplate = new Template("title", "subject", "content");
         testTemplate.setContent("more content");
         assertEquals(testTemplate.getContent(), "more content");

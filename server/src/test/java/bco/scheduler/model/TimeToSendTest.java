@@ -11,13 +11,13 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-class TimeToSendTest {
+public class TimeToSendTest {
 
     /**
      * Tests that the TimeToSend object has been made through the constructor
      */
 	@Test
-	void testConstructor() {
+	public void testConstructor() {
         TimeToSend testTimeToSend = TimeToSend.ONE_DAY_PRIOR;
         assertNotNull(testTimeToSend);
     }
@@ -26,7 +26,7 @@ class TimeToSendTest {
      * tests the getName() method
      */
     @Test
-    void testGetName(){
+    public void testGetName(){
         // test one week prior
         TimeToSend testOneWeekPrior = TimeToSend.ONE_WEEK_PRIOR;
         assertEquals(testOneWeekPrior.getName(), "One Week Prior");
@@ -45,7 +45,7 @@ class TimeToSendTest {
      * tests the getOffset() method
      */
     @Test
-	void testGetTimeToSend() {
+	public void testGetTimeToSend() {
         // test one week prior
         TimeToSend testOneWeekPrior = TimeToSend.ONE_WEEK_PRIOR;
         assertEquals(testOneWeekPrior.getOffset(), -7);

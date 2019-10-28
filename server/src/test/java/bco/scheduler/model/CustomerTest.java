@@ -11,13 +11,13 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-class CustomerTest {
+public class CustomerTest {
 
     /**
      * Tests that the Customer object has been made through the constructor
      */
 	@Test
-	void testConstructor() {
+	public void testConstructor() {
         Customer testCustomer = new Customer("John", "Doe", "jdoe@gmail.com", "919-515-3000", CommunicationType.EMAIL_AND_TEXT, "890 Oval Dr, Raleigh, NC 27606");
         assertNotNull(testCustomer);
     }
@@ -26,7 +26,7 @@ class CustomerTest {
      * tests the getID() and setID() methods
      */
     @Test
-    void testID(){
+    public void testID(){
         Customer testCustomer = new Customer("John", "Doe", "jdoe@gmail.com", "919-515-3000", CommunicationType.EMAIL_AND_TEXT, "890 Oval Dr, Raleigh, NC 27606");
         testCustomer.setId(1);
         assertEquals(testCustomer.getId(), 1);
@@ -36,26 +36,27 @@ class CustomerTest {
      * tests the getFirstName() method
      */
     @Test
-	void testGetFirstName() {
+	public void testGetFirstName() {
         Customer testCustomer = new Customer("John", "Doe", "jdoe@gmail.com", "919-515-3000", CommunicationType.EMAIL_AND_TEXT, "890 Oval Dr, Raleigh, NC 27606");
-        assertEquals(testCustomer.getFirstName(), "jdoe");
+        assertEquals(testCustomer.getFirstName(), "John");
     }
     
     /**
      * tests the setFirstName() method
      */
     @Test
-	void testSetFirstName() {
+	public void testSetFirstName() {
         Customer testCustomer = new Customer("John", "Doe", "jdoe@gmail.com", "919-515-3000", CommunicationType.EMAIL_AND_TEXT, "890 Oval Dr, Raleigh, NC 27606");
         testCustomer.setFirstName("Joe");
         assertEquals(testCustomer.getFirstName(), "Joe");
+       
     }
 
     /**
      * tests the getLastName() method
      */
     @Test
-	void testGetLastName() {
+	public void testGetLastName() {
         Customer testCustomer = new Customer("John", "Doe", "jdoe@gmail.com", "919-515-3000", CommunicationType.EMAIL_AND_TEXT, "890 Oval Dr, Raleigh, NC 27606");
         assertEquals(testCustomer.getLastName(), "Doe");
     }
@@ -64,7 +65,7 @@ class CustomerTest {
      * tests the setLastName() method
      */
     @Test
-	void testSetLastName() {
+	public void testSetLastName() {
         Customer testCustomer = new Customer("John", "Doe", "jdoe@gmail.com", "919-515-3000", CommunicationType.EMAIL_AND_TEXT, "890 Oval Dr, Raleigh, NC 27606");
         testCustomer.setLastName("Deer");
         assertEquals(testCustomer.getLastName(), "Deer");
@@ -74,7 +75,7 @@ class CustomerTest {
      * tests the getEmail() method
      */
     @Test
-	void testGetEmail() {
+	public void testGetEmail() {
         Customer testCustomer = new Customer("John", "Doe", "jdoe@gmail.com", "919-515-3000", CommunicationType.EMAIL_AND_TEXT, "890 Oval Dr, Raleigh, NC 27606");
         assertEquals(testCustomer.getEmail(), "jdoe@gmail.com");
     }
@@ -83,7 +84,7 @@ class CustomerTest {
      * tests the setEmail() method
      */
     @Test
-	void testSetEmail() { 
+	public void testSetEmail() { 
         Customer testCustomer = new Customer("John", "Doe", "jdoe@gmail.com", "919-515-3000", CommunicationType.EMAIL_AND_TEXT, "890 Oval Dr, Raleigh, NC 27606");
         testCustomer.setEmail("johndoe@gmail.com");
         assertEquals(testCustomer.getEmail(), "johndoe@gmail.com");
@@ -93,7 +94,7 @@ class CustomerTest {
      * tests the getPhone() method
      */
     @Test
-	void testGetPhone() {
+	public void testGetPhone() {
         Customer testCustomer = new Customer("John", "Doe", "jdoe@gmail.com", "919-515-3000", CommunicationType.EMAIL_AND_TEXT, "890 Oval Dr, Raleigh, NC 27606");
         assertEquals(testCustomer.getPhone(), "919-515-3000");
     }
@@ -102,7 +103,7 @@ class CustomerTest {
      * tests the setPhone() method
      */
     @Test
-	void testSetPhone() {
+	public void testSetPhone() {
         Customer testCustomer = new Customer("John", "Doe", "jdoe@gmail.com", "919-515-3000", CommunicationType.EMAIL_AND_TEXT, "890 Oval Dr, Raleigh, NC 27606");
         testCustomer.setPhone("678-999-8212");
         assertEquals(testCustomer.getPhone(), "678-999-8212");
@@ -112,7 +113,7 @@ class CustomerTest {
      * tests the getCommunicationPreference() method
      */
     @Test
-	void testGetCommunicationPreference() {
+	public void testGetCommunicationPreference() {
         Customer testCustomer = new Customer("John", "Doe", "jdoe@gmail.com", "919-515-3000", CommunicationType.EMAIL_AND_TEXT, "890 Oval Dr, Raleigh, NC 27606");
         assertEquals(testCustomer.getCommunicationPreference(), CommunicationType.EMAIL_AND_TEXT);
     }
@@ -121,7 +122,7 @@ class CustomerTest {
      * tests the setCommunicationPreference() method
      */
     @Test
-	void testSetCommunicationPreference() {
+	public void testSetCommunicationPreference() {
         Customer testCustomer = new Customer("John", "Doe", "jdoe@gmail.com", "919-515-3000", CommunicationType.EMAIL_AND_TEXT, "890 Oval Dr, Raleigh, NC 27606");
         testCustomer.setCommunicationPreference(CommunicationType.EMAIL);
         assertEquals(testCustomer.getCommunicationPreference(), CommunicationType.EMAIL);
@@ -131,7 +132,7 @@ class CustomerTest {
      * tests the getAddress() method
      */
     @Test
-	void testGetAddress() {
+	public void testGetAddress() {
         Customer testCustomer = new Customer("John", "Doe", "jdoe@gmail.com", "919-515-3000", CommunicationType.EMAIL_AND_TEXT, "890 Oval Dr, Raleigh, NC 27606");
         assertEquals(testCustomer.getAddress(), "890 Oval Dr, Raleigh, NC 27606");
     }
@@ -140,7 +141,7 @@ class CustomerTest {
      * tests the setAddress() method
      */
     @Test
-	void testSetAddress() {
+	public void testSetAddress() {
         Customer testCustomer = new Customer("John", "Doe", "jdoe@gmail.com", "919-515-3000", CommunicationType.EMAIL_AND_TEXT, "890 Oval Dr, Raleigh, NC 27606");
         testCustomer.setAddress("110000023 Oval Dr, Raleigh, NC 27606");
         assertEquals(testCustomer.getAddress(), "110000023 Oval Dr, Raleigh, NC 27606");

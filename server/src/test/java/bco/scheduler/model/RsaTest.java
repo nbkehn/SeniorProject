@@ -13,13 +13,13 @@ import org.junit.Test;
 
 import bco.scheduler.model.RSA;
 
-class RsaTest {
+public class RsaTest {
 
     /**
      * Tests that the RSA object has been made through the constructor
      */
 	@Test
-	void testConstructor() {
+	public void testConstructor() {
         // initialize the RSA
         RSA testRSA = new RSA();
         testRSA.setFirstName("John");
@@ -33,7 +33,7 @@ class RsaTest {
      * tests the getID() and setID() methods
      */
     @Test
-    void testID(){
+    public void testID(){
         // initialize the RSA
         RSA testRSA = new RSA();
         testRSA.setFirstName("John");
@@ -48,21 +48,21 @@ class RsaTest {
      * tests the getFirstName() method
      */
     @Test
-	void testGetFirstName() {
+	public void testGetFirstName() {
         // initialize the RSA
         RSA testRSA = new RSA();
         testRSA.setFirstName("John");
         testRSA.setLastName("Doe");
         testRSA.setEmail("jdoe@gmail.com");
         testRSA.setPhone("919-515-3000");
-        assertEquals(testRSA.getFirstName(), "jdoe");
+        assertEquals(testRSA.getFirstName(), "John");
     }
     
     /**
      * tests the setFirstName() method
      */
     @Test
-	void testSetFirstName() {
+	public void testSetFirstName() {
         // initialize the RSA
         RSA testRSA = new RSA();
         testRSA.setFirstName("John");
@@ -81,7 +81,7 @@ class RsaTest {
      * tests the getLastName() method
      */
     @Test
-	void testGetLastName() {
+	public void testGetLastName() {
         // initialize the RSA 
         RSA testRSA = new RSA();
         testRSA.setFirstName("John");
@@ -95,7 +95,7 @@ class RsaTest {
      * tests the setLastName() method
      */
     @Test
-	void testSetLastName() {
+	public void testSetLastName() {
         // initialize the RSA
         RSA testRSA = new RSA();
         testRSA.setFirstName("John");
@@ -114,7 +114,7 @@ class RsaTest {
      * tests the getEmail() method
      */
     @Test
-	void testGetEmail() {
+	public void testGetEmail() {
         // initialize the RSA
         RSA testRSA = new RSA();
         testRSA.setFirstName("John");
@@ -128,7 +128,7 @@ class RsaTest {
      * tests the setEmail() method
      */
     @Test
-	void testSetEmail() { 
+	public void testSetEmail() { 
         // initialize the RSA
         RSA testRSA = new RSA();
         testRSA.setFirstName("John");
@@ -147,7 +147,7 @@ class RsaTest {
      * tests the getPhone() method
      */
     @Test
-	void testGetPhone() {
+	public void testGetPhone() {
         // initialize the RSA
         RSA testRSA = new RSA();
         testRSA.setFirstName("John");
@@ -161,7 +161,7 @@ class RsaTest {
      * tests the setPhone() method
      */
     @Test
-	void testSetPhone() {
+	public void testSetPhone() {
         // initialize the RSA
         RSA testRSA = new RSA();
         testRSA.setFirstName("John");
