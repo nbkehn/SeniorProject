@@ -6,12 +6,21 @@
 
 package bco.scheduler.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 public class TemplateTest {
+
+    /**
+     * Tests that the fields of the Template object is null if the constructor parameters are empty
+     * (the assumption is that if one is null, then all would be)
+     */
+	@Test
+	public void testNullConstructor() {
+        Template nullTemplate = new Template();
+        assertNull(nullTemplate.getSubject());
+    }
 
     /**
      * Tests that the Template object has been made through the constructor

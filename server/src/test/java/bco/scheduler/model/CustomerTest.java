@@ -6,12 +6,20 @@
 
 package bco.scheduler.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 public class CustomerTest {
+    /**
+     * Tests that the fields of the Customer object is null if the constructor parameters are empty
+     * (the assumption is that if one is null, then all would be)
+     */
+	@Test
+	public void testNullConstructor() {
+        Customer testCustomer = new Customer();
+        assertNull(testCustomer.getEmail());
+    }
 
     /**
      * Tests that the Customer object has been made through the constructor

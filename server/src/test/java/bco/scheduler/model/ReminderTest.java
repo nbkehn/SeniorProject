@@ -6,18 +6,27 @@
 
 package bco.scheduler.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 public class ReminderTest {
 
     /**
+     * Tests that the Reminder object is Null if the reminder is not set with parameters
+     * (the assumption is that if one is null, then all would be)
+     */
+	@Test
+	public void testNullConstructor() {
+        Reminder nullReminder = new Reminder();
+        assertEquals(nullReminder.getEmailTemplateId(), 0);
+    }
+
+    /**
      * Tests that the Reminder object has been made through the constructor
      */
 	@Test
-	public void testConstructor() {
+	public void testConstructor() {        
         Reminder testReminder = new Reminder(365, 1, 2);
         assertNotNull(testReminder);
     }
