@@ -10,7 +10,7 @@ import javax.persistence.Table;
 /**
  * The flooring type class used to assign different types of flooring used for 
  * appointments. 
- * @author Will Duke
+ * @author Noah Trimble, Will Duke
  */
 @Entity
 @Table(name = "flooringtype")
@@ -26,8 +26,8 @@ public class FlooringType {
     /**
      * The actual string representation of the flooring type.
      */
-    @Column(name = "type_name", nullable = true)
-    private String typeName;
+    @Column(name = "name", nullable = false)
+    public String name;
 
 
     /**
@@ -39,10 +39,10 @@ public class FlooringType {
 
     /**
      * The actual flooring type constructor with a passed floor type to set to. 
-     * @param typeName the type to set the floor object to.
+     * @param name the type to set the floor object to.
      */
-    public FlooringType(String typeName) {
-        this.typeName = typeName;
+    public FlooringType(String name) {
+        this.name = name;
     }
 
     /**
@@ -63,17 +63,17 @@ public class FlooringType {
   
     /**
      * Gets the flooring type of the object represented as a string
-     * @return typeName string representation of the flooring type
+     * @return name string representation of the flooring type
      */
-    public String getTypeName() {
-        return typeName;
+    public String getName() {
+        return name;
     }
 
     /**
      * Sets the flooring type name parameter to the passed string name
-     * @param typeName string representation of the flooring type to set to
+     * @param name string representation of the flooring type to set to
      */
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
+    public void setName(String name) {
+        this.name = name;
     }
 }

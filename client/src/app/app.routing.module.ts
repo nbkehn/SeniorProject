@@ -1,7 +1,7 @@
 /**
  * Defines routing paths
  *
- * @author Noah Trimble
+ * @author Noah Trimble, Will Duke
  */
 import { ModifyTechnicianComponent } from './technician/modify-technician/modify-technician.component';
 import { NgModule } from '@angular/core';

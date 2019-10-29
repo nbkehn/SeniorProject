@@ -1,7 +1,7 @@
 /**
  * Angular module dependencies
  *
- * @author Noah Trimble
+ * @author Noah Trimble, Will Duke
  */
 
 import { BrowserModule } from '@angular/platform-browser';

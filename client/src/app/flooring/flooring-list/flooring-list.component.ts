@@ -2,8 +2,7 @@
  * Angular component for viewing floorings
  *
  * @package flooring
- * @author Noah Trimble
- * @modifiedBy Will Duke
+ * @author Noah Trimble, Will Duke
  */
 import { Observable } from "rxjs";
 import { FlooringService as FlooringService } from "../flooring.service";

@@ -25,6 +25,7 @@ import bco.scheduler.model.CommunicationType;
 /**
  * The controller for the flooring type. Handles all actions surrounding the flooring type objects and any interaction
  * that can be had with them.
+ * @author Noah Trimble, Will Duke
  */
 @RestController
 @RequestMapping("/api/v1")
@@ -70,7 +71,7 @@ public class FlooringTypeController {
                 .orElseThrow(() -> new ResourceNotFoundException("Flooring not found for this id :: " + flooringTypeId));
 
         flooring.setId(flooringType.getId());
-        flooring.setTypeName(flooringType.getTypeName());
+        flooring.setName(flooringType.getName());
         
         return ResponseEntity.ok(flooringTypeRepository.save(flooring));
     }

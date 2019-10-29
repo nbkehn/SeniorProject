@@ -3,7 +3,7 @@
  * Flooring listing page
  *
  * @package flooring
- * @author Will Duke
+ * @author Noah Trimble, Will Duke
  */
 -->
 <div class="panel panel-primary">
@@ -21,13 +21,13 @@
       <!--column headers for the table-->
       <tr>
         <th>Type Name</th>
+        <th>Actions</th>
       </tr>
       </thead>
       <tbody>
       <!-- each row of the table that is populated with data from every flooring (essentially a for loop going through every flooring and printing)-->
       <tr *ngFor="let flooring of floorings | async">
         <td>{{flooring.name}}</td>
-        <td>{{translateCommunicationPreference(flooring.communicationPreference)}}</td>
         <td>
           <!-- button options for each row so that the user can edit/delete that flooring with a click of a button-->
           <button (click)="editFlooring(flooring.id)" class="btn btn-primary">Edit</button>

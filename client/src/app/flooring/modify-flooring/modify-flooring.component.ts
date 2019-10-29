@@ -2,8 +2,7 @@
  * Angular component for creating and editing flooring
  *
  * @package flooring
- * @author Noah Trimble
- * @modifiedBy Will Duke
+ * @author Noah Trimble, Will Duke
  */
 import { FlooringService } from '../flooring.service';
 import { Flooring } from '../flooring';

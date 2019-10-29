@@ -2,7 +2,7 @@
  * Defines REST API calls make for flooring
  *
  * @package flooring
- * @author Will Duke
+ * @author Noah Trimble, Will Duke
  */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 })
 export class FlooringService {
   // Base URL for each request
-  private baseUrl = 'http://localhost:8080/api/v1/floorings';
+  private baseUrl = 'http://localhost:8080/api/v1/flooringtype';
 
   /**
    * Constructor for FlooringService

@@ -3,8 +3,7 @@
  * Flooring add/edit form page
  *
  * @package flooring
- * @author Noah Trimble
- * @modifiedBy Will Duke
+ * @author Noah Trimble, Will Duke
  */
 -->
 <!-- title, which will change depending on whether it is the add or edit page-->
@@ -21,9 +20,9 @@
     <form #flooringForm="ngForm" (ngSubmit)="flooringForm.valid && onSubmit()" id="flooring-form">
       <!-- form component for the flooring's name -->
       <div class="form-group">
-        <label for="flooringType">Flooring Type</label>
+        <label for="name">Flooring Type</label>
         <input type="text" class="form-control" id="name" required [(ngModel)]="flooring.name"
-               name="name" #flooringType="ngModel">
+               name="name" #name="ngModel">
         <div *ngIf="name.invalid && (name.dirty || name.touched || flooringForm.submitted)"
              class="alert alert-danger">
           <div *ngIf="name.errors.required">
