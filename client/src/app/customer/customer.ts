@@ -11,11 +11,5 @@ export class Customer {
   email: string;
   phone: string;
   address: string;
-  communicationPreference: CommunicationPreference
-}
-
-export enum CommunicationPreference {
-  Email,
-  Text,
-  Both
+  communicationPreference: string;
 }

@@ -20,6 +20,8 @@ import {NgxSmartModalService} from "ngx-smart-modal";
 export class CustomerListComponent implements OnInit {
   // the list of customers
   customers: Observable<Customer[]>;
+  // Communication preferences
+  preferences;
 
   /**
    * Constructor for the CustomerListComponent, doesn't really do anything right now
@@ -38,6 +40,8 @@ export class CustomerListComponent implements OnInit {
    */
   ngOnInit() {
     this.reloadData();
+    this.preferences = [];
+    this.setPreferences();
   }
 
   /**
@@ -46,6 +50,20 @@ export class CustomerListComponent implements OnInit {
    */
   reloadData() {
     this.customers = this.customerService.getCustomersList();
+  }
+
+  /**
+   * Set communication preferences
+   */
+  setPreferences() {
+    this.customerService.getCommunicationPreferenceOptions()
+      .subscribe(
+        data => {
+          this.preferences = data;
+        },
+        error => {
+          this.alertService.error('Communication preferences could not be loaded.', false);
+        });
   }
 
   /**
@@ -77,17 +95,7 @@ export class CustomerListComponent implements OnInit {
    * @param id Option id
    * @return translated communication preference
    */
-  translateCommunicationPreference(id: number) {
-    let options = this.customerService.getCommunicationPreferenceOptions();
-    let found = options.find(function(option) {
-       return option.id === id;
-    });
-
-    if (typeof found !== 'undefined') {
-      return found.name;
-    }
-    else {
-      return '';
-    }
+  translateCommunicationPreference(id: string) {
+    return this.preferences[id];
   }
 }

@@ -90,9 +90,9 @@
         <label for="communicationPreference">Communication</label>
         <select class="form-control" id="communicationPreference" required #communicationPreference="ngModel"
                [(ngModel)]="customer.communicationPreference" name="communicationPreference">
-          <option *ngFor="let option of getCommunicationPreferenceOptions(); let i = index"
-                  [value]="getCommunicationPreferenceOptions()[i].id">
-            {{getCommunicationPreferenceOptions()[i].name}}
+          <option *ngFor="let key of objectKeys(preferences)"
+                  [value]="key">
+            {{preferences[key]}}
           </option>
         </select>
         <div *ngIf="communicationPreference.invalid &&

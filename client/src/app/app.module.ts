@@ -1,7 +1,7 @@
 /**
  * Angular module dependencies
  *
- * @author Noah Trimble, Will Duke
+ * @author Noah Trimble, Soumya Bagade, Will Duke
  */
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -27,6 +27,10 @@ import {UserListComponent} from "./user/user-list/user-list.component";
 import {MustMatchDirective} from "./user/validator/must-match-directive";
 import { ModifyFlooringComponent } from './flooring/modify-flooring/modify-flooring.component';
 import { FlooringListComponent } from './flooring/flooring-list/flooring-list.component';
+import {TemplateListComponent} from "./template/template-list/template-list.component";
+import {ModifyTemplateComponent} from "./template/modify-template/modify-template.component";
+import {ReminderListComponent} from "./reminder/reminder-list/reminder-list.component";
+import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminder.component";
 
 
 @NgModule({
@@ -43,7 +47,11 @@ import { FlooringListComponent } from './flooring/flooring-list/flooring-list.co
     UserListComponent,
     MustMatchDirective,
     ModifyFlooringComponent, 
-    FlooringListComponent
+    FlooringListComponent,
+    TemplateListComponent,
+    ModifyTemplateComponent,
+    ReminderListComponent,
+    ModifyReminderComponent
   ],
   imports: [
     BrowserModule,

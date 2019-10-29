@@ -7,7 +7,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {CommunicationPreference} from "./customer";
 
 @Injectable({
   providedIn: 'root'
@@ -72,10 +71,6 @@ export class CustomerService {
    * @return communication preference options
    */
   getCommunicationPreferenceOptions() {
-    return [
-      {id: CommunicationPreference.Email, name: 'Email'},
-      {id: CommunicationPreference.Text, name: 'Text'},
-      {id: CommunicationPreference.Both, name: 'Email and Text'}
-    ];
+    return this.http.get(`${this.baseUrl}/communicationType`);
   }
 }
