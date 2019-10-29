@@ -35,7 +35,7 @@ const routes: Routes = [
   { path: 'user/add', component: ModifyUserComponent },
   { path: 'flooring/edit/:id', component: ModifyFlooringComponent },
   { path: 'flooring/index', component:  FlooringListComponent },
-  { path: 'flooring/add', component: ModifyFlooringComponent }
+  { path: 'flooring/add', component: ModifyFlooringComponent },
   { path: 'user/edit/:id', component: ModifyUserComponent },
   { path: 'template/index', component: TemplateListComponent },
   { path: 'template/add', component: ModifyTemplateComponent },
