@@ -53,8 +53,8 @@ public class AppointmentController {
      * @return appointments list
      */
     @GetMapping("/appointments")
-    public ResponseEntity<List<Appointment>> getAllAppointments() {
-        return ResponseEntity.ok(appointmentRepository.findAll());
+    public List<Appointment> getAllAppointments() {
+        return appointmentRepository.findAll();
     }
 
     /**
@@ -64,11 +64,11 @@ public class AppointmentController {
      * @throws ResourceNotFoundException
      */
     @GetMapping("/appointments/{id}")
-    public ResponseEntity<Appointment> getAppointmentById(@PathVariable(value = "id") Long appointmentId)
+    public Appointment getAppointmentById(@PathVariable(value = "id") Long appointmentId)
             throws ResourceNotFoundException {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment not found for this id :: " + appointmentId));
-        return ResponseEntity.ok(appointment);
+        return appointment;
     }
 
     /**
@@ -77,17 +77,12 @@ public class AppointmentController {
      * @return created appointment
      */
     @PostMapping("/appointments")
-    public ResponseEntity<Appointment> createAppointment(@Valid @RequestBody Appointment appointment) {
-        System.out.println("Post: ");
-        System.out.println(appointment.getStartDateTime());
-        System.out.println(appointment.getEndDateTime());
-        System.out.println(appointment.getCustomer());
-        System.out.println(appointment.getTechnicians());
-        System.out.println(appointment.getRSA());
-
+    public Appointment createAppointment (
+            @Valid @RequestBody Appointment appointment
+    ) {
         appointment = appointmentRepository.save(appointment);
         appointmentQueueRepository.addNewAppointment(appointment.getId());
-        return ResponseEntity.ok(appointment);
+        return appointment;
     }
 
     /**
@@ -98,7 +93,7 @@ public class AppointmentController {
      * @throws ResourceNotFoundException
      */
     @PutMapping("/appointments/{id}")
-    public ResponseEntity<Appointment> updateAppointment(@PathVariable(value = "id") Long appointmentId,
+    public Appointment updateAppointment(@PathVariable(value = "id") Long appointmentId,
                                                    @Valid @RequestBody Appointment appointmentDetails) throws ResourceNotFoundException {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment not found for this id :: " + appointmentId));
@@ -109,7 +104,7 @@ public class AppointmentController {
         appointment.setStartDateTime(appointmentDetails.getStartDateTime());
         appointment.setEndDateTime(appointmentDetails.getEndDateTime());
         
-        return ResponseEntity.ok(appointmentRepository.save(appointment));
+        return appointmentRepository.save(appointment);
     }
 
     /**
@@ -119,51 +114,13 @@ public class AppointmentController {
      * @throws ResourceNotFoundException
      */
     @DeleteMapping("/appointments/{id}")
-    public ResponseEntity<Appointment> deleteAppointment(@PathVariable(value = "id") Long appointmentId)
+    public long deleteAppointment(@PathVariable(value = "id") Long appointmentId)
             throws ResourceNotFoundException {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment not found for this id :: " + appointmentId));
 
         appointmentRepository.delete(appointment);
-        return ResponseEntity.ok(appointment);
+        return appointment.getId();
     }
     
-    /**
-     * Gets all customers
-     * @return array of customers
-     */
-    @GetMapping("/appointments/customer")
-    public ResponseEntity<Map<Long, String>> getCustomers() {
-        Map<Long, String> map = new HashMap<Long, String>();
-        for (Customer customer : customerRepository.findAll()) {
-            map.put(customer.getId(), customer.getLastName() + ", " + customer.getFirstName());
-        }
-        return ResponseEntity.ok(map);
-    }
-    
-    /**
-     * Get all technicians
-     * @return array of technicians
-     */
-    @GetMapping("/appointments/technician")
-    public ResponseEntity<Map<Long, String>> getTechnicians() {
-        Map<Long, String> map = new HashMap<Long, String>();
-        for (Technician technician : technicianRepository.findAll()) {
-            map.put(technician.getId(), technician.getLastName() + ", " + technician.getFirstName());
-        }
-        return ResponseEntity.ok(map);
-    }
-    
-    /**
-     * Get all rsas
-     * @return array of rsas
-     */
-    @GetMapping("/appointments/rsa")
-    public ResponseEntity<Map<Long, String>> getRSAs() {
-        Map<Long, String> map = new HashMap<Long, String>();
-        for (RSA rsa : rsaRepository.findAll()) {
-            map.put(rsa.getId(), rsa.getLastName() + ", " + rsa.getFirstName());
-        }
-        return ResponseEntity.ok(map);
-    }
 }

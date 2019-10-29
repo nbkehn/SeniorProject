@@ -1,3 +1,8 @@
+import { Customer } from '../customer/customer';
+import { Technician } from '../technician/technician';
+import { Rsa } from '../rsa/rsa';
+
+
 /**
  * Defines a appointment class with it's necessary components
  *
@@ -8,7 +13,7 @@ export class Appointment {
   id: number;
   startDateTime: Date;
   endDateTime: Date;
-  customer: number;
-  technicians: number[];
-  rsa: number;
+  customer: Customer;
+  technician: Technician[];
+  rsa: Rsa;
 }

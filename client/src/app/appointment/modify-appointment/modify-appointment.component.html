@@ -50,9 +50,9 @@
         <label for="customer">Customer</label>
         <select class="form-control" id="customer" required #customer="ngModel"
                [(ngModel)]="appointment.customer" name="customer">
-          <option *ngFor="let key of objectKeys(customers)"
-                  [value]="key">
-            {{customers[key]}}
+          <option *ngFor="let customerOption of customerOptions"
+                  [ngValue]="customerOption">
+            {{customerOption.firstName}} {{customerOption.lastName}}
           </option>
         </select>
         <div *ngIf="customer.invalid &&
@@ -64,14 +64,14 @@
         </div>
       </div>
 
-      <!-- form component for appointment's technicians -->
+      <!-- form component for appointment's technicians
       <div class="form-group">
         <label for="technicians">Technicians</label>
-        <select class="form-control" id="technicians" required #technicians="ngModel"
+        <select multiple class="form-control" id="technicians" required #technicians="ngModel"
                [(ngModel)]="appointment.technicians" name="technicians">
-          <option *ngFor="let key of objectKeys(technicianOptions)"
-                  [value]="key">
-            {{technicianOptions[key]}}
+          <option *ngFor="let technicianOption of technicianOptions"
+                  [ngValue]="technicianOption">
+            {{technicianOption.firstName}} {{technicianOption.lastName}}
           </option>
         </select>
         <div *ngIf="technicians.invalid &&
@@ -81,16 +81,16 @@
             This field is required.
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- form component for appointment's rsa -->
       <div class="form-group">
         <label for="rsa">RSA</label>
         <select class="form-control" id="rsa" required #rsa="ngModel"
                [(ngModel)]="appointment.rsa" name="rsa">
-          <option *ngFor="let key of objectKeys(rsas)"
-                  [value]="key">
-            {{rsas[key]}}
+          <option *ngFor="let rsaOption of rsaOptions"
+                  [ngValue]="rsaOption">
+            {{rsaOption.firstName}} {{rsaOption.lastName}}
           </option>
         </select>
         <div *ngIf="rsa.invalid &&

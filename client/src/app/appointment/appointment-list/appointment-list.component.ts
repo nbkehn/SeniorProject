@@ -19,12 +19,6 @@ import {NgxSmartModalService} from "ngx-smart-modal";
 export class AppointmentListComponent implements OnInit {
   // the list of appointments
   appointments: Observable<Appointment[]>;
-  // customers
-  customers;
-  // technicians
-  technicians;
-  // rsas
-  rsas;
 
 
   /**
@@ -44,12 +38,6 @@ export class AppointmentListComponent implements OnInit {
    */
   ngOnInit() {
     this.reloadData();
-    this.customers = [];
-    this.technicians = [];
-    this.rsas = [];
-    this.setCustomers();
-    this.setTechnicians();
-    this.setRSAs();
   }
 
   /**
@@ -58,48 +46,6 @@ export class AppointmentListComponent implements OnInit {
    */
   reloadData() {
     this.appointments = this.appointmentService.getAppointmentsList();
-  }
-
-  /**
-   * Set customers
-   */
-  setCustomers() {
-    this.appointmentService.getCustomers()
-      .subscribe(
-        data => {
-          this.customers = data;
-        },
-        error => {
-          this.alertService.error('Customers could not be loaded.', false);
-        });
-  }
-
-  /**
-   * Set technicians
-   */
-  setTechnicians() {
-    this.appointmentService.getTechnicians()
-      .subscribe(
-        data => {
-          this.technicians = data;
-        },
-        error => {
-          this.alertService.error('Technicians could not be loaded.', false);
-        });
-  }
-
-    /**
-   * Set rsas
-   */
-  setRSAs() {
-    this.appointmentService.getRSAs()
-      .subscribe(
-        data => {
-          this.rsas = data;
-        },
-        error => {
-          this.alertService.error('RSAs could not be loaded.', false);
-        });
   }
 
   /**
@@ -124,32 +70,5 @@ export class AppointmentListComponent implements OnInit {
    */
   editAppointment(id: number) {
     this.router.navigate(['/appointment/edit', id]);
-  }
-
-  /**
-   * Translate customer option id to value
-   * @param id Option id
-   * @return translated customer
-   */
-  translateCustomer(id: number) {
-    return this.customers[id];
-  }
-
-  /**
-   * Translate technician option id to value
-   * @param id Option id
-   * @return translated technician
-   */
-  translateTechnician(id: number) {
-    return this.technicians[id];
-  }
-
-  /**
-   * Translate rsa option id to value
-   * @param id Option id
-   * @return translated rsa
-   */
-  translateRSA(id: number) {
-    return this.rsas[id];
   }
 }
