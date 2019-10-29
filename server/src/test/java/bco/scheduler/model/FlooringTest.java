@@ -1,5 +1,5 @@
 /**
- * Tests the Flooring Model class
+ * Tests the FlooringType Model class
  * 
  * @author Soumya Bagade, Will Duke
  */
@@ -12,22 +12,22 @@ import org.junit.Test;
 
 public class FlooringTest {
     /**
-     * Tests that the fields of the Flooring object is null if the constructor parameters are empty
+     * Tests that the fields of the FlooringType object is null if the constructor parameters are empty
      * (the assumption is that if one is null, then all would be)
      */
 	@Test
 	public void testNullConstructor() {
-        Flooring testFlooring = new Flooring();
-        assertNull(testFlooring.getEmail());
+        FlooringType testFlooringType = new FlooringType();
+        assertNull(testFlooringType.getName());
     }
 
     /**
-     * Tests that the Flooring object has been made through the constructor
+     * Tests that the FlooringType object has been made through the constructor
      */
 	@Test
 	public void testConstructor() {
-        Flooring testFlooring = new Flooring("Hardwood");
-        assertNotNull(testFlooring);
+        FlooringType testFlooringType = new FlooringType("Hardwood");
+        assertNotNull(testFlooringType);
     }
 
     /**
@@ -35,9 +35,9 @@ public class FlooringTest {
      */
     @Test
     public void testID(){
-        Flooring testFlooring = new Flooring("Vinyl");
-        testFlooring.setId(1);
-        assertEquals(testFlooring.getId(), 1);
+        FlooringType testFlooringType = new FlooringType("Vinyl");
+        testFlooringType.setId(1);
+        assertEquals(testFlooringType.getId(), 1);
     }
     
     /**
@@ -45,8 +45,8 @@ public class FlooringTest {
      */
     @Test
 	public void testGetName() {
-        Flooring testFlooring = new Flooring("Bamboo");
-        assertEquals(testFlooring.getName(), "Bamboo");
+        FlooringType testFlooringType = new FlooringType("Bamboo");
+        assertEquals(testFlooringType.getName(), "Bamboo");
     }
     
     /**
@@ -54,9 +54,9 @@ public class FlooringTest {
      */
     @Test
 	public void testName() {
-        Flooring testFlooring = new Flooring("Tile");
-        testFlooring.setName("Not tile");
-        assertEquals(testFlooring.getFirstName(), "Not tile");
+        FlooringType testFlooringType = new FlooringType("Tile");
+        testFlooringType.setName("Not tile");
+        assertEquals(testFlooringType.getName(), "Not tile");
        
     }
 }
