@@ -56,7 +56,6 @@ export class ModifyAppointmentComponent implements OnInit {
     this.rsaOptions = [];
     this.setCustomers();
     this.setTechnicians();
-    this.setRSAs();
 
     // initializes a new appointment
     this.appointment = new Appointment();
@@ -129,7 +128,6 @@ export class ModifyAppointmentComponent implements OnInit {
   save() {
     // saves the appointment object to the database -- if the appointment hasn't been created before, it saves as a new entry
     // if the appointment has been created before, it updates the appointment
-    debugger;
     let response = !this.id ? this.appointmentService.createAppointment(this.appointment)
       : this.appointmentService.updateAppointment(this.id, this.appointment);
     response.subscribe(

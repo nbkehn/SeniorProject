@@ -50,7 +50,7 @@
         <label for="customer">Customer</label>
         <select class="form-control" id="customer" required #customer="ngModel"
                [(ngModel)]="appointment.customer" name="customer">
-          <option ngFor="let customerOption of customerOptions"
+          <option *ngFor="let customerOption of customerOptions"
                   [ngValue]="customerOption">
             {{customerOption.firstName}} {{customerOption.lastName}}
           </option>
@@ -64,7 +64,7 @@
         </div>
       </div>
 
-      <!-- form component for appointment's technicians -->
+      <!-- form component for appointment's technicians
       <div class="form-group">
         <label for="technicians">Technicians</label>
         <select multiple class="form-control" id="technicians" required #technicians="ngModel"
@@ -81,7 +81,7 @@
             This field is required.
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- form component for appointment's rsa -->
       <div class="form-group">

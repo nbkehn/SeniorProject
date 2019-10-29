@@ -2,8 +2,6 @@ package bco.scheduler.controller;
 
 import javax.validation.Valid;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.List;
 import java.util.Map;
 
@@ -54,8 +52,8 @@ public class AppointmentController {
      * @return appointments list
      */
     @GetMapping("/appointments")
-    public ResponseEntity<List<Appointment>> getAllAppointments() {
-        return ResponseEntity.ok(appointmentRepository.findAll());
+    public List<Appointment> getAllAppointments() {
+        return appointmentRepository.findAll();
     }
 
     /**
@@ -65,11 +63,11 @@ public class AppointmentController {
      * @throws ResourceNotFoundException
      */
     @GetMapping("/appointments/{id}")
-    public ResponseEntity<Appointment> getAppointmentById(@PathVariable(value = "id") Long appointmentId)
+    public Appointment getAppointmentById(@PathVariable(value = "id") Long appointmentId)
             throws ResourceNotFoundException {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment not found for this id :: " + appointmentId));
-        return ResponseEntity.ok(appointment);
+        return appointment;
     }
 
     /**
@@ -78,10 +76,10 @@ public class AppointmentController {
      * @return created appointment
      */
     @PostMapping("/appointments")
-    public ResponseEntity<Appointment> createAppointment (
+    public Appointment createAppointment (
             @Valid @RequestBody Appointment appointment
     ) {        
-        return ResponseEntity.ok(appointmentRepository.save(appointment));
+        return appointmentRepository.save(appointment);
     }
 
     /**
@@ -92,7 +90,7 @@ public class AppointmentController {
      * @throws ResourceNotFoundException
      */
     @PutMapping("/appointments/{id}")
-    public ResponseEntity<Appointment> updateAppointment(@PathVariable(value = "id") Long appointmentId,
+    public Appointment updateAppointment(@PathVariable(value = "id") Long appointmentId,
                                                    @Valid @RequestBody Appointment appointmentDetails) throws ResourceNotFoundException {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment not found for this id :: " + appointmentId));
@@ -103,7 +101,7 @@ public class AppointmentController {
         appointment.setStartDateTime(appointmentDetails.getStartDateTime());
         appointment.setEndDateTime(appointmentDetails.getEndDateTime());
         
-        return ResponseEntity.ok(appointmentRepository.save(appointment));
+        return appointmentRepository.save(appointment);
     }
 
     /**
@@ -113,13 +111,13 @@ public class AppointmentController {
      * @throws ResourceNotFoundException
      */
     @DeleteMapping("/appointments/{id}")
-    public ResponseEntity<Appointment> deleteAppointment(@PathVariable(value = "id") Long appointmentId)
+    public long deleteAppointment(@PathVariable(value = "id") Long appointmentId)
             throws ResourceNotFoundException {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment not found for this id :: " + appointmentId));
 
         appointmentRepository.delete(appointment);
-        return ResponseEntity.ok(appointment);
+        return appointment.getId();
     }
     
 }
