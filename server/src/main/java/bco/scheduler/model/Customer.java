@@ -2,17 +2,9 @@ package bco.scheduler.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.JoinColumn;
-import javax.persistence.CascadeType;
 import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
 import java.util.HashMap;
 import java.util.Map;
-
 
 /**
  * Customer object, holds information related to customers
@@ -28,8 +20,6 @@ public class Customer extends Person {
     private CommunicationType communicationPreference;
     
     /** customer address */
-//    @OneToOne(cascade = {CascadeType.ALL})
-//    @JoinColumn(name = "address")
     @Column(name = "address", nullable = true)
     private String address;
     
