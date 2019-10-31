@@ -1,0 +1,55 @@
+<!--
+/**
+ * Flooring listing page
+ *
+ * @package flooring
+ * @author Noah Trimble, Will Duke
+ */
+-->
+<div class="panel panel-primary">
+  <!-- the title for the page-->
+  <div class="panel-heading">
+    <h2>Flooring List</h2>
+  </div>
+  <div class="panel-actions">
+    <button routerLink="/flooring/add" class="btn btn-primary panel-action">Add Flooring</button>
+  </div>
+  <!-- the actual body of the page-->
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+      <!--column headers for the table-->
+      <tr>
+        <th>Type Name</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- each row of the table that is populated with data from every flooring (essentially a for loop going through every flooring and printing)-->
+      <tr *ngFor="let flooring of floorings | async">
+        <td>{{flooring.name}}</td>
+        <td>
+          <!-- button options for each row so that the user can edit/delete that flooring with a click of a button-->
+          <button (click)="editFlooring(flooring.id)" class="btn btn-primary">Edit</button>
+          <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(flooring.id, true).open()"
+                  class="btn btn-danger btn-delete">Delete</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Delete confirmation modal -->
+<ngx-smart-modal #deleteConfirmation identifier="deleteConfirmation" class="delete-confirmation-modal confirmation-modal">
+  <h2>Confirm Delete</h2>
+  <p>Are you sure you want to delete this flooring?</p>
+  <div class="actions-container">
+    <div class="btn-container">
+      <button (click)="deleteConfirmation.close()" class="btn btn-cancel">No</button>
+    </div>
+    <div class="btn-container">
+      <button (click)="deleteFlooring(deleteConfirmation.getData()); deleteConfirmation.close()" class="btn btn-confirm">Yes</button>
+    </div>
+  </div>
+</ngx-smart-modal>
