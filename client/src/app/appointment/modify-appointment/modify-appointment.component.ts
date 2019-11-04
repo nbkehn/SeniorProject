@@ -12,6 +12,9 @@ import { AlertService } from '../../alert/alert.service';
 import { CustomerService } from 'src/app/customer/customer.service';
 import { TechnicianService } from 'src/app/technician/technician.service';
 import { RsaService } from 'src/app/rsa/rsa.service';
+import { Customer } from 'src/app/customer/customer';
+import { Rsa } from 'src/app/rsa/rsa';
+import { Technician } from 'src/app/technician/technician';
 
 @Component({
   selector: 'app-modify-appointment',
@@ -21,7 +24,7 @@ export class ModifyAppointmentComponent implements OnInit {
   // the appointment's ID in the database
   id: number;
   // the appointment object to create and store data into
-  appointment: Appointment = new Appointment();
+  appointment: Appointment;
   // the title for the page
   title: string;
   // the list of customers
@@ -56,9 +59,13 @@ export class ModifyAppointmentComponent implements OnInit {
     this.rsaOptions = [];
     this.setCustomers();
     this.setTechnicians();
+    this.setRSAs();
 
     // initializes a new appointment
     this.appointment = new Appointment();
+    this.appointment.customer = new Customer();
+    this.appointment.technicians = [];
+    this.appointment.rsa = new Rsa();
 
     // gets the id from the routing
     this.id = this.route.snapshot.params['id'];

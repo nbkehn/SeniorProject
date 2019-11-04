@@ -14,6 +14,6 @@ export class Appointment {
   startDateTime: Date;
   endDateTime: Date;
   customer: Customer;
-  technician: Technician[];
+  technicians: Array<Technician>;
   rsa: Rsa;
 }
