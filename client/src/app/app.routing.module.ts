@@ -1,8 +1,7 @@
 /**
  * Defines routing paths
  *
- * @author Noah Trimble
- * @modifiedBy Soumya Bagade
+ * @author Noah Trimble, Soumya Bagade, Will Duke
  */
 import { ModifyTechnicianComponent } from './technician/modify-technician/modify-technician.component';
 import { NgModule } from '@angular/core';
@@ -16,6 +15,8 @@ import {RsaListComponent} from "./rsa/rsa-list/rsa-list.component";
 import {ModifyRsaComponent} from "./rsa/modify-rsa/modify-rsa.component";
 import {UserListComponent} from "./user/user-list/user-list.component";
 import {ModifyUserComponent} from "./user/modify-user/modify-user.component";
+import { ModifyFlooringComponent } from './flooring/modify-flooring/modify-flooring.component';
+import { FlooringListComponent } from './flooring/flooring-list/flooring-list.component';
 import {TemplateListComponent} from "./template/template-list/template-list.component";
 import {ModifyTemplateComponent} from "./template/modify-template/modify-template.component";
 import {ReminderListComponent} from "./reminder/reminder-list/reminder-list.component";
@@ -37,6 +38,9 @@ const routes: Routes = [
   { path: 'rsa/edit/:id', component: ModifyRsaComponent },
   { path: 'user/index', component:  UserListComponent },
   { path: 'user/add', component: ModifyUserComponent },
+  { path: 'flooring/edit/:id', component: ModifyFlooringComponent },
+  { path: 'flooring/index', component:  FlooringListComponent },
+  { path: 'flooring/add', component: ModifyFlooringComponent },
   { path: 'user/edit/:id', component: ModifyUserComponent },
   { path: 'template/index', component: TemplateListComponent },
   { path: 'template/add', component: ModifyTemplateComponent },
