@@ -28,11 +28,11 @@ export class ModifyAppointmentComponent implements OnInit {
   // the title for the page
   title: string;
   // the list of customers
-  customerOptions;
+  customerOptions: Customer[];
   // the list of technicians
-  technicianOptions;
+  technicianOptions: Technician[];
   // the list of rsas
-  rsaOptions;
+  rsaOptions: Rsa[];
 
   /**
    * Creates the instance of the component
@@ -84,6 +84,10 @@ export class ModifyAppointmentComponent implements OnInit {
           this.alertService.error('Appointment could not be loaded.', false);
         });
     }
+  }
+
+  technicianCompare(technician1: Technician, technician2: Technician) {
+    return technician1 && technician2 ? technician1.id === technician2.id : technician1 === technician2;
   }
 
   /**
