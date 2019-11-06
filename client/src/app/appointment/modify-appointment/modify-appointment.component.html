@@ -66,9 +66,9 @@
       <!-- form component for appointment's technicians -->
       <div class="form-group">
         <label for="technicians">Technicians</label>
-        <select multiple class="form-control" id="technicians" required #technicians="ngModel"
+        <select multiple [compareWith]="technicianCompare" class="form-control" id="technicians" required #technicians="ngModel"
           [(ngModel)]="appointment.technicians" name="technicians">
-          <option *ngFor="let technicianOption of technicianOptions" [ngValue]="technicianOption.id">
+          <option *ngFor="let technicianOption of technicianOptions" [ngValue]="technicianOption">
             {{technicianOption.firstName}} {{technicianOption.lastName}}
           </option>
         </select>
