@@ -12,9 +12,12 @@ import { AlertService } from '../../alert/alert.service';
 import { CustomerService } from 'src/app/customer/customer.service';
 import { TechnicianService } from 'src/app/technician/technician.service';
 import { RsaService } from 'src/app/rsa/rsa.service';
+import { FlooringService } from 'src/app/flooring/flooring.service';
+
 import { Customer } from 'src/app/customer/customer';
 import { Rsa } from 'src/app/rsa/rsa';
 import { Technician } from 'src/app/technician/technician';
+import { Flooring } from 'src/app/flooring/flooring';
 
 @Component({
   selector: 'app-modify-appointment',
@@ -33,6 +36,8 @@ export class ModifyAppointmentComponent implements OnInit {
   technicianOptions: Technician[];
   // the list of rsas
   rsaOptions: Rsa[];
+  // this list of flooring options
+  flooringOptions: Flooring[];
 
   /**
    * Creates the instance of the component
@@ -46,6 +51,7 @@ export class ModifyAppointmentComponent implements OnInit {
               private customerService: CustomerService,
               private technicianService: TechnicianService,
               private rsaService: RsaService,
+              private flooringService: FlooringService,
               private router: Router,
               private alertService: AlertService) { }
 
@@ -57,15 +63,18 @@ export class ModifyAppointmentComponent implements OnInit {
     this.customerOptions = [];
     this.technicianOptions = [];
     this.rsaOptions = [];
+    this.flooringOptions = [];
     this.setCustomers();
     this.setTechnicians();
     this.setRSAs();
+    this.setFloorings();
 
     // initializes a new appointment
     this.appointment = new Appointment();
     this.appointment.customer = new Customer();
     this.appointment.technicians = [];
     this.appointment.rsa = new Rsa();
+    this.appointment.flooring = new Flooring();
 
     // gets the id from the routing
     this.id = this.route.snapshot.params['id'];
@@ -129,6 +138,20 @@ export class ModifyAppointmentComponent implements OnInit {
         },
         error => {
           this.alertService.error('RSAs could not be loaded.', false);
+        });
+  }
+
+  /**
+   * Set Flooring
+   */
+  setFloorings() {
+    this.flooringService.getFlooringsList()
+      .subscribe(
+        data => {
+          this.flooringOptions = data;
+        },
+        error => {
+          this.alertService.error('Floorings could not be loaded.', false);
         });
   }
 

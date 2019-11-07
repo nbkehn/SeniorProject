@@ -45,12 +45,17 @@ public class Appointment {
     private Customer customer;
     
     /** start date time */
-    @Column(name = "startDateTime", nullable = true)
+    @Column(name = "startDateTime")
     private LocalDateTime startDateTime;
     
     /** end date time */
-    @Column(name = "endDateTime", nullable = true)
+    @Column(name = "endDateTime")
     private LocalDateTime endDateTime;
+    
+    /** flooring category */
+    @ManyToOne
+    @JoinColumn(name = "flooring_id")   
+    private FlooringType flooring;
     
     /** default constructor */
     public Appointment() {}
@@ -162,5 +167,21 @@ public class Appointment {
      */
     public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
+    }
+    
+    /**
+     * gets flooring 
+     * @return flooring 
+     */
+    public FlooringType getFlooring() {
+        return flooring;
+    }
+
+    /**
+     * sets flooring type
+     * @param flooringType flooring type 
+     */
+    public void setFlooring(FlooringType flooring) {
+        this.flooring = flooring;
     }
 }

@@ -6,13 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import bco.scheduler.model.Customer;
-import bco.scheduler.repository.CustomerRepository;
-
 import bco.scheduler.model.Technician;
-import bco.scheduler.repository.TechnicianRepository;
-
 import bco.scheduler.model.RSA;
-import bco.scheduler.repository.RSARepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,18 +30,6 @@ public class AppointmentController {
     @Autowired
     private AppointmentRepository appointmentRepository;
     
-    /** customer repository */
-    @Autowired
-    private CustomerRepository customerRepository;
-    
-    /** technician repository */
-    @Autowired
-    private TechnicianRepository technicianRepository;
-    
-    /** rsa repository */
-    @Autowired
-    private RSARepository rsaRepository;
-
     /**
      * returns all appointments
      * @return appointments list
@@ -79,6 +62,7 @@ public class AppointmentController {
     public Appointment createAppointment (
             @Valid @RequestBody Appointment appointment
     ) {        
+        System.out.println(appointment.getFlooring().getId());
         return appointmentRepository.save(appointment);
     }
 
@@ -100,6 +84,7 @@ public class AppointmentController {
         appointment.setCustomer(appointmentDetails.getCustomer());
         appointment.setStartDateTime(appointmentDetails.getStartDateTime());
         appointment.setEndDateTime(appointmentDetails.getEndDateTime());
+        appointment.setFlooring(appointmentDetails.getFlooring());
         
         return appointmentRepository.save(appointment);
     }

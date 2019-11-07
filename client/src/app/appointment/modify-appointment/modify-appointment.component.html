@@ -97,6 +97,23 @@
           </div>
         </div>
       </div>
+
+      <!-- form component for appointment's flooring flooring -->
+      <div class="form-group">
+        <label for="flooring">Flooring Category</label>
+        <select class="form-control" id="flooring" required #flooring="ngModel" 
+          [(ngModel)]="appointment.flooring.id" name="flooring">
+          <option *ngFor="let flooringOption of flooringOptions" [ngValue]="flooringOption.id">
+            {{flooringOption.name}}
+          </option>
+        </select>
+        <div *ngIf="flooring.invalid &&
+                    (flooring.dirty || flooring.touched || appointmentForm.submitted)" class="alert alert-danger">
+          <div *ngIf="flooring.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 </div>
