@@ -26,6 +26,7 @@ import bco.scheduler.repository.AppointmentRepository;
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AppointmentController {
+    
     /** appointment repository */
     @Autowired
     private AppointmentRepository appointmentRepository;
@@ -62,7 +63,6 @@ public class AppointmentController {
     public Appointment createAppointment (
             @Valid @RequestBody Appointment appointment
     ) {        
-        System.out.println(appointment.getFlooring().getId());
         return appointmentRepository.save(appointment);
     }
 
@@ -92,7 +92,7 @@ public class AppointmentController {
     /**
      * deletes an appointment
      * @param appointmentId appointment to remove
-     * @return removed appointment
+     * @return removed appointment id
      * @throws ResourceNotFoundException
      */
     @DeleteMapping("/appointments/{id}")

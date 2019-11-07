@@ -16,7 +16,7 @@ import java.util.Set;
 import java.time.LocalDateTime;
 
 /**
- * Appointment class, stitches together the person components and timeslots
+ * Appointment class, stitches together the person components and timeslots, and flooring type
  * 
  * @author Connor J. Parke
  *
@@ -29,7 +29,7 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
-    /** technician */
+    /** technicians set */
     @ManyToMany
     @JoinColumn(name = "appointment")
     private Set<Technician> technicians;
@@ -63,12 +63,13 @@ public class Appointment {
     /**
      * main constructor
      * 
-     * @param technicians appointment technicians
-     * @param rsa appointment rsa
-     * @param customer appointment customer
-     * @param timeslots appointment timeslots
+     * @param startDateTime starting time of the 
      */
-    public Appointment(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    public Appointment(RSA rsa, Customer customer, Set<Technician> technicians, FlooringType flooringtype, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        this.rsa = rsa;
+        this.customer = customer;
+        this.technicians = technicians;
+        this.flooring = flooring; 
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
     }
@@ -90,8 +91,8 @@ public class Appointment {
     }
 
     /**
-     * gets technicians
-     * @return technicans list
+     * gets technicians set
+     * @return technicans set
      */
     public Set<Technician> getTechnicians() {
         return technicians;
@@ -170,8 +171,8 @@ public class Appointment {
     }
     
     /**
-     * gets flooring 
-     * @return flooring 
+     * gets flooring type
+     * @return flooring type
      */
     public FlooringType getFlooring() {
         return flooring;
