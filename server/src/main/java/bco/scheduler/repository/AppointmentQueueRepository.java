@@ -22,7 +22,7 @@ public interface AppointmentQueueRepository extends JpaRepository<AppointmentQue
             "SELECT aq.* FROM appointment_queue aq\n" +
             "LEFT JOIN appointment a ON a.id = aq.appointment_id\n" +
             "LEFT JOIN reminder r ON r.id = aq.reminder_id\n" +
-            "WHERE (aq.is_sent IS NULL OR aq.is_sent = FALSE)\n" +
+            "WHERE aq.is_sent = FALSE\n" +
             "AND (a.start_date_time + INTERVAL r.time_to_send DAY) <= NOW()", nativeQuery = true)
     Collection<AppointmentQueue> getReadyToSend();
 
@@ -33,8 +33,8 @@ public interface AppointmentQueueRepository extends JpaRepository<AppointmentQue
      */
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO appointment_queue (appointment_id, reminder_id)\n" +
-            "SELECT a.id, r.id FROM appointment a\n" +
+    @Query(value = "INSERT INTO appointment_queue (appointment_id, reminder_id, is_sent)\n" +
+            "SELECT a.id, r.id, FALSE FROM appointment a\n" +
             "  LEFT JOIN reminder r ON r.id = :reminder_id\n" +
             "  WHERE (a.start_date_time + INTERVAL r.time_to_send DAY) > NOW();", nativeQuery = true)
     int addNewReminder(@Param("reminder_id") long reminderId);
@@ -46,7 +46,7 @@ public interface AppointmentQueueRepository extends JpaRepository<AppointmentQue
      */
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO appointment_queue (appointment_id, reminder_id)\n" +
-            "SELECT :appointment_id, r.id FROM reminder r;", nativeQuery = true)
+    @Query(value = "INSERT INTO appointment_queue (appointment_id, reminder_id, is_sent)\n" +
+            "SELECT :appointment_id, r.id, FALSE FROM reminder r;", nativeQuery = true)
     int addNewAppointment(@Param("appointment_id") long appointmentId);
 }
