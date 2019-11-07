@@ -12,6 +12,12 @@ import { AlertService } from '../../alert/alert.service';
 import { CustomerService } from 'src/app/customer/customer.service';
 import { TechnicianService } from 'src/app/technician/technician.service';
 import { RsaService } from 'src/app/rsa/rsa.service';
+import { FlooringService } from 'src/app/flooring/flooring.service';
+
+import { Customer } from 'src/app/customer/customer';
+import { Rsa } from 'src/app/rsa/rsa';
+import { Technician } from 'src/app/technician/technician';
+import { Flooring } from 'src/app/flooring/flooring';
 
 @Component({
   selector: 'app-modify-appointment',
@@ -21,28 +27,31 @@ export class ModifyAppointmentComponent implements OnInit {
   // the appointment's ID in the database
   id: number;
   // the appointment object to create and store data into
-  appointment: Appointment = new Appointment();
+  appointment: Appointment;
   // the title for the page
   title: string;
   // the list of customers
-  customerOptions;
+  customerOptions: Customer[];
   // the list of technicians
-  technicianOptions;
+  technicianOptions: Technician[];
   // the list of rsas
-  rsaOptions;
+  rsaOptions: Rsa[];
+  // this list of flooring options
+  flooringOptions: Flooring[];
 
   /**
    * Creates the instance of the component
-   * @param route
-   * @param appointmentService
-   * @param router
-   * @param alertService
+   * @param route route to page
+   * @param appointmentService http handler
+   * @param router routing handler
+   * @param alertService alert messages handler
    */
   constructor(private route: ActivatedRoute,
               private appointmentService: AppointmentService,
               private customerService: CustomerService,
               private technicianService: TechnicianService,
               private rsaService: RsaService,
+              private flooringService: FlooringService,
               private router: Router,
               private alertService: AlertService) { }
 
@@ -50,20 +59,31 @@ export class ModifyAppointmentComponent implements OnInit {
    * initializes the components and populates the form with appointment data if it is being edited (instead of created)
    */
   ngOnInit() {
+
     // initialize mapped options
     this.customerOptions = [];
     this.technicianOptions = [];
     this.rsaOptions = [];
+    this.flooringOptions = [];
+
+    // populate option data
     this.setCustomers();
     this.setTechnicians();
+    this.setRSAs();
+    this.setFloorings();
 
-    // initializes a new appointment
+    // initialize a new appointment and aggregates
     this.appointment = new Appointment();
+    this.appointment.customer = new Customer();
+    this.appointment.technicians = [];
+    this.appointment.rsa = new Rsa();
+    this.appointment.flooring = new Flooring();
 
     // gets the id from the routing
-    this.id = this.route.snapshot.params['id'];
+    this.id = this.route.snapshot.params.id;
 
-    // changes the title depending on whether the appointment has been stored in the database and is now being edited (Edit Appointment) or created as a new one (Create Appointment)
+    // changes the title depending on whether the appointment has been stored in the database and is now being edited (Edit Appointment)
+    // or created as a new one (Create Appointment)
     this.title = this.id ? 'Edit Appointment' : 'Create Appointment';
 
     // if the id is not null, it means that the appointment has already been stored and is now being edited.
@@ -79,8 +99,12 @@ export class ModifyAppointmentComponent implements OnInit {
     }
   }
 
+  technicianCompare(technician1: Technician, technician2: Technician) {
+    return technician1 && technician2 ? technician1.id === technician2.id : technician1 === technician2;
+  }
+
   /**
-   * Set customers
+   * populate customers options
    */
   setCustomers() {
     this.customerService.getCustomersList()
@@ -94,7 +118,7 @@ export class ModifyAppointmentComponent implements OnInit {
   }
 
   /**
-   * Set technicians
+   * populate technicians options
    */
   setTechnicians() {
     this.technicianService.getTechniciansList()
@@ -108,7 +132,7 @@ export class ModifyAppointmentComponent implements OnInit {
   }
 
   /**
-   * Set RSAs
+   * populate RSA options
    */
   setRSAs() {
     this.rsaService.getRSAsList()
@@ -118,6 +142,20 @@ export class ModifyAppointmentComponent implements OnInit {
         },
         error => {
           this.alertService.error('RSAs could not be loaded.', false);
+        });
+  }
+
+  /**
+   * populate Flooring options
+   */
+  setFloorings() {
+    this.flooringService.getFlooringsList()
+      .subscribe(
+        data => {
+          this.flooringOptions = data;
+        },
+        error => {
+          this.alertService.error('Floorings could not be loaded.', false);
         });
   }
 

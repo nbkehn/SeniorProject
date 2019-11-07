@@ -19,7 +19,7 @@ import java.util.Set;
 import java.time.LocalDateTime;
 
 /**
- * Appointment class, stitches together the person components and timeslots
+ * Appointment class, stitches together the person components and timeslots, and flooring type
  * 
  * @author Connor J. Parke
  *
@@ -33,7 +33,7 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
-    /** technician */
+    /** technicians set */
     @ManyToMany
     @JoinColumn(name = "appointment")
     private Set<Technician> technicians;
@@ -49,12 +49,17 @@ public class Appointment {
     private Customer customer;
     
     /** start date time */
-    @Column(name = "startDateTime", nullable = true)
+    @Column(name = "startDateTime")
     private LocalDateTime startDateTime;
     
     /** end date time */
-    @Column(name = "endDateTime", nullable = true)
+    @Column(name = "endDateTime")
     private LocalDateTime endDateTime;
+    
+    /** flooring category */
+    @ManyToOne
+    @JoinColumn(name = "flooring_id")   
+    private FlooringType flooring;
     
     /** default constructor */
     public Appointment() {}
@@ -62,12 +67,13 @@ public class Appointment {
     /**
      * main constructor
      * 
-     * @param technicians appointment technicians
-     * @param rsa appointment rsa
-     * @param customer appointment customer
-     * @param timeslots appointment timeslots
+     * @param startDateTime starting time of the 
      */
-    public Appointment(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    public Appointment(RSA rsa, Customer customer, Set<Technician> technicians, FlooringType flooringtype, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        this.rsa = rsa;
+        this.customer = customer;
+        this.technicians = technicians;
+        this.flooring = flooring; 
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
     }
@@ -89,8 +95,8 @@ public class Appointment {
     }
 
     /**
-     * gets technicians
-     * @return technicans list
+     * gets technicians set
+     * @return technicans set
      */
     public Set<Technician> getTechnicians() {
         return technicians;
@@ -166,6 +172,22 @@ public class Appointment {
      */
     public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
+    }
+
+    /**
+     * gets flooring type
+     * @return flooring type
+     */
+    public FlooringType getFlooring() {
+        return flooring;
+    }
+
+    /**
+     * sets flooring type
+     * @param flooringType flooring type 
+     */
+    public void setFlooring(FlooringType flooring) {
+        this.flooring = flooring;
     }
 
     /**

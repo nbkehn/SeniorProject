@@ -1,6 +1,7 @@
 import { Customer } from '../customer/customer';
 import { Technician } from '../technician/technician';
 import { Rsa } from '../rsa/rsa';
+import { Flooring } from '../flooring/flooring';
 
 
 /**
@@ -14,6 +15,7 @@ export class Appointment {
   startDateTime: Date;
   endDateTime: Date;
   customer: Customer;
-  technician: Technician[];
+  technicians: Technician[];
   rsa: Rsa;
+  flooring: Flooring;
 }

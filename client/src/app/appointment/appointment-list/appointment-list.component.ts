@@ -4,17 +4,17 @@
  * @package appointment
  * @author Connor J. Parke
  */
-import { Observable } from "rxjs";
-import { AppointmentService } from "../appointment.service";
-import { Appointment } from "../appointment";
-import { Component, OnInit } from "@angular/core";
+import { Observable } from 'rxjs';
+import { AppointmentService } from '../appointment.service';
+import { Appointment } from '../appointment';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {AlertService} from "../../alert/alert.service";
-import {NgxSmartModalService} from "ngx-smart-modal";
+import {AlertService} from '../../alert/alert.service';
+import {NgxSmartModalService} from 'ngx-smart-modal';
 
 @Component({
-  selector: "app-appointment-list",
-  templateUrl: "./appointment-list.component.html"
+  selector: 'app-appointment-list',
+  templateUrl: './appointment-list.component.html'
 })
 export class AppointmentListComponent implements OnInit {
   // the list of appointments

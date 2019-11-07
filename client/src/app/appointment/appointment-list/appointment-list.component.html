@@ -25,19 +25,21 @@
         <th>Customer</th>
         <th>Technicians</th>
         <th>RSA</th>
+        <th>Flooring Type</th>
         <th>Actions</th>
       </tr>
       </thead>
       <tbody>
       <!-- each row of the table that is populated with data from every appointment (essentially a for loop going through every appointment and printing)-->
       <tr *ngFor="let appointment of appointments | async">
-        <td>{{appointment.startDateTime}}</td>
-        <td>{{appointment.endDateTime}}</td>
+        <td>{{appointment.startDateTime | date : "short"}}</td>
+        <td>{{appointment.endDateTime | date: "short"}}</td>
         <td>{{appointment.customer?.firstName}} {{appointment.customer?.lastName}} </td>
         <td>
           <div *ngFor="let technician of appointment.technicians">{{technician?.firstName}} {{technician?.lastName}}</div>
         </td>
         <td>{{appointment.rsa?.firstName}} {{appointment.rsa?.lastName}}</td>
+        <td>{{appointment.flooring?.name}}</td>
         <td>
           <!-- button options for each row so that the user can edit/delete that appointment with a click of a button-->
           <button (click)="editAppointment(appointment.id)" class="btn btn-primary">Edit</button>
