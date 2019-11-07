@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import bco.scheduler.exception.ResourceNotFoundException;
 import bco.scheduler.model.Appointment;
 
+import java.util.List;
+
 /**
  * Appointment Controller
  * @author Connor J. Parke
