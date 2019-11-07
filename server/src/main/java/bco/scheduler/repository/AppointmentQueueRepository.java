@@ -47,6 +47,8 @@ public interface AppointmentQueueRepository extends JpaRepository<AppointmentQue
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO appointment_queue (appointment_id, reminder_id, is_sent)\n" +
-            "SELECT :appointment_id, r.id, FALSE FROM reminder r;", nativeQuery = true)
+            "SELECT a.id, r.id, FALSE FROM reminder r\n" +
+            "  LEFT JOIN appointment a ON a.id = :appointment_id\n" +
+            "  WHERE (a.start_date_time + INTERVAL r.time_to_send DAY) > NOW();", nativeQuery = true)
     int addNewAppointment(@Param("appointment_id") long appointmentId);
 }
