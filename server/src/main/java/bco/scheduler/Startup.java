@@ -32,15 +32,13 @@ public class Startup {
      * couldn't easily be added through Hibernate
      */
     @PostConstruct
-    public void runNativeSql() throws SQLException {
+    public void runNativeSql() {
         ClassPathResource resource = new ClassPathResource("scripts/startup.sql");
-        Connection connection = dataSource.getConnection();
-        ScriptUtils.executeSqlScript(connection, resource);
-//        try(Connection connection = dataSource.getConnection()) {
-//            ScriptUtils.executeSqlScript(connection, resource);
-//        }
-//        catch (SQLException | ScriptException e) {
-//            log.error(e.getMessage());
-//        }
+        try(Connection connection = dataSource.getConnection()) {
+            ScriptUtils.executeSqlScript(connection, resource);
+        }
+        catch (SQLException | ScriptException e) {
+            log.error(e.getMessage());
+        }
     }
 }

@@ -196,9 +196,9 @@ public class Appointment {
      */
     public Map<String, String> getTemplateVariables() {
         Map<String, String> map = new HashMap<>();
-        map.put(CLASS_NAME + ".start_date_time", this.getStartDateTime().format(DateTimeFormatter.ofPattern("EEEE MMMM dd K:m a")));
+        map.put(CLASS_NAME + ".start_date_time", this.getStartDateTime().format(DateTimeFormatter.ofPattern("EEEE MMMM dd K:mm a")));
         map.put(CLASS_NAME + ".start_date", this.getStartDateTime().format(DateTimeFormatter.ofPattern("EEEE MMMM dd")));
-        map.put(CLASS_NAME + ".start_time", this.getStartDateTime().format(DateTimeFormatter.ofPattern("K:m a")));
+        map.put(CLASS_NAME + ".start_time", this.getStartDateTime().format(DateTimeFormatter.ofPattern("K:mm a")));
         return map;
     }
 
