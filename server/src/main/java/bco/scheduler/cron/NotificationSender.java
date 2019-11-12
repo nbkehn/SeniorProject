@@ -43,7 +43,6 @@ public class NotificationSender {
     // Logging
     private static final Logger log = LoggerFactory.getLogger(NotificationSender.class);
 
-    // TODO: Store these somewhere else
     // Twilio variables
     private static final String ACCOUNT_SID = "AC197c8ea70d7980b88abeefbf3a03a8ea";
     private static final String AUTH_TOKEN = "f00b57fccf6cf5e5c762d1b16061f912";

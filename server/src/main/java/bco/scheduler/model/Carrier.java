@@ -31,7 +31,7 @@ public class Carrier {
      * @param name name of carrie
      * @param emailDomain email domain of carrier
      */
-    public Carrier(String name, String mobileNetworkCode, String emailDomain) {
+    public Carrier(String name, String emailDomain) {
         this.name = name;
         this.emailDomain = emailDomain;
     }
