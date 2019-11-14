@@ -23,6 +23,8 @@ export class ReminderListComponent implements OnInit {
   timesToSend;
   // Templates
   templates;
+  // User types
+  userTypes;
 
   /**
    * Constructor for the ReminderListComponent, doesn't really do anything right now
@@ -43,8 +45,10 @@ export class ReminderListComponent implements OnInit {
     this.reloadData();
     this.timesToSend = [];
     this.templates = [];
+    this.userTypes = [];
     this.setTimesToSend();
     this.setTemplates();
+    this.setUserTypes();
   }
 
   /**
@@ -80,6 +84,20 @@ export class ReminderListComponent implements OnInit {
         },
         error => {
           this.alertService.error('Templates could not be loaded.', false);
+        });
+  }
+
+  /**
+   * Set user types
+   */
+  setUserTypes() {
+    this.reminderService.getUserTypes()
+      .subscribe(
+        data => {
+          this.userTypes = data;
+        },
+        error => {
+          this.alertService.error('User types could not be loaded.', false);
         });
   }
 
@@ -123,5 +141,14 @@ export class ReminderListComponent implements OnInit {
    */
   translateTemplate(id: number) {
     return this.templates[id];
+  }
+
+  /**
+   * Translate user type option id to value
+   * @param id Option id
+   * @return translated user type
+   */
+  translateUserType(id: string) {
+    return this.userTypes[id];
   }
 }

@@ -27,6 +27,8 @@ export class ModifyReminderComponent implements OnInit {
   timesToSend;
   // Templates
   templates;
+  // User types
+  userTypes;
 
   /**
    * Creates the instance of the component
@@ -47,9 +49,11 @@ export class ModifyReminderComponent implements OnInit {
     // initialize mapped options
     this.timesToSend = [];
     this.templates = [];
+    this.userTypes = [];
     this.objectKeys = Object.keys;
     this.setTimesToSend();
     this.setTemplates();
+    this.setUserTypes();
 
     // initializes a new reminder
     this.reminder = new Reminder();
@@ -98,6 +102,20 @@ export class ModifyReminderComponent implements OnInit {
         },
         error => {
           this.alertService.error('Templates could not be loaded.', false);
+        });
+  }
+
+  /**
+   * Set user types
+   */
+  setUserTypes() {
+    this.reminderService.getUserTypes()
+      .subscribe(
+        data => {
+          this.userTypes = data;
+        },
+        error => {
+          this.alertService.error('User types could not be loaded.', false);
         });
   }
 
