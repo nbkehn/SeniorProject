@@ -136,7 +136,8 @@ export class ModifyReminderComponent implements OnInit {
       },
       error => {
         // Display error message on error and remain in form
-        this.alertService.error('The reminder could not be saved. Please note that time to send is unique per reminder.', false);
+        this.alertService.error('The reminder could not be saved. ' +
+          'Please note that each combination of time to send and user are unique per reminder.', false);
       });
   }
 

@@ -6,6 +6,8 @@ import javax.persistence.*;
  * Reminder object, holds information related to reminders
  * @author Noah Trimble
  */
+@Table(name = "reminder",
+        uniqueConstraints = { @UniqueConstraint(columnNames = { "user", "time_to_send" }) })
 @Entity
 public class Reminder {
 
