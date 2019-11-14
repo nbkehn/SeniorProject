@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 /**
  * Reminder object, holds information related to reminders
- * @author Noah Trimble
+ * @author Noah Trimble, Connor J. Parke
  */
 @Entity
 public class Reminder {
@@ -13,18 +13,21 @@ public class Reminder {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
+    
     /** time to send reminder */
+    @Enumerated
     @Column(name = "time_to_send", nullable = false, unique = true)
-    private int timeToSend;
+    private TimeToSend timeToSend;
 
-    /** chosen text template's ID */
-    @Column(name="text_template_id", nullable = false)
-    private long textTemplateId;
+    /** chosen text template */
+    @ManyToOne
+    @JoinColumn(name="text_template_id")
+    private Template textTemplate;
 
-    /** chosen email template's ID */
-    @Column(name="email_template_id", nullable = false)
-    private long emailTemplateId;
+    /** chosen email template */
+    @ManyToOne
+    @JoinColumn(name="email_template_id")
+    private Template emailTemplate;
 
     /** default constructor */
     public Reminder() {}
@@ -35,10 +38,10 @@ public class Reminder {
      * @param textTemplateId text template id to use
      * @param emailTemplateId email template id to use
      */
-    public Reminder(int timeToSend, long textTemplateId, long emailTemplateId) {
+    public Reminder(TimeToSend timeToSend, Template textTemplate, Template emailTemplate) {
         this.timeToSend = timeToSend;
-        this.textTemplateId = textTemplateId;
-        this.emailTemplateId = emailTemplateId;
+        this.textTemplate = textTemplate;
+        this.emailTemplate = emailTemplate;
     }
 
     /**
@@ -61,7 +64,7 @@ public class Reminder {
      * Get time to send
      * @return time to send
      */
-    public int getTimeToSend() {
+    public TimeToSend getTimeToSend() {
         return timeToSend;
     }
 
@@ -69,39 +72,39 @@ public class Reminder {
      * Set time to send
      * @param timeToSend time to send
      */
-    public void setTimeToSend(int timeToSend) {
+    public void setTimeToSend(TimeToSend timeToSend) {
         this.timeToSend = timeToSend;
     }
 
     /**
-     * Get text template id
-     * @return text template id
+     * Get text template
+     * @return text template
      */
-    public long getTextTemplateId() {
-        return textTemplateId;
+    public Template getTextTemplate() {
+        return textTemplate;
     }
 
     /**
-     * Set text template id
-     * @param textTemplateId text template id
+     * Set text template
+     * @param textTemplateId text template
      */
-    public void setTextTemplateId(long textTemplateId) {
-        this.textTemplateId = textTemplateId;
+    public void setTextTemplate(Template textTemplate) {
+        this.textTemplate = textTemplate;
     }
 
     /**
-     * Get email template id
-     * @return email template id
+     * Get email template
+     * @return email template
      */
-    public long getEmailTemplateId() {
-        return emailTemplateId;
+    public Template getEmailTemplate() {
+        return emailTemplate;
     }
 
     /**
-     * Set email template id
-     * @param emailTemplateId email template id
+     * Set email template
+     * @param emailTemplateId email template
      */
-    public void setEmailTemplateId(long emailTemplateId) {
-        this.emailTemplateId = emailTemplateId;
+    public void setEmailTemplate(Template emailTemplate) {
+        this.emailTemplate = emailTemplate;
     }
 }

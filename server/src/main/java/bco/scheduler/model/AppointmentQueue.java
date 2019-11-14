@@ -15,13 +15,15 @@ public class AppointmentQueue {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    /** appointment's ID */
-    @Column(name="appointment_id", nullable = false)
-    private long appointmentId;
+    /** appointment */
+    @ManyToOne
+    @JoinColumn(name="appointment_id", nullable = false)
+    private Appointment appointment;
 
-    /** reminder's ID */
-    @Column(name="reminder_id", nullable = false)
-    private long reminderId;
+    /** reminder */
+    @ManyToOne
+    @JoinColumn(name="reminder_id", nullable = false)
+    private Reminder reminder;
 
     /** has the reminder been sent */
     @Column(name = "is_sent", nullable = false, columnDefinition = "int default 0")
@@ -36,12 +38,12 @@ public class AppointmentQueue {
 
     /**
      * Appointment queue constructor
-     * @param appointmentId connected appointment ID
-     * @param reminderId connected reminder ID
+     * @param appointment connected appointment
+     * @param reminder connected reminder
      */
-    public AppointmentQueue(long appointmentId, long reminderId) {
-        this.appointmentId = appointmentId;
-        this.reminderId = reminderId;
+    public AppointmentQueue(Appointment appointment, Reminder reminder) {
+        this.appointment = appointment;
+        this.reminder = reminder;
         this.isSent = false;
     }
 
@@ -62,35 +64,35 @@ public class AppointmentQueue {
     }
 
     /**
-     * Get appointment id
-     * @return appointment id
+     * Get appointment 
+     * @return appointment 
      */
-    public long getAppointmentId() {
-        return appointmentId;
+    public Appointment getAppointment() {
+        return appointment;
     }
 
     /**
-     * Set appointment id
-     * @param appointmentId connected appointment id
+     * Set appointment
+     * @param appointment connected appointment
      */
-    public void setAppointmentId(long appointmentId) {
-        this.appointmentId = appointmentId;
+    public void setAppointment(Appointment appointment) {
+        this.appointment = appointment;
     }
 
     /**
-     * Get reminder id
-     * @return reminder id
+     * Get reminder
+     * @return reminder
      */
-    public long getReminderId() {
-        return reminderId;
+    public Reminder getReminder() {
+        return reminder;
     }
 
     /**
-     * Set reminder id
-     * @param reminderId connected reminder id
+     * Set reminder 
+     * @param reminder connected reminder
      */
-    public void setReminderId(long reminderId) {
-        this.reminderId = reminderId;
+    public void setReminder(Reminder reminder) {
+        this.reminder = reminder;
     }
 
     /**

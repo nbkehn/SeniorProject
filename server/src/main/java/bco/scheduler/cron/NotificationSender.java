@@ -56,16 +56,12 @@ public class NotificationSender {
 
         for (AppointmentQueue appointmentQueueItem : appointmentQueueItems) {
             try {
+                
                 // Get necessary attached object to appointment queue item
-                Appointment appointment = appointmentRepository.findById(appointmentQueueItem.getAppointmentId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Appointment not found."));
-                Reminder reminder = reminderRepository.findById(appointmentQueueItem.getReminderId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Reminder not found."));
-
-                Template emailTemplate = templateRepository.findById(reminder.getEmailTemplateId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Email template not found."));
-                Template textTemplate = templateRepository.findById(reminder.getTextTemplateId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Text template not found."));
+                Appointment appointment = appointmentQueueItem.getAppointment();
+                Reminder reminder = appointmentQueueItem.getReminder();
+                Template emailTemplate = reminder.getEmailTemplate();
+                Template textTemplate = reminder.getTextTemplate();
                 Customer customer = appointment.getCustomer();
 
                 // Send email, text, or both depending on customer's communication preference

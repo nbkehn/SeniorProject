@@ -73,8 +73,8 @@ public class ReminderController {
         Reminder reminder = reminderRepository.findById(reminderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reminder not found for this id :: " + reminderId));
 
-        reminder.setEmailTemplateId(reminderDetails.getEmailTemplateId());
-        reminder.setTextTemplateId(reminderDetails.getTextTemplateId());
+        reminder.setEmailTemplate(reminderDetails.getEmailTemplate());
+        reminder.setTextTemplate(reminderDetails.getTextTemplate());
         reminder.setTimeToSend(reminderDetails.getTimeToSend());
         
         return ResponseEntity.ok(reminderRepository.save(reminder));
