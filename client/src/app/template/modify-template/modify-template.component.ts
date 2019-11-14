@@ -22,6 +22,10 @@ export class ModifyTemplateComponent implements OnInit {
   template: Template = new Template();
   // the title for the page
   pageTitle: string;
+  // object keys
+  objectKeys;
+  // Template variables
+  templateVariables;
 
   /**
    * Creates the instance of the component
@@ -39,6 +43,11 @@ export class ModifyTemplateComponent implements OnInit {
    * initializes the components and populates the form with template data if it is being edited (instead of created)
    */
   ngOnInit() {
+    // initialize mapped options
+    this.templateVariables = [];
+    this.objectKeys = Object.keys;
+    this.setTemplateVariables();
+
     // initializes a new template
     this.template = new Template();
 
@@ -59,6 +68,20 @@ export class ModifyTemplateComponent implements OnInit {
           this.alertService.error('Template could not be loaded.', false);
         });
     }
+  }
+
+  /**
+   * Set template reminders
+   */
+  setTemplateVariables() {
+    this.templateService.getTemplateVariables()
+      .subscribe(
+        data => {
+          this.templateVariables = data;
+        },
+        error => {
+          this.alertService.error('Template variables could not be loaded.', false);
+        });
   }
 
   /**

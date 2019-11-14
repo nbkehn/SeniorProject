@@ -1,21 +1,15 @@
 package bco.scheduler.controller;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import bco.scheduler.model.Customer;
-import bco.scheduler.model.Technician;
-import bco.scheduler.model.RSA;
+import bco.scheduler.repository.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import bco.scheduler.exception.ResourceNotFoundException;
 import bco.scheduler.model.Appointment;
-import bco.scheduler.repository.AppointmentRepository;
+
+import java.util.List;
 
 /**
  * Appointment Controller
@@ -30,7 +24,11 @@ public class AppointmentController {
     /** appointment repository */
     @Autowired
     private AppointmentRepository appointmentRepository;
-    
+
+    /** appointment queue repository */
+    @Autowired
+    private AppointmentQueueRepository appointmentQueueRepository;
+
     /**
      * returns all appointments
      * @return appointments list
@@ -62,8 +60,10 @@ public class AppointmentController {
     @PostMapping("/appointments")
     public Appointment createAppointment (
             @Valid @RequestBody Appointment appointment
-    ) {        
-        return appointmentRepository.save(appointment);
+    ) {
+        appointment = appointmentRepository.save(appointment);
+        appointmentQueueRepository.addNewAppointment(appointment.getId());
+        return appointment;
     }
 
     /**

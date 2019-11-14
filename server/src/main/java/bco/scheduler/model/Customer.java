@@ -3,6 +3,8 @@ package bco.scheduler.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Customer object, holds information related to customers
@@ -10,6 +12,7 @@ import javax.persistence.Enumerated;
  */
 @Entity
 public class Customer extends Person {
+    public static final String CLASS_NAME = "customer";
 
     /** customer communication preference */
     @Enumerated
@@ -30,7 +33,7 @@ public class Customer extends Person {
      * @param lastName customer last name
      * @param email customer email
      * @param phone customer phone
-     * @param communication type prefered communication method
+     * @param communicationPreference type preferred communication method
      * @param address customer address
      */
     public Customer(String firstName, String lastName, String email, String phone, CommunicationType communicationPreference, String address) {
@@ -69,5 +72,29 @@ public class Customer extends Person {
      */
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    /**
+     * Get template variable mappings
+     * @return template variable
+     */
+    public Map<String, String> getTemplateVariables() {
+        Map<String, String> map = new HashMap<>();
+        map.put(CLASS_NAME + ".name", this.getFirstName() + " " + this.getLastName());
+        map.put(CLASS_NAME + ".first_name", this.getFirstName());
+        map.put(CLASS_NAME + ".last_name", this.getLastName());
+        return map;
+    }
+
+    /**
+     * Get template variable descriptions
+     * @return template variable descriptions
+     */
+    public static Map<String, String> getTemplateVariableDescriptions() {
+        Map<String, String> map = new HashMap<>();
+        map.put("${" + CLASS_NAME + ".name" + "}", "Customer's Full Name");
+        map.put("${" + CLASS_NAME + ".first_name" + "}", "Customer's First Name");
+        map.put("${" + CLASS_NAME + ".last_name" + "}", "Customer's Last Name");
+        return map;
     }
 }

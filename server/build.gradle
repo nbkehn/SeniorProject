@@ -27,6 +27,8 @@ dependencies {
 	runtimeOnly 'mysql:mysql-connector-java'
     testCompile "junit:junit:4.11"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation group: "com.twilio.sdk", name: "twilio", version: "7.42.0"
 }
 
 jacocoTestReport {

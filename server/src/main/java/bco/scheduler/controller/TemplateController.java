@@ -1,9 +1,14 @@
 package bco.scheduler.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
+import bco.scheduler.model.Appointment;
+import bco.scheduler.model.CommunicationType;
+import bco.scheduler.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -100,5 +105,20 @@ public class TemplateController {
 
         templateRepository.delete(template);
         return ResponseEntity.ok(template);
+    }
+
+    /**
+     * Get template variables
+     * @return array of template variables
+     */
+    @GetMapping("/templates/variables")
+    public ResponseEntity<Map<String, String>> getTemplateVariables() {
+        Map<String, String> customerTemplateVariables = Customer.getTemplateVariableDescriptions();
+        Map<String, String> appointmentTemplateVariables = Appointment.getTemplateVariableDescriptions();
+        Map<String, String> templateVariables = new HashMap<>();
+        templateVariables.putAll(customerTemplateVariables);
+        templateVariables.putAll(appointmentTemplateVariables);
+
+        return ResponseEntity.ok(templateVariables);
     }
 }

@@ -12,6 +12,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.Set;
 import java.time.LocalDateTime;
 
@@ -22,7 +25,8 @@ import java.time.LocalDateTime;
  *
  */
 @Entity
-public class Appointment {   
+public class Appointment {
+    public static final String CLASS_NAME = "appointment";
 
     /** appointment id */
     @Id
@@ -73,7 +77,7 @@ public class Appointment {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
     }
-    
+
     /**
      * gets id
      * @return id
@@ -81,7 +85,7 @@ public class Appointment {
     public long getId() {
         return id;
     }
-    
+
     /**
      * sets id
      * @param id
@@ -169,7 +173,7 @@ public class Appointment {
     public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
     }
-    
+
     /**
      * gets flooring type
      * @return flooring type
@@ -184,5 +188,29 @@ public class Appointment {
      */
     public void setFlooring(FlooringType flooring) {
         this.flooring = flooring;
+    }
+
+    /**
+     * Get template variable mappings
+     * @return template variable
+     */
+    public Map<String, String> getTemplateVariables() {
+        Map<String, String> map = new HashMap<>();
+        map.put(CLASS_NAME + ".start_date_time", this.getStartDateTime().format(DateTimeFormatter.ofPattern("EEEE MMMM dd K:mm a")));
+        map.put(CLASS_NAME + ".start_date", this.getStartDateTime().format(DateTimeFormatter.ofPattern("EEEE MMMM dd")));
+        map.put(CLASS_NAME + ".start_time", this.getStartDateTime().format(DateTimeFormatter.ofPattern("K:mm a")));
+        return map;
+    }
+
+    /**
+     * Get template variable descriptions
+     * @return template variable descriptions
+     */
+    public static Map<String, String> getTemplateVariableDescriptions() {
+        Map<String, String> map = new HashMap<>();
+        map.put("${" + CLASS_NAME + ".start_date_time" + "}", "Appointment Start Date and Time");
+        map.put("${" + CLASS_NAME + ".start_date" + "}", "Appointment Start Date");
+        map.put("${" + CLASS_NAME + ".start_time" + "}", "Appointment Start Time");
+        return map;
     }
 }
