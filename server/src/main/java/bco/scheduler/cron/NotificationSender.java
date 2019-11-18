@@ -4,10 +4,7 @@
  */
 package bco.scheduler.cron;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import bco.scheduler.exception.ResourceNotFoundException;
 import bco.scheduler.model.*;
@@ -66,21 +63,37 @@ public class NotificationSender {
                         .orElseThrow(() -> new ResourceNotFoundException("Email template not found."));
                 Template textTemplate = templateRepository.findById(reminder.getTextTemplateId())
                         .orElseThrow(() -> new ResourceNotFoundException("Text template not found."));
-                Customer customer = appointment.getCustomer();
 
-                // Send email, text, or both depending on customer's communication preference
-                switch(customer.getCommunicationPreference()) {
-                    case EMAIL:
-                        this.sendEmail(emailTemplate, customer, appointment);
+                // Determine which user to send message to
+                switch(reminder.getUser()) {
+                    case CUSTOMER:
+                        Customer customer = appointment.getCustomer();
+                        // Send email, text, or both depending on customer's communication preference
+                        switch(customer.getCommunicationPreference()) {
+                            case EMAIL:
+                                this.sendMessage(emailTemplate, customer, appointment, true);
+                                break;
+                            case TEXT:
+                                this.sendMessage(textTemplate, customer, appointment, false);
+                                break;
+                            case EMAIL_AND_TEXT:
+                                this.sendMessage(emailTemplate, customer, appointment, true);
+                                this.sendMessage(textTemplate, customer, appointment, false);
+                                break;
+                        }
                         break;
-                    case TEXT:
-                        this.sendText(textTemplate, customer, appointment);
+
+                    case RSA:
+                        this.sendMessage(emailTemplate, appointment.getRSA(), appointment, true);
                         break;
-                    case EMAIL_AND_TEXT:
-                        this.sendEmail(emailTemplate, customer, appointment);
-                        this.sendText(textTemplate, customer, appointment);
+
+                    case TECHNICIAN:
+                        for(Technician technician : appointment.getTechnicians()) {
+                            this.sendMessage(emailTemplate, technician, appointment, true);
+                        }
                         break;
                 }
+
 
                 // Set that the appointment reminder has been sent in the appointment queue
                 appointmentQueueItem.setSent(true);
@@ -95,40 +108,31 @@ public class NotificationSender {
     }
 
     /**
-     * Send appointment reminder text
-     * @param template template to use for text
-     * @param customer customer to send text to
-     * @param appointment appointment data to use
+     * Send message over email
+     * @param template Template to use
+     * @param appointment Attached appointment
+     * @param person person to send message to
+     * @param isEmail Email or text
      */
-    private void sendText(Template template, Customer customer, Appointment appointment) {
+    private void sendMessage(Template template, Person person, Appointment appointment, boolean isEmail) {
+        String target;
+        if (isEmail) {
+            target = person.getEmail();
+        }
+        else {
+            Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+            PhoneNumber phoneNumber = PhoneNumber.fetcher(
+                    new com.twilio.type.PhoneNumber(person.getPhone()))
+                    .setType(Arrays.asList("carrier")).fetch();
+            Carrier carrier = carrierRepository.findByName(phoneNumber.getCarrier().get("name")).get(0);
+            target = person.getPhone() + "@" + carrier.getEmailDomain();
+        }
+
         SimpleMailMessage msg = new SimpleMailMessage();
 
-        // Get address to send text to
-        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-        PhoneNumber phoneNumber = PhoneNumber.fetcher(
-                new com.twilio.type.PhoneNumber(customer.getPhone()))
-                .setType(Arrays.asList("carrier")).fetch();
-        Carrier carrier = carrierRepository.findByName(phoneNumber.getCarrier().get("name")).get(0);
-
-        msg.setTo(customer.getPhone() + "@" + carrier.getEmailDomain());
-        msg.setSubject(parseTemplateVariables(template.getSubject(), customer, appointment));
-        msg.setText(parseTemplateVariables(template.getContent(), customer, appointment));
-
-        javaMailSender.send(msg);
-    }
-
-    /**
-     * Send appointment reminder email
-     * @param template template to use for email
-     * @param customer customer to send email to
-     * @param appointment appointment data to use
-     */
-    private void sendEmail(Template template, Customer customer, Appointment appointment) {
-        SimpleMailMessage msg = new SimpleMailMessage();
-
-        msg.setTo(customer.getEmail());
-        msg.setSubject(parseTemplateVariables(template.getSubject(), customer, appointment));
-        msg.setText(parseTemplateVariables(template.getContent(), customer, appointment));
+        msg.setTo(target);
+        msg.setSubject(parseTemplateVariables(template.getSubject(), appointment, person));
+        msg.setText(parseTemplateVariables(template.getContent(), appointment, person));
 
         javaMailSender.send(msg);
     }
@@ -136,16 +140,19 @@ public class NotificationSender {
     /**
      * Replace content variables with actual values
      * @param content Original content with variables
-     * @param customer Customer attached to appointment
      * @param appointment Appointment that the reminder is for
+     * @param person Recipient of message
      * @return parsed content string
      */
-    private String parseTemplateVariables(String content, Customer customer, Appointment appointment) {
-        Map<String, String> customerTemplateVariables = customer.getTemplateVariables();
-        Map<String, String> appointmentTemplateVariables = appointment.getTemplateVariables();
+    private String parseTemplateVariables(String content, Appointment appointment, Person person) {
+        List<Map<String, String>> templateVariableList = new ArrayList<>();
+        templateVariableList.add(appointment.getTemplateVariables());
+        templateVariableList.add(person.getTemplateVariables());
+
         Map<String, String> templateVariables = new HashMap<>();
-        templateVariables.putAll(customerTemplateVariables);
-        templateVariables.putAll(appointmentTemplateVariables);
+        for (Map<String, String> item : templateVariableList) {
+            templateVariables.putAll(item);
+        }
 
         for (Map.Entry<String, String> templateVariable : templateVariables.entrySet()) {
             content = content.replace("${" + templateVariable.getKey() + "}", templateVariable.getValue());
