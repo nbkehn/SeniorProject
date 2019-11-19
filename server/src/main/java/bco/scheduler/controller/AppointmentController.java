@@ -68,10 +68,14 @@ public class AppointmentController {
     public Appointment createAppointment (
             @Valid @RequestBody Appointment appointment
     ) {
-        appointment = appointmentRepository.saveAndFlush(appointment);
-        appointmentQueueRepository.addNewAppointment(appointment.getId());
-        notificationSender.sendNotificationForOffset(appointment, TimeToSend.APPOINTMENT_CREATION.getOffset());
-        return appointment;
+        final Appointment newAppointment = appointmentRepository.saveAndFlush(appointment);
+        appointmentRepository.refresh(newAppointment);
+        appointmentQueueRepository.addNewAppointment(newAppointment.getId());
+
+        Runnable r = () -> notificationSender.sendNotificationsForOffset(newAppointment, TimeToSend.APPOINTMENT_CREATION.getOffset());
+        new Thread(r).start();
+
+        return newAppointment;
     }
 
     /**
@@ -122,7 +126,7 @@ public class AppointmentController {
     public boolean sendOTWMessage (
             @Valid @RequestBody Appointment appointment
     ) {
-        return notificationSender.sendNotificationForOffset(appointment, TimeToSend.OTW.getOffset());
+        return notificationSender.sendNotificationsForOffset(appointment, TimeToSend.OTW.getOffset());
     }
     
 }

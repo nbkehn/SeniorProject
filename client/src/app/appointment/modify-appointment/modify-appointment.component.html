@@ -11,13 +11,11 @@
   <h2>{{title}}</h2>
 </div>
 <div class="panel-actions">
-  <!-- Send OTW message -->
-  <div *ngIf="appointment.id">
-    <button type="button" class="btn btn-primary panel-action" (click)="sendOTWMessage()">Send OTW Message</button>
-  </div>
-
   <!-- form component for the submit button -->
   <button type="submit" class="btn btn-primary panel-action" form="appointment-form">Save</button>
+
+  <!-- Send OTW message -->
+  <button *ngIf="appointment.id" type="button" class="btn btn-primary panel-action" (click)="sendOTWMessage()">Send OTW Message</button>
 </div>
 <div class="panel-body">
   <div class="form-container">

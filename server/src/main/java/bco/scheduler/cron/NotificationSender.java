@@ -79,12 +79,13 @@ public class NotificationSender {
      * @param offset Offset to use for notification
      * @return whether message was sent of not
      */
-    public boolean sendNotificationForOffset(Appointment appointment, int offset) {
+    public boolean sendNotificationsForOffset(Appointment appointment, int offset) {
         try {
             List<Reminder> reminders = reminderRepository.findByTimeToSend(offset);
             if (reminders.size() > 0) {
-                Reminder reminder = reminders.get(0);
-                this.sendNotification(reminder, appointment);
+                for(Reminder reminder : reminders) {
+                    this.sendNotification(reminder, appointment);
+                }
                 return true;
             }
         }
