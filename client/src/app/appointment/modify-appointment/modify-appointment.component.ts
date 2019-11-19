@@ -194,4 +194,24 @@ export class ModifyAppointmentComponent implements OnInit {
   gotoList() {
     this.router.navigate(['/appointment/index']);
   }
+
+  /**
+   * Send OTW message for appointment
+   */
+  sendOTWMessage() {
+    let response = this.appointmentService.sendOTWMessage(this.appointment);
+    response.subscribe(
+      data => {
+        if (data) {
+          this.alertService.success('The OTW message was sent successfully.', false);
+        }
+        else {
+          this.alertService.error('The OTW message could not be sent.', false);
+        }
+      },
+      error => {
+        // Display error message on error and remain in form
+        this.alertService.error('The OTW message could not be sent.', false);
+      });
+  }
 }

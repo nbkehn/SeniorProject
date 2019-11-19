@@ -1,6 +1,9 @@
 package bco.scheduler.controller;
 
 import javax.validation.Valid;
+
+import bco.scheduler.cron.NotificationSender;
+import bco.scheduler.model.TimeToSend;
 import bco.scheduler.repository.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,10 @@ public class AppointmentController {
     /** appointment queue repository */
     @Autowired
     private AppointmentQueueRepository appointmentQueueRepository;
+
+    /** notification sender */
+    @Autowired
+    private NotificationSender notificationSender;
 
     /**
      * returns all appointments
@@ -61,8 +68,9 @@ public class AppointmentController {
     public Appointment createAppointment (
             @Valid @RequestBody Appointment appointment
     ) {
-        appointment = appointmentRepository.save(appointment);
+        appointment = appointmentRepository.saveAndFlush(appointment);
         appointmentQueueRepository.addNewAppointment(appointment.getId());
+        notificationSender.sendNotificationForOffset(appointment, TimeToSend.APPOINTMENT_CREATION.getOffset());
         return appointment;
     }
 
@@ -103,6 +111,18 @@ public class AppointmentController {
 
         appointmentRepository.delete(appointment);
         return appointment.getId();
+    }
+
+    /**
+     * sends OTW message for appointment
+     * @param appointment appointment to send OTW message for
+     * @return whether message was set of not
+     */
+    @PostMapping("/appointments/sendOTW")
+    public boolean sendOTWMessage (
+            @Valid @RequestBody Appointment appointment
+    ) {
+        return notificationSender.sendNotificationForOffset(appointment, TimeToSend.OTW.getOffset());
     }
     
 }

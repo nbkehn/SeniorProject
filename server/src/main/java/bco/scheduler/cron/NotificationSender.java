@@ -59,41 +59,7 @@ public class NotificationSender {
                 Reminder reminder = reminderRepository.findById(appointmentQueueItem.getReminderId())
                         .orElseThrow(() -> new ResourceNotFoundException("Reminder not found."));
 
-                Template emailTemplate = templateRepository.findById(reminder.getEmailTemplateId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Email template not found."));
-                Template textTemplate = templateRepository.findById(reminder.getTextTemplateId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Text template not found."));
-
-                // Determine which user to send message to
-                switch(reminder.getUser()) {
-                    case CUSTOMER:
-                        Customer customer = appointment.getCustomer();
-                        // Send email, text, or both depending on customer's communication preference
-                        switch(customer.getCommunicationPreference()) {
-                            case EMAIL:
-                                this.sendMessage(emailTemplate, customer, appointment, true);
-                                break;
-                            case TEXT:
-                                this.sendMessage(textTemplate, customer, appointment, false);
-                                break;
-                            case EMAIL_AND_TEXT:
-                                this.sendMessage(emailTemplate, customer, appointment, true);
-                                this.sendMessage(textTemplate, customer, appointment, false);
-                                break;
-                        }
-                        break;
-
-                    case RSA:
-                        this.sendMessage(emailTemplate, appointment.getRSA(), appointment, true);
-                        break;
-
-                    case TECHNICIAN:
-                        for(Technician technician : appointment.getTechnicians()) {
-                            this.sendMessage(emailTemplate, technician, appointment, true);
-                        }
-                        break;
-                }
-
+                this.sendNotification(reminder, appointment);
 
                 // Set that the appointment reminder has been sent in the appointment queue
                 appointmentQueueItem.setSent(true);
@@ -104,6 +70,77 @@ public class NotificationSender {
                 appointmentQueueRepository.save(appointmentQueueItem);
                 log.error(e.getMessage());
             }
+        }
+    }
+
+    /**
+     * Send notification for a provided offset
+     * @param appointment appointment to send notification for
+     * @param offset Offset to use for notification
+     * @return whether message was sent of not
+     */
+    public boolean sendNotificationForOffset(Appointment appointment, int offset) {
+        try {
+            List<Reminder> reminders = reminderRepository.findByTimeToSend(offset);
+            if (reminders.size() > 0) {
+                Reminder reminder = reminders.get(0);
+                this.sendNotification(reminder, appointment);
+                return true;
+            }
+        }
+        catch(ResourceNotFoundException e) {
+            log.error(e.getMessage());
+        }
+
+        return false;
+    }
+
+    /**
+     * Send a single notification
+     * @param reminder reminder to use
+     * @param appointment appointment attached to reminder
+     * @throws ResourceNotFoundException template not found
+     */
+    private void sendNotification(Reminder reminder, Appointment appointment) throws ResourceNotFoundException {
+        Template emailTemplate = templateRepository.findById(reminder.getEmailTemplateId())
+                .orElseThrow(() -> new ResourceNotFoundException("Email template not found."));
+        Template textTemplate = templateRepository.findById(reminder.getTextTemplateId())
+                .orElseThrow(() -> new ResourceNotFoundException("Text template not found."));
+
+        // Determine which user to send message to
+        switch(reminder.getUser()) {
+            case CUSTOMER:
+                Customer customer = appointment.getCustomer();
+
+                if (reminder.getTimeToSend() == TimeToSend.OTW.getOffset()) {
+                    this.sendMessage(textTemplate, customer, appointment, false);
+                    break;
+                }
+
+                // Send email, text, or both depending on customer's communication preference
+                switch(customer.getCommunicationPreference()) {
+                    case EMAIL:
+                        this.sendMessage(emailTemplate, customer, appointment, true);
+                        break;
+                    case TEXT:
+                        this.sendMessage(textTemplate, customer, appointment, false);
+                        break;
+                    case EMAIL_AND_TEXT:
+                        this.sendMessage(emailTemplate, customer, appointment, true);
+                        this.sendMessage(textTemplate, customer, appointment, false);
+                        break;
+                }
+                break;
+
+            case RSA:
+                this.sendMessage(emailTemplate, appointment.getRSA(), appointment, true);
+                break;
+
+            case TECHNICIAN:
+                for(Technician technician : appointment.getTechnicians()) {
+                    this.sendMessage(emailTemplate, technician, appointment, true);
+                }
+                break;
         }
     }
 
