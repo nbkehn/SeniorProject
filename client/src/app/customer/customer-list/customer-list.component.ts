@@ -2,8 +2,7 @@
  * Angular component for viewing customers
  *
  * @package customer
- * @author Noah Trimble
- * @modifiedBy Soumya Bagade
+ * @author Noah Trimble and Soumya Bagade
  */
 import { Observable } from "rxjs";
 import { CustomerService } from "../customer.service";

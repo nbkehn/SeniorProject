@@ -3,7 +3,7 @@
  *
  * @package alert
  * @source https://github.com/cornflourblue/angular2-alert-notifications
- * @modifiedBy Noah Trimble
+ * @author Noah Trimble
  */
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';

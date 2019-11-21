@@ -2,8 +2,7 @@
  * Angular component for creating and editing technicians
  *
  * @package technician
- * @author Noah Trimble
- * @modifiedBy Soumya Bagade
+ * @author Noah Trimble and Soumya Bagade
  */
 import { TechnicianService } from '../technician.service';
 import { Technician } from '../technician';
