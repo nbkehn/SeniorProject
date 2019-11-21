@@ -7,7 +7,7 @@ package bco.scheduler.model;
 public enum TimeToSend {
     ONE_WEEK_PRIOR("One Week Prior", -7),
     ONE_DAY_PRIOR("One Day Prior", -1),
-    ONE_YEAR_AFTER("One Year After", 365),
+    ONE_YEAR_AFTER("Warranty Message (Carpet Only)", 365),
     OTW("OTW Message (Only text template will be used)", -1000),
     APPOINTMENT_CREATION("Appointment Creation Message", -1001);
 
