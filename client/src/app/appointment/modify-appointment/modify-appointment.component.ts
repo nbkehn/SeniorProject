@@ -38,6 +38,8 @@ export class ModifyAppointmentComponent implements OnInit {
   rsaOptions: Rsa[];
   // this list of flooring options
   flooringOptions: Flooring[];
+  // is OTW message sending
+  sending: boolean;
 
   /**
    * Creates the instance of the component
@@ -59,6 +61,8 @@ export class ModifyAppointmentComponent implements OnInit {
    * initializes the components and populates the form with appointment data if it is being edited (instead of created)
    */
   ngOnInit() {
+    // initialize sending
+    this.sending = false;
 
     // initialize mapped options
     this.customerOptions = [];
@@ -193,5 +197,29 @@ export class ModifyAppointmentComponent implements OnInit {
    */
   gotoList() {
     this.router.navigate(['/appointment/index']);
+  }
+
+  /**
+   * Send OTW message for appointment
+   */
+  sendOTWMessage() {
+    this.sending = true;
+    let response = this.appointmentService.sendOTWMessage(this.appointment);
+    response.subscribe(
+      data => {
+        if (data) {
+          this.alertService.success('The OTW message was sent successfully.', false);
+        }
+        else {
+          this.alertService.error('The OTW message could not be sent.  ' +
+            'Make sure you have an OTW reminder configured from the Reminder Management page.', false);
+        }
+        this.sending = false;
+      },
+      error => {
+        // Display error message on error and remain in form
+        this.alertService.error('The OTW message could not be sent.', false);
+        this.sending = false;
+      });
   }
 }

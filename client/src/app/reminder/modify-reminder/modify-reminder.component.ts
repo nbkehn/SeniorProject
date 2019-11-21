@@ -27,6 +27,8 @@ export class ModifyReminderComponent implements OnInit {
   timesToSend;
   // Templates
   templates;
+  // User types
+  userTypes;
 
   /**
    * Creates the instance of the component
@@ -47,9 +49,11 @@ export class ModifyReminderComponent implements OnInit {
     // initialize mapped options
     this.timesToSend = [];
     this.templates = [];
+    this.userTypes = [];
     this.objectKeys = Object.keys;
     this.setTimesToSend();
     this.setTemplates();
+    this.setUserTypes();
 
     // initializes a new reminder
     this.reminder = new Reminder();
@@ -102,6 +106,20 @@ export class ModifyReminderComponent implements OnInit {
   }
 
   /**
+   * Set user types
+   */
+  setUserTypes() {
+    this.reminderService.getUserTypes()
+      .subscribe(
+        data => {
+          this.userTypes = data;
+        },
+        error => {
+          this.alertService.error('User types could not be loaded.', false);
+        });
+  }
+
+  /**
    * saves the techician to the database and logs the response code (200 OK or 4xx error) to the console
    * the console can be accessed in the web page by pressing Fn + F12 on a Windows system
    */
@@ -118,7 +136,8 @@ export class ModifyReminderComponent implements OnInit {
       },
       error => {
         // Display error message on error and remain in form
-        this.alertService.error('The reminder could not be saved. Please note that time to send is unique per reminder.', false);
+        this.alertService.error('The reminder could not be saved. ' +
+          'Please note that each combination of time to send and user are unique per reminder.', false);
       });
   }
 

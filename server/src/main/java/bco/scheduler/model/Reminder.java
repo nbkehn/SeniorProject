@@ -6,6 +6,8 @@ import javax.persistence.*;
  * Reminder object, holds information related to reminders
  * @author Noah Trimble
  */
+@Table(name = "reminder",
+        uniqueConstraints = { @UniqueConstraint(columnNames = { "user", "time_to_send" }) })
 @Entity
 public class Reminder {
 
@@ -15,8 +17,12 @@ public class Reminder {
     private long id;
 
     /** time to send reminder */
-    @Column(name = "time_to_send", nullable = false, unique = true)
+    @Column(name = "time_to_send", nullable = false)
     private int timeToSend;
+
+    /** user to send reminder to */
+    @Column(name = "user", nullable = false)
+    private UserType user;
 
     /** chosen text template's ID */
     @Column(name="text_template_id", nullable = false)
@@ -34,11 +40,13 @@ public class Reminder {
      * @param timeToSend time to send reminder
      * @param textTemplateId text template id to use
      * @param emailTemplateId email template id to use
+     * @param user user attached to reminder
      */
-    public Reminder(int timeToSend, long textTemplateId, long emailTemplateId) {
+    public Reminder(int timeToSend, long textTemplateId, long emailTemplateId, UserType user) {
         this.timeToSend = timeToSend;
         this.textTemplateId = textTemplateId;
         this.emailTemplateId = emailTemplateId;
+        this.user = user;
     }
 
     /**
@@ -71,6 +79,22 @@ public class Reminder {
      */
     public void setTimeToSend(int timeToSend) {
         this.timeToSend = timeToSend;
+    }
+
+    /**
+     * Get user attached to reminder
+     * @return user
+     */
+    public UserType getUser() {
+        return user;
+    }
+
+    /**
+     * Set user on reminder
+     * @param user user to put on reminder
+     */
+    public void setUser(UserType user) {
+        this.user = user;
     }
 
     /**

@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Set;
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 /**
  * Appointment class, stitches together the person components and timeslots, and flooring type
@@ -199,7 +200,23 @@ public class Appointment {
         map.put(CLASS_NAME + ".start_date_time", this.getStartDateTime().format(DateTimeFormatter.ofPattern("EEEE MMMM dd K:mm a")));
         map.put(CLASS_NAME + ".start_date", this.getStartDateTime().format(DateTimeFormatter.ofPattern("EEEE MMMM dd")));
         map.put(CLASS_NAME + ".start_time", this.getStartDateTime().format(DateTimeFormatter.ofPattern("K:mm a")));
+        map.put(CLASS_NAME + ".customer_name", this.getCustomer().getFirstName() + " " + this.getCustomer().getLastName());
+        map.put(CLASS_NAME + ".rsa_name", this.getRSA().getFirstName() + " " + this.getRSA().getLastName());
+        map.put(CLASS_NAME + ".tech_names", this.getTechnicianNames());
         return map;
+    }
+
+    /**
+     * Get comma-separated list of technician names on the appointment
+     * @return technician names
+     */
+    private String getTechnicianNames() {
+        List<String> technicianNames = new ArrayList<>();
+        for (Technician technician : this.getTechnicians()) {
+            technicianNames.add(technician.getFirstName() + " " + technician.getLastName());
+        }
+
+        return String.join(", ", technicianNames);
     }
 
     /**
@@ -211,6 +228,9 @@ public class Appointment {
         map.put("${" + CLASS_NAME + ".start_date_time" + "}", "Appointment Start Date and Time");
         map.put("${" + CLASS_NAME + ".start_date" + "}", "Appointment Start Date");
         map.put("${" + CLASS_NAME + ".start_time" + "}", "Appointment Start Time");
+        map.put("${" + CLASS_NAME + ".customer_name" + "}", "Appointment Customer Name");
+        map.put("${" + CLASS_NAME + ".rsa_name" + "}", "Appointment RSA Name");
+        map.put("${" + CLASS_NAME + ".tech_names" + "}", "Appointment Technician Names");
         return map;
     }
 }

@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Parent class for all person subtypes, e.g. rsa, technician, user
@@ -12,6 +14,7 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public class Person {
+    public static final String CLASS_NAME = "person";
 
     /** person id */
     @Id
@@ -129,5 +132,29 @@ public class Person {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * Get template variable mappings
+     * @return template variable
+     */
+    public Map<String, String> getTemplateVariables() {
+        Map<String, String> map = new HashMap<>();
+        map.put(CLASS_NAME + ".name", this.getFirstName() + " " + this.getLastName());
+        map.put(CLASS_NAME + ".first_name", this.getFirstName());
+        map.put(CLASS_NAME + ".last_name", this.getLastName());
+        return map;
+    }
+
+    /**
+     * Get template variable descriptions
+     * @return template variable descriptions
+     */
+    public static Map<String, String> getTemplateVariableDescriptions() {
+        Map<String, String> map = new HashMap<>();
+        map.put("${" + CLASS_NAME + ".name" + "}", "Email/Text Recipient's Full Name");
+        map.put("${" + CLASS_NAME + ".first_name" + "}", "Email/Text Recipient's First Name");
+        map.put("${" + CLASS_NAME + ".last_name" + "}", "Email/Text Recipient's Last Name");
+        return map;
     }
 }
