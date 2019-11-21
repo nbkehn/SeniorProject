@@ -108,17 +108,4 @@ public class ReminderController {
         }
         return ResponseEntity.ok(map);
     }
-
-    /**
-     * Get templates
-     * @return array of templates
-     */
-    @GetMapping("/reminders/template")
-    public ResponseEntity<Map<Long, String>> getTemplates() {
-        Map<Long, String> map = new HashMap<Long, String>();
-        for (Template template : templateRepository.findAll()) {
-            map.put(template.getId(), template.getTitle());
-        }
-        return ResponseEntity.ok(map);
-    }
 }

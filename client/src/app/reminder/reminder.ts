@@ -1,3 +1,5 @@
+import { Template } from '../template/template';
+
 /**
  * Defines a reminder class with it's necessary components
  *
@@ -6,7 +8,7 @@
  */
 export class Reminder {
   id: number;
-  emailTemplateId: number;
-  textTemplateId: number;
+  emailTemplate: Template;
+  textTemplate: Template;
   timeToSend: number;
 }

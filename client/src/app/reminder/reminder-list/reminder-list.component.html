@@ -29,9 +29,9 @@
       <tbody>
       <!-- each row of the table that is populated with data from every reminder (essentially a for loop going through every reminder and printing)-->
       <tr *ngFor="let reminder of reminders | async">
-        <td>{{translateTemplate(reminder.emailTemplateId)}}</td>
-        <td>{{translateTemplate(reminder.textTemplateId)}}</td>
-        <td>{{translateTimeToSend(reminder.timeToSend)}}</td>
+        <td>{{reminder.emailTemplate?.title}}</td>
+        <td>{{reminder.textTemplate?.title}}</td>
+        <td>time to send</td>
         <td>
           <!-- button options for each row so that the user can edit/delete that reminder with a click of a button-->
           <button (click)="editReminder(reminder.id)" class="btn btn-primary">Edit</button>

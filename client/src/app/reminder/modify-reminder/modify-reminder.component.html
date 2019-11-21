@@ -18,52 +18,53 @@
   <div class="form-container">
     <!-- the ngSubmit calls on the data from the ngModel, which is required. The ngModel automatically populates the reminder object with relevant data-->
     <form #reminderForm="ngForm" (ngSubmit)="reminderForm.valid && onSubmit()" id="reminder-form">
+      
       <!-- form component for reminder's email template -->
       <div class="form-group">
-        <label for="emailTemplateId">Email Template</label>
-        <select class="form-control" id="emailTemplateId" required #emailTemplateId="ngModel"
-               [(ngModel)]="reminder.emailTemplateId" name="emailTemplateId">
-          <option *ngFor="let key of objectKeys(templates)"
-                  [value]="key">
-            {{templates[key]}}
+        <label for="emailTemplate">Email Template</label>
+        <select class="form-control" id="emailTemplate" required #emailTemplate="ngModel"
+               [(ngModel)]="reminder.emailTemplate.id" name="emailTemplate">
+          <option *ngFor="let templateOption of templateOptions"
+                  [ngValue]="templateOption.id">
+            {{templateOption.title}}
           </option>
         </select>
-        <div *ngIf="emailTemplateId.invalid &&
-                    (emailTemplateId.dirty || emailTemplateId.touched || reminderForm.submitted)"
+        <div *ngIf="emailTemplate.invalid &&
+                    (emailTemplate.dirty || emailTemplate.touched || reminderForm.submitted)"
              class="alert alert-danger">
-          <div *ngIf="emailTemplateId.errors.required">
+          <div *ngIf="emailTemplate.errors.required">
             This field is required.
           </div>
         </div>
-      </div>
+      </div>     
 
       <!-- form component for reminder's text template -->
       <div class="form-group">
-        <label for="textTemplateId">Text Template</label>
-        <select class="form-control" id="textTemplateId" required #textTemplateId="ngModel"
-                [(ngModel)]="reminder.textTemplateId" name="textTemplateId">
-          <option *ngFor="let key of objectKeys(templates)"
-                  [value]="key">
-            {{templates[key]}}
+        <label for="textTemplate">Text Template</label>
+        <select class="form-control" id="textTemplate" required #textTemplate="ngModel"
+                [(ngModel)]="reminder.textTemplate.id" name="textTemplate">
+          <option *ngFor="let templateOption of templateOptions"
+                  [ngValue]="templateOption.id">
+            {{templateOption.title}}
           </option>
         </select>
-        <div *ngIf="textTemplateId.invalid &&
-                    (textTemplateId.dirty || textTemplateId.touched || reminderForm.submitted)"
+        <div *ngIf="textTemplate.invalid &&
+                    (textTemplate.dirty || textTemplate.touched || reminderForm.submitted)"
              class="alert alert-danger">
-          <div *ngIf="textTemplateId.errors.required">
+          <div *ngIf="textTemplate.errors.required">
             This field is required.
           </div>
         </div>
       </div>
 
-      <!-- form component for reminder's time to send -->
+      <!-- form component for reminder's time to send 
       <div class="form-group">
         <label for="timeToSend">Time To Send</label>
         <select class="form-control" id="timeToSend" required #timeToSend="ngModel"
                 [(ngModel)]="reminder.timeToSend" name="timeToSend">
-          <option *ngFor="let key of objectKeys(timesToSend)"
-                  [value]="key">
-            {{timesToSend[key]}}
+          <option *ngFor="let timeToSend of timeToSendOptions"
+                  [ngValue]="timeToSend.value">
+            {{timeToSend.name}}
           </option>
         </select>
         <div *ngIf="timeToSend.invalid &&
@@ -74,6 +75,7 @@
           </div>
         </div>
       </div>
+      -->
     </form>
   </div>
 </div>

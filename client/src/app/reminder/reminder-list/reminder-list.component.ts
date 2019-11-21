@@ -9,8 +9,8 @@ import { ReminderService } from "../reminder.service";
 import { Reminder } from "../reminder";
 import { Component, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
-import {AlertService} from "../../alert/alert.service";
-import {NgxSmartModalService} from "ngx-smart-modal";
+import { AlertService } from "../../alert/alert.service";
+import { NgxSmartModalService } from "ngx-smart-modal";
 
 @Component({
   selector: "app-reminder-list",
@@ -19,10 +19,6 @@ import {NgxSmartModalService} from "ngx-smart-modal";
 export class ReminderListComponent implements OnInit {
   // the list of reminders
   reminders: Observable<Reminder[]>;
-  // Times to send
-  timesToSend;
-  // Templates
-  templates;
 
   /**
    * Constructor for the ReminderListComponent, doesn't really do anything right now
@@ -41,10 +37,6 @@ export class ReminderListComponent implements OnInit {
    */
   ngOnInit() {
     this.reloadData();
-    this.timesToSend = [];
-    this.templates = [];
-    this.setTimesToSend();
-    this.setTemplates();
   }
 
   /**
@@ -53,34 +45,6 @@ export class ReminderListComponent implements OnInit {
    */
   reloadData() {
     this.reminders = this.reminderService.getRemindersList();
-  }
-
-  /**
-   * Set times to send
-   */
-  setTimesToSend() {
-    this.reminderService.getTimesToSend()
-      .subscribe(
-        data => {
-          this.timesToSend = data;
-        },
-        error => {
-          this.alertService.error('Times to send could not be loaded.', false);
-        });
-  }
-
-  /**
-   * Set templates
-   */
-  setTemplates() {
-    this.reminderService.getTemplates()
-      .subscribe(
-        data => {
-          this.templates = data;
-        },
-        error => {
-          this.alertService.error('Templates could not be loaded.', false);
-        });
   }
 
   /**
@@ -105,23 +69,5 @@ export class ReminderListComponent implements OnInit {
    */
   editReminder(id: number) {
     this.router.navigate(['/reminder/edit', id]);
-  }
-
-  /**
-   * Translate time to send option id to value
-   * @param id Option id
-   * @return translated time to send
-   */
-  translateTimeToSend(id: number) {
-    return this.timesToSend[id];
-  }
-
-  /**
-   * Translate template option id to value
-   * @param id Option id
-   * @return translated template
-   */
-  translateTemplate(id: number) {
-    return this.templates[id];
   }
 }
