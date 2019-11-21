@@ -81,4 +81,12 @@ export class ReminderService {
   getTemplates() {
     return this.http.get(`${this.baseUrl}/template`);
   }
+
+  /**
+   * Get user types
+   * @return user types
+   */
+  getUserTypes() {
+    return this.http.get(`${this.baseUrl}/userType`);
+  }
 }

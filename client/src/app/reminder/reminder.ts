@@ -9,4 +9,5 @@ export class Reminder {
   emailTemplateId: number;
   textTemplateId: number;
   timeToSend: number;
+  user: string;
 }

@@ -74,6 +74,25 @@
           </div>
         </div>
       </div>
+
+      <!-- form component for reminder's user -->
+      <div class="form-group">
+        <label for="user">User</label>
+        <select class="form-control" id="user" required #user="ngModel"
+                [(ngModel)]="reminder.user" name="user">
+          <option *ngFor="let key of objectKeys(userTypes)"
+                  [value]="key">
+            {{userTypes[key]}}
+          </option>
+        </select>
+        <div *ngIf="user.invalid &&
+                    (user.dirty || user.touched || reminderForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="user.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 </div>

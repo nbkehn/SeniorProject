@@ -27,7 +27,7 @@ public class ReminderTest {
      */
 	@Test
 	public void testConstructor() {        
-        Reminder testReminder = new Reminder(365, 1, 2);
+        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
         assertNotNull(testReminder);
     }
     
@@ -37,7 +37,7 @@ public class ReminderTest {
      */
     @Test
     public void testID(){
-        Reminder testReminder = new Reminder(365, 1, 2);
+        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
         testReminder.setId(1);
         assertEquals(testReminder.getId(), 1);
     }
@@ -48,7 +48,7 @@ public class ReminderTest {
      */
     @Test
 	public void testGetTimeToSend() {
-        Reminder testReminder = new Reminder(365, 1, 2);
+        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
         assertEquals(testReminder.getTimeToSend(), 365);
     }
     
@@ -57,7 +57,7 @@ public class ReminderTest {
      */
     @Test
 	public void testSetTimeToSend() {
-        Reminder testReminder = new Reminder(365, 1, 2);
+        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
         assertEquals(testReminder.getTimeToSend(), 365);
         testReminder.setTimeToSend(-7);
         assertEquals(testReminder.getTimeToSend(), -7);
@@ -68,7 +68,7 @@ public class ReminderTest {
      */
     @Test
 	public void testGetTextTemplateId() {
-        Reminder testReminder = new Reminder(365, 1, 2);
+        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
         assertEquals(testReminder.getTextTemplateId(), 1);
     }
     
@@ -77,7 +77,7 @@ public class ReminderTest {
      */
     @Test
 	public void testSetTextTemplateId() {
-        Reminder testReminder = new Reminder(365, 1, 2);        
+        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
         assertEquals(testReminder.getTextTemplateId(), 1);
         testReminder.setTextTemplateId(100);
         assertEquals(testReminder.getTextTemplateId(), 100);
@@ -88,7 +88,7 @@ public class ReminderTest {
      */
     @Test
 	public void testGetEmailTemplateId() {
-        Reminder testReminder = new Reminder(365, 1, 2);
+        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
         assertEquals(testReminder.getEmailTemplateId(), 2);
     }
     
@@ -97,7 +97,7 @@ public class ReminderTest {
      */
     @Test
 	public void testSetEmailTemplateId() {
-        Reminder testReminder = new Reminder(365, 1, 2);
+        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
         assertEquals(testReminder.getEmailTemplateId(), 2);
         testReminder.setEmailTemplateId(200);
         assertEquals(testReminder.getEmailTemplateId(), 200);
