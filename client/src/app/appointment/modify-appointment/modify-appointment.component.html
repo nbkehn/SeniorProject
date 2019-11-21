@@ -15,7 +15,8 @@
   <button type="submit" class="btn btn-primary panel-action" form="appointment-form">Save</button>
 
   <!-- Send OTW message -->
-  <button *ngIf="appointment.id" type="button" class="btn btn-primary panel-action" (click)="sendOTWMessage()">Send OTW Message</button>
+  <button *ngIf="appointment.id" type="button" class="btn btn-primary panel-action"
+          (click)="sendOTWMessage()" [disabled]="sending">Send OTW Message</button>
 </div>
 <div class="panel-body">
   <div class="form-container">
