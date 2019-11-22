@@ -37,7 +37,7 @@ public class TimeToSendTest {
 
         // test one year after
         TimeToSend testOneYearAfter = TimeToSend.ONE_YEAR_AFTER;
-        assertEquals(testOneYearAfter.getName(), "One Year After");
+        assertEquals(testOneYearAfter.getName(), "Warranty Message (Carpet Only)");
     }
     
 
