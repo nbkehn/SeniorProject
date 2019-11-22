@@ -5,8 +5,7 @@ import javax.persistence.Entity;
 /**
  * The general object for the RSA user type
  * 
- * @author Connor J. Parke
- * @modifiedby Soumya Bagade
+ * @author Connor J. Parke and Soumya Bagade
  *
  */
 @Entity

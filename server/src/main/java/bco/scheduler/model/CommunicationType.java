@@ -1,7 +1,6 @@
 /**
  * Communication type enum
- * @author Connor Parke
- * @modifiedBy Noah Trimble
+ * @author Connor Parke and Noah Trimble
  */
 package bco.scheduler.model;
 

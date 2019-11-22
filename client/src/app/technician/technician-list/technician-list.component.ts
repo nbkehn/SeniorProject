@@ -2,8 +2,7 @@
  * Angular component for viewing technicians
  *
  * @package technician
- * @author Noah Trimble
- * @modifiedBy Soumya Bagade
+ * @author Noah Trimble and Soumya Bagade
  */
 import { Observable } from "rxjs";
 import { TechnicianService } from "../technician.service";

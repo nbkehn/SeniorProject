@@ -2,8 +2,7 @@
  * Angular component for viewing users
  *
  * @package user
- * @author Noah Trimble
- * @modifiedBy Soumya Bagade
+ * @author Noah Trimble and Soumya Bagade
  */
 import { Observable } from "rxjs";
 import { UserService } from "../user.service";
