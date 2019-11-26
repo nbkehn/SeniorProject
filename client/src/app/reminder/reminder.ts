@@ -11,4 +11,5 @@ export class Reminder {
   emailTemplate: Template;
   textTemplate: Template;
   timeToSend: number;
+  user: string;
 }

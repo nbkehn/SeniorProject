@@ -23,6 +23,7 @@
         <th>Email Template</th>
         <th>Text Template</th>
         <th>Time To Send</th>
+        <th>User</th>
         <th>Actions</th>
       </tr>
       </thead>
@@ -32,6 +33,7 @@
         <td>{{reminder.emailTemplate?.title}}</td>
         <td>{{reminder.textTemplate?.title}}</td>
         <td>time to send</td>
+        <td>reminder</td>
         <td>
           <!-- button options for each row so that the user can edit/delete that reminder with a click of a button-->
           <button (click)="editReminder(reminder.id)" class="btn btn-primary">Edit</button>

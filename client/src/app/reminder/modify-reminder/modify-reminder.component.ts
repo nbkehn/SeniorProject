@@ -12,6 +12,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AlertService } from '../../alert/alert.service';
 import { TemplateService } from 'src/app/template/template.service';
 import { Template } from 'src/app/template/template';
+import { UserType } from 'src/app/reminder/usertype';
+
 
 @Component({
   selector: 'app-modify-reminder',
@@ -28,6 +30,8 @@ export class ModifyReminderComponent implements OnInit {
   templateOptions: Template[];
   // Times to send
   timeToSendOptions: TimeToSend[];
+  // user types
+  userTypeOptions: UserType[];
 
   /**
    * Creates the instance of the component
@@ -49,10 +53,12 @@ export class ModifyReminderComponent implements OnInit {
     // initialize mapped options
     this.templateOptions = [];
     this.timeToSendOptions = [];
+    this.userTypeOptions = [];
 
     // populate option data
     this.setTemplates();
     this.setTimesToSend();
+    this.setUserTypes();
 
     // initializes a new reminder and aggregates
     this.reminder = new Reminder();
@@ -107,6 +113,20 @@ export class ModifyReminderComponent implements OnInit {
   }
 
   /**
+   * Set user types
+   */
+  setUserTypes() {
+    this.reminderService.getUserTypes()
+      .subscribe(
+        data => {
+          this.userTypeOptions = data;
+        },
+        error => {
+          this.alertService.error('User types could not be loaded.', false);
+        });
+  }
+
+  /**
    * saves the techician to the database and logs the response code (200 OK or 4xx error) to the console
    * the console can be accessed in the web page by pressing Fn + F12 on a Windows system
    */
@@ -123,7 +143,8 @@ export class ModifyReminderComponent implements OnInit {
       },
       error => {
         // Display error message on error and remain in form
-        this.alertService.error('The reminder could not be saved. Please note that time to send is unique per reminder.', false);
+        this.alertService.error('The reminder could not be saved. ' +
+          'Please note that each combination of time to send and user are unique per reminder.', false);
       });
   }
 

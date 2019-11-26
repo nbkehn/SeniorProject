@@ -66,4 +66,13 @@ export class AppointmentService {
   getAppointmentsList(): Observable<any> {
     return this.http.get(`${this.baseUrl}`);
   }
+
+  /**
+   * Send OTW Message
+   * @param appointment Appointment to send OTW message for
+   * @return whether appointment was sent or not
+   */
+  sendOTWMessage(appointment: Appointment): Observable<any> {
+    return this.http.post(`${this.baseUrl}/sendOTW`, appointment);
+  }
 }

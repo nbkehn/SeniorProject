@@ -74,4 +74,12 @@ export class ReminderService {
   getTimesToSend(): Observable<any> {
     return this.http.get(`${this.baseUrl}/timeToSend`);
   }
+
+  /**
+   * Get user types
+   * @return user types
+   */
+  getUserTypes(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/userType`);
+  }
 }

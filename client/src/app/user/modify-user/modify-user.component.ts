@@ -2,8 +2,7 @@
  * Angular component for creating and editing users
  *
  * @package user
- * @author Noah Trimble
- * @modifiedBy Soumya Bagade
+ * @author Noah Trimble and Soumya Bagade
  */
 import { UserService } from '../user.service';
 import { User } from '../user';

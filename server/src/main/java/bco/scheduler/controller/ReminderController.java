@@ -4,6 +4,7 @@ import bco.scheduler.exception.ResourceNotFoundException;
 import bco.scheduler.model.Reminder;
 import bco.scheduler.model.Template;
 import bco.scheduler.model.TimeToSend;
+import bco.scheduler.model.UserType;
 import bco.scheduler.repository.AppointmentQueueRepository;
 import bco.scheduler.repository.ReminderRepository;
 import bco.scheduler.repository.TemplateRepository;
@@ -76,6 +77,7 @@ public class ReminderController {
         reminder.setEmailTemplate(reminderDetails.getEmailTemplate());
         reminder.setTextTemplate(reminderDetails.getTextTemplate());
         reminder.setTimeToSend(reminderDetails.getTimeToSend());
+        reminder.setUser(reminderDetails.getUser());
         
         return ResponseEntity.ok(reminderRepository.save(reminder));
     }
@@ -105,6 +107,19 @@ public class ReminderController {
         Map<Integer, String> map = new HashMap<Integer, String>();
         for (TimeToSend timeToSend : TimeToSend.values()) {
             map.put(timeToSend.getOffset(), timeToSend.getName());
+        }
+        return ResponseEntity.ok(map);
+    }
+
+    /**
+     * Get user types
+     * @return array of user types
+     */
+    @GetMapping("/reminders/userType")
+    public ResponseEntity<Map<UserType, String>> getUserTypes() {
+        Map<UserType, String> map = new HashMap<>();
+        for (UserType userType : UserType.values()) {
+            map.put(userType, userType.getName());
         }
         return ResponseEntity.ok(map);
     }
