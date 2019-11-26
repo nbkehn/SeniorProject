@@ -152,7 +152,7 @@ public class NotificationSender {
      * @param person person to send message to
      * @param isEmail Email or text
      */
-    private void sendMessage(Template template, Person person, Appointment appointment, boolean isEmail) {
+    private void sendMessage(Template template, Person person, Appointment appointment, boolean isEmail) throws ResourceNotFoundException {
         String target;
         if (isEmail) {
             target = person.getEmail();
@@ -162,7 +162,12 @@ public class NotificationSender {
             PhoneNumber phoneNumber = PhoneNumber.fetcher(
                     new com.twilio.type.PhoneNumber(person.getPhone()))
                     .setType(Arrays.asList("carrier")).fetch();
-            Carrier carrier = carrierRepository.findByName(phoneNumber.getCarrier().get("name")).get(0);
+            String carrierName = phoneNumber.getCarrier().get("name").split(" ")[0];
+            List<Carrier> carriers = carrierRepository.findByNameLike("%" + carrierName + "%");
+            if (carriers.size() <= 0) {
+                throw new ResourceNotFoundException(carrierName + " is not a supported carrier.");
+            }
+            Carrier carrier = carriers.get(0);
             target = person.getPhone() + "@" + carrier.getEmailDomain();
         }
 

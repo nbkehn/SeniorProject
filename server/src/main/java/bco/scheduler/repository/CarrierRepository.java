@@ -11,9 +11,9 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public interface CarrierRepository extends JpaRepository<Carrier, Long>{
     /**
-     * Get carrier by name
+     * Get carrier by name using a LIKE query
      * @param name name of carrier
      * @return carrier with name given
      */
-    List<Carrier> findByName(String name);
+    List<Carrier> findByNameLike(String name);
 }
