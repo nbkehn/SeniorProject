@@ -196,6 +196,7 @@ public class Appointment {
         map.put(CLASS_NAME + ".customer_name", this.getCustomer().getFirstName() + " " + this.getCustomer().getLastName());
         map.put(CLASS_NAME + ".rsa_name", this.getRSA().getFirstName() + " " + this.getRSA().getLastName());
         map.put(CLASS_NAME + ".tech_names", this.getTechnicianNames());
+        map.put(CLASS_NAME + ".flooring", this.getFlooring().getName());
         return map;
     }
 
@@ -224,6 +225,7 @@ public class Appointment {
         map.put("${" + CLASS_NAME + ".customer_name" + "}", "Appointment Customer Name");
         map.put("${" + CLASS_NAME + ".rsa_name" + "}", "Appointment RSA Name");
         map.put("${" + CLASS_NAME + ".tech_names" + "}", "Appointment Technician Names");
+        map.put("${" + CLASS_NAME + ".flooring" + "}", "Appointment Flooring Type");
         return map;
     }
 }

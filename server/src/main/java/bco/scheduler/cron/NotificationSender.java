@@ -111,6 +111,12 @@ public class NotificationSender {
      * @throws ResourceNotFoundException template not found
      */
     private void sendNotification(Reminder reminder, Appointment appointment) throws ResourceNotFoundException {
+        // Only send warranty notification if flooring type is carpet
+        if (reminder.getTimeToSend() == TimeToSend.ONE_YEAR_AFTER.getOffset() &&
+            !appointment.getFlooring().getName().toLowerCase().equals("carpet")) {
+            return;
+        }
+
         Template emailTemplate = templateRepository.findById(reminder.getEmailTemplateId())
                 .orElseThrow(() -> new ResourceNotFoundException("Email template not found."));
         Template textTemplate = templateRepository.findById(reminder.getTextTemplateId())
