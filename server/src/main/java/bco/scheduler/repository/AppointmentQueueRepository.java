@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.List;
 
 @Repository
 @CrossOrigin(origins = "http://localhost:4200")
@@ -62,4 +63,13 @@ public interface AppointmentQueueRepository extends JpaRepository<AppointmentQue
             "  LEFT JOIN appointment a ON a.id = :appointment_id\n" +
             "  WHERE (a.start_date_time + INTERVAL r.time_to_send DAY) > NOW();", nativeQuery = true)
     int addNewAppointment(@Param("appointment_id") long appointmentId);
+
+    /**
+     * Get all appointment queue items that have not been sent yet and have error messages
+     * @return appointment queue items that have not been sent yet and have error messages
+     */
+    @Query(value = "SELECT * FROM appointment_queue\n" +
+            "  WHERE is_sent = FALSE\n" +
+            "  AND error_message IS NOT NULL;", nativeQuery = true)
+    List<AppointmentQueue> findAllWithErrorsAndNotSent();
 }

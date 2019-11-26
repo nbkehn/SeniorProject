@@ -207,7 +207,7 @@ export class ModifyAppointmentComponent implements OnInit {
     let response = this.appointmentService.sendOTWMessage(this.appointment);
     response.subscribe(
       data => {
-        if (!data['error']) {
+        if (data['error'] === '0') {
           this.alertService.success('The OTW message was sent successfully.', false);
         }
         else {

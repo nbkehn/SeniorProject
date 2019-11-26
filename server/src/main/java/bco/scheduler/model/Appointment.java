@@ -3,15 +3,8 @@ package bco.scheduler.model;
 import bco.scheduler.repository.CustomerRepository;
 import bco.scheduler.repository.RSARepository;
 import bco.scheduler.repository.TechnicianRepository;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -35,7 +28,7 @@ public class Appointment {
     private long id;
     
     /** technicians set */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "appointment")
     private Set<Technician> technicians;
     
