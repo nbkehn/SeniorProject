@@ -207,12 +207,12 @@ export class ModifyAppointmentComponent implements OnInit {
     let response = this.appointmentService.sendOTWMessage(this.appointment);
     response.subscribe(
       data => {
-        if (data) {
+        if (!data['error']) {
           this.alertService.success('The OTW message was sent successfully.', false);
         }
         else {
-          this.alertService.error('The OTW message could not be sent.  ' +
-            'Make sure you have an OTW reminder configured from the Reminder Management page.', false);
+          this.alertService.error('The OTW message could not be sent: ' +
+            data['message'], false);
         }
         this.sending = false;
       },

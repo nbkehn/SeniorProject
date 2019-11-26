@@ -16,6 +16,9 @@ import java.util.Collection;
 public interface AppointmentQueueRepository extends JpaRepository<AppointmentQueue, Long>{
     /**
      * Get all appointment reminders that are ready to be sent
+     * Do this by adding the time to send (number of days after the appointment's start date)
+     * to the start date of the appointment and comparing against now.
+     * If the value is less than now and has not been sent, it needs to be sent.
      * @return appointment queue items
      */
     @Query(value =
@@ -28,6 +31,10 @@ public interface AppointmentQueueRepository extends JpaRepository<AppointmentQue
 
     /**
      * Add new reminders to the appointment queue that wouldn't have to be sent yet
+     * I.e. an entry in appointment queue will be made for the given reminder for each existing appointment
+     * unless the entry should have already been sent.
+     * This was done because we don't want users to be bombarded with old messages every time a new reminder
+     * is created.
      * @param reminderId newly created reminder id
      * @return number of rows updated
      */
@@ -41,6 +48,10 @@ public interface AppointmentQueueRepository extends JpaRepository<AppointmentQue
 
     /**
      * Add new appointment to the appointment queue
+     * I.e. an entry in appointment queue will be made for the given appointment for each existing reminder
+     * unless the entry should have already been sent.
+     * This was done because we don't want users to be bombarded with old messages every time a new appointment
+     * is created.
      * @param appointmentId newly created appointment
      * @return number of rows updated
      */
