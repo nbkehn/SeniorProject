@@ -13,6 +13,7 @@ import bco.scheduler.exception.ResourceNotFoundException;
 import bco.scheduler.model.Appointment;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Appointment Controller
@@ -123,7 +124,7 @@ public class AppointmentController {
      * @return whether message was set of not
      */
     @PostMapping("/appointments/sendOTW")
-    public boolean sendOTWMessage (
+    public Map<String, String> sendOTWMessage (
             @Valid @RequestBody Appointment appointment
     ) {
         return notificationSender.sendNotificationsForOffset(appointment, TimeToSend.OTW.getOffset());
