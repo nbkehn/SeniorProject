@@ -7,7 +7,7 @@ import javax.persistence.*;
  * @author Noah Trimble, Connor J. Parke
  */
 @Table(name = "reminder",
-        uniqueConstraints = { @UniqueConstraint(columnNames = { "user", "time_to_send" }) })
+        uniqueConstraints = { @UniqueConstraint(columnNames = { "user_type", "time_to_send" }) })
 @Entity
 public class Reminder {
 
@@ -17,9 +17,8 @@ public class Reminder {
     private long id;
     
     /** time to send reminder */
-    @Enumerated
-    @Column(name = "time_to_send", nullable = false, unique = true)
-    private TimeToSend timeToSend;
+    @Column(name = "time_to_send", nullable = false)
+    private int timeToSend;
 
     /** chosen text template */
     @ManyToOne
@@ -28,8 +27,8 @@ public class Reminder {
 
     /** user to send reminder to */
     @Enumerated
-    @Column(name = "user", nullable = false)
-    private UserType user;
+    @Column(name = "user_type", nullable = false)
+    private UserType userType;
 
     /** chosen email template */
     @ManyToOne
@@ -44,13 +43,13 @@ public class Reminder {
      * @param timeToSend time to send reminder
      * @param textTemplateId text template id to use
      * @param emailTemplateId email template id to use
-     * @param user user attached to reminder
+     * @param userType user type attached to reminder
      */
-    public Reminder(TimeToSend timeToSend, Template textTemplate, Template emailTemplate, UserType user) {
+    public Reminder(int timeToSend, Template textTemplate, Template emailTemplate, UserType userType) {
         this.timeToSend = timeToSend;
         this.textTemplate = textTemplate;
         this.emailTemplate = emailTemplate;
-        this.user = user;
+        this.userType = userType;
     }
 
     /**
@@ -73,7 +72,7 @@ public class Reminder {
      * Get time to send
      * @return time to send
      */
-    public TimeToSend getTimeToSend() {
+    public int getTimeToSend() {
         return timeToSend;
     }
 
@@ -81,24 +80,24 @@ public class Reminder {
      * Set time to send
      * @param timeToSend time to send
      */
-    public void setTimeToSend(TimeToSend timeToSend) {
+    public void setTimeToSend(int timeToSend) {
         this.timeToSend = timeToSend;
     }
 
     /**
-     * Get user attached to reminder
-     * @return user
+     * Get user type attached to reminder
+     * @return user type
      */
-    public UserType getUser() {
-        return user;
+    public UserType getUserType() {
+        return userType;
     }
 
     /**
-     * Set user on reminder
-     * @param user user to put on reminder
+     * Set user type on reminder
+     * @param userType user type to put on reminder
      */
-    public void setUser(UserType user) {
-        this.user = user;
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 
     /**

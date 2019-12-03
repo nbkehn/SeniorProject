@@ -64,6 +64,9 @@ export class ModifyReminderComponent implements OnInit {
     this.reminder = new Reminder();
     this.reminder.emailTemplate = new Template(); 
     this.reminder.textTemplate = new Template();
+	this.reminder.timeToSend = new TimeToSend();
+	this.reminder.userType = new UserType();
+
 
     // gets the id from the routing
     this.id = this.route.snapshot.params['id'];

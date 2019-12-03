@@ -33,11 +33,7 @@ public class ReminderTest {
      */
 	@Test
 	public void testConstructor() {        
-<<<<<<< HEAD
         Reminder testReminder = new Reminder();
-=======
-        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
->>>>>>> d1b27dca487b352477feab1ebe643c777c5509a0
         assertNotNull(testReminder);
     }
     
@@ -47,11 +43,7 @@ public class ReminderTest {
      */
     @Test
     public void testID(){
-<<<<<<< HEAD
-        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER, textTemplate, emailTemplate);
-=======
-        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
->>>>>>> d1b27dca487b352477feab1ebe643c777c5509a0
+        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.RSA);
         testReminder.setId(1);
         assertEquals(testReminder.getId(), 1);
     }
@@ -62,13 +54,8 @@ public class ReminderTest {
      */
     @Test
 	public void testGetTimeToSend() {
-<<<<<<< HEAD
-        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER, textTemplate, emailTemplate);
-        assertEquals(testReminder.getTimeToSend(), TimeToSend.ONE_YEAR_AFTER);
-=======
-        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
-        assertEquals(testReminder.getTimeToSend(), 365);
->>>>>>> d1b27dca487b352477feab1ebe643c777c5509a0
+        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.RSA);
+        assertEquals(testReminder.getTimeToSend(), TimeToSend.ONE_YEAR_AFTER.getOffset());
     }
     
     /**
@@ -76,87 +63,72 @@ public class ReminderTest {
      */
     @Test
 	public void testSetTimeToSend() {
-<<<<<<< HEAD
-        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER, textTemplate, emailTemplate);
-        assertEquals(testReminder.getTimeToSend(), TimeToSend.ONE_YEAR_AFTER);
-        testReminder.setTimeToSend(TimeToSend.ONE_WEEK_PRIOR);
-        assertEquals(testReminder.getTimeToSend(), TimeToSend.ONE_WEEK_PRIOR);
-=======
-        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
-        assertEquals(testReminder.getTimeToSend(), 365);
-        testReminder.setTimeToSend(-7);
-        assertEquals(testReminder.getTimeToSend(), -7);
->>>>>>> d1b27dca487b352477feab1ebe643c777c5509a0
+        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.RSA);
+        assertEquals(testReminder.getTimeToSend(), TimeToSend.ONE_YEAR_AFTER.getOffset());
+        testReminder.setTimeToSend(TimeToSend.ONE_WEEK_PRIOR.getOffset());
+        assertEquals(testReminder.getTimeToSend(), TimeToSend.ONE_WEEK_PRIOR.getOffset());
     }
 
     /**
      * tests the getTextTemplate() method
      */
     @Test
-<<<<<<< HEAD
 	public void testGetTextTemplate() {
-        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER, textTemplate, emailTemplate);
+        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.RSA);
         assertEquals(testReminder.getTextTemplate(), textTemplate);
-=======
-	public void testGetTextTemplateId() {
-        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
-        assertEquals(testReminder.getTextTemplateId(), 1);
->>>>>>> d1b27dca487b352477feab1ebe643c777c5509a0
     }
     
     /**
      * tests the setTextTemplate() method
      */
     @Test
-<<<<<<< HEAD
 	public void testSetTextTemplate() throws ResourceNotFoundException {
-        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER, textTemplate, emailTemplate);
+        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.RSA);
         assertEquals(testReminder.getTextTemplate(), textTemplate);
         
         Template newTextTemplate = new Template("TestTitle3", "TestSubject3", "TestContent3");
         testReminder.setTextTemplate(newTextTemplate);
         assertEquals(testReminder.getTextTemplate(), newTextTemplate);
-=======
-	public void testSetTextTemplateId() {
-        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
-        assertEquals(testReminder.getTextTemplateId(), 1);
-        testReminder.setTextTemplateId(100);
-        assertEquals(testReminder.getTextTemplateId(), 100);
->>>>>>> d1b27dca487b352477feab1ebe643c777c5509a0
     }
     
     /**
      * tests the getEmailTemplate() method
      */
     @Test
-<<<<<<< HEAD
 	public void testGetEmailTemplate() {
-        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER, textTemplate, emailTemplate);
+        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.RSA);
         assertEquals(testReminder.getEmailTemplate(), emailTemplate);
-=======
-	public void testGetEmailTemplateId() {
-        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
-        assertEquals(testReminder.getEmailTemplateId(), 2);
->>>>>>> d1b27dca487b352477feab1ebe643c777c5509a0
     }
     
     /**
      * tests the setEmailTemplate() method
      */
     @Test
-<<<<<<< HEAD
 	public void testSetEmailTemplate() throws ResourceNotFoundException {
-        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER, textTemplate, emailTemplate);
+        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.RSA);
         assertEquals(testReminder.getEmailTemplate(), emailTemplate);
         Template newEmailTemplate = new Template("TestTitle4", "TestSubject4", "TestContent4");
         testReminder.setEmailTemplate(newEmailTemplate);
         assertEquals(testReminder.getEmailTemplate(), newEmailTemplate);
-=======
-	public void testSetEmailTemplateId() {
-        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
-        assertEquals(testReminder.getEmailTemplateId(), 2);
-        testReminder.setEmailTemplateId(200);
-        assertEquals(testReminder.getEmailTemplateId(), 200);
->>>>>>> d1b27dca487b352477feab1ebe643c777c5509a0
 	}
+    
+    /**
+     * tests the getUserType() method
+     */
+    @Test
+    public void testGetUserType() {
+        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.RSA);
+        assertEquals(testReminder.getUserType(), UserType.RSA);
+    }
+    
+    /**
+     * tests the setUserType() method
+     */
+    @Test
+    public void testSetUserType() throws ResourceNotFoundException {
+        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.RSA);
+        assertEquals(testReminder.getUserType(), UserType.RSA);
+        testReminder.setUserType(UserType.CUSTOMER);
+        assertEquals(testReminder.getUserType(), UserType.CUSTOMER);
+    }
 }

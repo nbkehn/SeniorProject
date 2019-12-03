@@ -57,14 +57,14 @@
         </div>
       </div>
 
-      <!-- form component for reminder's time to send 
+      <!-- form component for reminder's time to send -->
       <div class="form-group">
         <label for="timeToSend">Time To Send</label>
         <select class="form-control" id="timeToSend" required #timeToSend="ngModel"
                 [(ngModel)]="reminder.timeToSend" name="timeToSend">
-          <option *ngFor="let timeToSend of timeToSendOptions"
-                  [ngValue]="timeToSend.value">
-            {{timeToSend.name}}
+          <option *ngFor="let timeToSendOption of timeToSendOptions"
+                  [ngValue]="timeToSendOption.offset">
+            {{timeToSendOption.name}}
           </option>
         </select>
         <div *ngIf="timeToSend.invalid &&
@@ -75,17 +75,16 @@
           </div>
         </div>
       </div>
-      -->
 
 
       <!-- form component for reminder's user -->
       <div class="form-group">
-        <label for="user">User</label>
-        <select class="form-control" id="user" required #user="ngModel"
-                [(ngModel)]="reminder.user" name="user">
-          <option *ngFor="let key of objectKeys(userTypes)"
-                  [value]="key">
-            {{userTypes[key]}}
+        <label for="userType">User Type</label>
+        <select class="form-control" id="userType" required #user="ngModel"
+                [(ngModel)]="reminder.userType" name="userType">
+          <option *ngFor="let userTypeOption of userTypeOptions"
+                  [ngValue]="userTypeOption.id">
+            {{userTypeOption.name}}
           </option>
         </select>
         <div *ngIf="user.invalid &&

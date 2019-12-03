@@ -53,27 +53,10 @@ public class NotificationSender {
 
         for (AppointmentQueue appointmentQueueItem : appointmentQueueItems) {
             try {
-                
                 // Get necessary attached object to appointment queue item
                 Appointment appointment = appointmentQueueItem.getAppointment();
                 Reminder reminder = appointmentQueueItem.getReminder();
-                Template emailTemplate = reminder.getEmailTemplate();
-                Template textTemplate = reminder.getTextTemplate();
-                Customer customer = appointment.getCustomer();
-
-                // Send email, text, or both depending on customer's communication preference
-                switch(customer.getCommunicationPreference()) {
-                    case EMAIL:
-                        this.sendEmail(emailTemplate, customer, appointment);
-                        break;
-                    case TEXT:
-                        this.sendText(textTemplate, customer, appointment);
-                        break;
-                    case EMAIL_AND_TEXT:
-                        this.sendEmail(emailTemplate, customer, appointment);
-                        this.sendText(textTemplate, customer, appointment);
-                        break;
-                }
+                this.sendNotification(reminder, appointment);
 
                 // Set that the appointment reminder has been sent in the appointment queue
                 appointmentQueueItem.setSent(true);
@@ -131,13 +114,11 @@ public class NotificationSender {
             return;
         }
 
-        Template emailTemplate = templateRepository.findById(reminder.getEmailTemplateId())
-                .orElseThrow(() -> new ResourceNotFoundException("Email template not found."));
-        Template textTemplate = templateRepository.findById(reminder.getTextTemplateId())
-                .orElseThrow(() -> new ResourceNotFoundException("Text template not found."));
+        Template emailTemplate = reminder.getEmailTemplate();
+        Template textTemplate = reminder.getTextTemplate();
 
         // Determine which user to send message to
-        switch(reminder.getUser()) {
+        switch(reminder.getUserType()) {
             case CUSTOMER:
                 Customer customer = appointment.getCustomer();
 
