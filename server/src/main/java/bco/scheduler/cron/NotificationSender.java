@@ -77,23 +77,31 @@ public class NotificationSender {
      * Send notification for a provided offset
      * @param appointment appointment to send notification for
      * @param offset Offset to use for notification
-     * @return whether message was sent of not
+     * @return whether message was sent of not (error) and what went wrong if there was an error
      */
-    public boolean sendNotificationsForOffset(Appointment appointment, int offset) {
+    public Map<String, String> sendNotificationsForOffset(Appointment appointment, int offset) {
+        Map<String, String> response = new HashMap<>();
         try {
             List<Reminder> reminders = reminderRepository.findByTimeToSend(offset);
             if (reminders.size() > 0) {
                 for(Reminder reminder : reminders) {
                     this.sendNotification(reminder, appointment);
                 }
-                return true;
+                response.put("error", "0");
+                return response;
+            }
+            else {
+                response.put("error", "1");
+                response.put("message", "No reminders have been configured for this time to send.");
             }
         }
         catch(ResourceNotFoundException e) {
             log.error(e.getMessage());
+            response.put("error", "1");
+            response.put("message", e.getMessage());
         }
 
-        return false;
+        return response;
     }
 
     /**
@@ -158,7 +166,7 @@ public class NotificationSender {
      * @param person person to send message to
      * @param isEmail Email or text
      */
-    private void sendMessage(Template template, Person person, Appointment appointment, boolean isEmail) {
+    private void sendMessage(Template template, Person person, Appointment appointment, boolean isEmail) throws ResourceNotFoundException {
         String target;
         if (isEmail) {
             target = person.getEmail();
@@ -168,7 +176,12 @@ public class NotificationSender {
             PhoneNumber phoneNumber = PhoneNumber.fetcher(
                     new com.twilio.type.PhoneNumber(person.getPhone()))
                     .setType(Arrays.asList("carrier")).fetch();
-            Carrier carrier = carrierRepository.findByName(phoneNumber.getCarrier().get("name")).get(0);
+            String carrierName = phoneNumber.getCarrier().get("name").split(" ")[0];
+            List<Carrier> carriers = carrierRepository.findByNameLike("%" + carrierName + "%");
+            if (carriers.size() <= 0) {
+                throw new ResourceNotFoundException(carrierName + " is not a supported carrier.");
+            }
+            Carrier carrier = carriers.get(0);
             target = person.getPhone() + "@" + carrier.getEmailDomain();
         }
 
