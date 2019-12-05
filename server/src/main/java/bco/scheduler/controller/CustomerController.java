@@ -25,8 +25,7 @@ import bco.scheduler.model.CommunicationType;
 
 /**
  * Controller for customers
- * @author Connor J. Parke
- * @editedBy Noah Trimble
+ * @author Connor J. Parke and Noah Trimble
  *
  */
 @RestController
