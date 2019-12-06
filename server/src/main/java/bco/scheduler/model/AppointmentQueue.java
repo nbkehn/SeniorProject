@@ -1,6 +1,8 @@
 package bco.scheduler.model;
 
 import javax.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 
 /**
@@ -18,6 +20,7 @@ public class AppointmentQueue {
     /** appointment */
     @ManyToOne
     @JoinColumn(name="appointment_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Appointment appointment;
 
     /** reminder */
