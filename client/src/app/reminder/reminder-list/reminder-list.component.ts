@@ -70,7 +70,7 @@ export class ReminderListComponent implements OnInit {
   translateUserType(id: string) {
 	for (let option of this.userTypeOptions) {
 		if (option.id == id) {
-			return option.name;
+			return option;
 		}
 	}
   }
@@ -83,7 +83,7 @@ export class ReminderListComponent implements OnInit {
   translateTimeToSend(offset: number) {
 	for (let option of this.timeToSendOptions) {
 		if (option.offset == offset) {
-			return option.name;
+			return option;
 		}
 	}
   }

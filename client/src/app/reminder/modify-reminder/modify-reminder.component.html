@@ -60,7 +60,7 @@
       <!-- form component for reminder's time to send -->
       <div class="form-group">
         <label for="timeToSend">Time To Send</label>
-        <select class="form-control" id="timeToSend" required #timeToSend="ngModel"
+        <select  [compareWith]="timeToSendCompare" class="form-control" id="timeToSend" required #timeToSend="ngModel"
                 [(ngModel)]="reminder.timeToSend" name="timeToSend">
           <option *ngFor="let timeToSendOption of timeToSendOptions"
                   [ngValue]="timeToSendOption.offset">
@@ -80,17 +80,17 @@
       <!-- form component for reminder's user -->
       <div class="form-group">
         <label for="userType">User Type</label>
-        <select class="form-control" id="userType" required #user="ngModel"
+        <select class="form-control" id="userType" required #userType="ngModel"
                 [(ngModel)]="reminder.userType" name="userType">
           <option *ngFor="let userTypeOption of userTypeOptions"
                   [ngValue]="userTypeOption.id">
             {{userTypeOption.name}}
           </option>
         </select>
-        <div *ngIf="user.invalid &&
-                    (user.dirty || user.touched || reminderForm.submitted)"
+        <div *ngIf="userType.invalid &&
+                    (userType.dirty || userType.touched || reminderForm.submitted)"
              class="alert alert-danger">
-          <div *ngIf="user.errors.required">
+          <div *ngIf="userType.errors.required">
             This field is required.
           </div>
         </div>

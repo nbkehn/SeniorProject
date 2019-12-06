@@ -85,7 +85,7 @@ export class ModifyReminderComponent implements OnInit {
           this.alertService.error('Reminder could not be loaded.', false);
         });
     }
-  }
+  } 
 
   /**
    * Set times to send
@@ -149,6 +149,11 @@ export class ModifyReminderComponent implements OnInit {
         this.alertService.error('The reminder could not be saved. ' +
           'Please note that each combination of time to send and user are unique per reminder.', false);
       });
+  }
+
+ 
+  timeToSendCompare(timeToSend1: String, timeToSend2: TimeToSend) {
+    return timeToSend1 == timeToSend2.toString(); 
   }
 
   /**
