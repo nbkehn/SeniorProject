@@ -26,6 +26,7 @@ public class AppointmentQueue {
     /** reminder */
     @ManyToOne
     @JoinColumn(name="reminder_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Reminder reminder;
 
     /** has the reminder been sent */
