@@ -1,6 +1,6 @@
 /**
  * Time to send enum
- * @author Noah Trimble
+ * @author Noah Trimble, Connor J. Parke
  */
 package bco.scheduler.model;
 
@@ -26,7 +26,7 @@ public enum TimeToSend {
         this.name = name;
         this.offset = offset;
     }
-
+    
     /**
      * Get name of communication type
      * @return name

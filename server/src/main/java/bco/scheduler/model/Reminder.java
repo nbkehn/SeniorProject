@@ -4,10 +4,10 @@ import javax.persistence.*;
 
 /**
  * Reminder object, holds information related to reminders
- * @author Noah Trimble
+ * @author Noah Trimble, Connor J. Parke
  */
 @Table(name = "reminder",
-        uniqueConstraints = { @UniqueConstraint(columnNames = { "user", "time_to_send" }) })
+        uniqueConstraints = { @UniqueConstraint(columnNames = { "user_type", "time_to_send" }) })
 @Entity
 public class Reminder {
 
@@ -15,22 +15,25 @@ public class Reminder {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
+    
     /** time to send reminder */
     @Column(name = "time_to_send", nullable = false)
     private int timeToSend;
 
+    /** chosen text template */
+    @ManyToOne
+    @JoinColumn(name="text_template_id", nullable = false)
+    private Template textTemplate;
+
     /** user to send reminder to */
-    @Column(name = "user", nullable = false)
-    private UserType user;
+    @Enumerated
+    @Column(name = "user_type", nullable = false)
+    private UserType userType;
 
-    /** chosen text template's ID */
-    @Column(name="text_template_id", nullable = false)
-    private long textTemplateId;
-
-    /** chosen email template's ID */
-    @Column(name="email_template_id", nullable = false)
-    private long emailTemplateId;
+    /** chosen email template */
+    @ManyToOne
+    @JoinColumn(name="email_template_id", nullable = false)
+    private Template emailTemplate;
 
     /** default constructor */
     public Reminder() {}
@@ -40,13 +43,13 @@ public class Reminder {
      * @param timeToSend time to send reminder
      * @param textTemplateId text template id to use
      * @param emailTemplateId email template id to use
-     * @param user user attached to reminder
+     * @param userType user type attached to reminder
      */
-    public Reminder(int timeToSend, long textTemplateId, long emailTemplateId, UserType user) {
+    public Reminder(int timeToSend, Template textTemplate, Template emailTemplate, UserType userType) {
         this.timeToSend = timeToSend;
-        this.textTemplateId = textTemplateId;
-        this.emailTemplateId = emailTemplateId;
-        this.user = user;
+        this.textTemplate = textTemplate;
+        this.emailTemplate = emailTemplate;
+        this.userType = userType;
     }
 
     /**
@@ -82,50 +85,50 @@ public class Reminder {
     }
 
     /**
-     * Get user attached to reminder
-     * @return user
+     * Get user type attached to reminder
+     * @return user type
      */
-    public UserType getUser() {
-        return user;
+    public UserType getUserType() {
+        return userType;
     }
 
     /**
-     * Set user on reminder
-     * @param user user to put on reminder
+     * Set user type on reminder
+     * @param userType user type to put on reminder
      */
-    public void setUser(UserType user) {
-        this.user = user;
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 
     /**
-     * Get text template id
-     * @return text template id
+     * Get text template
+     * @return text template
      */
-    public long getTextTemplateId() {
-        return textTemplateId;
+    public Template getTextTemplate() {
+        return textTemplate;
     }
 
     /**
-     * Set text template id
-     * @param textTemplateId text template id
+     * Set text template
+     * @param textTemplateId text template
      */
-    public void setTextTemplateId(long textTemplateId) {
-        this.textTemplateId = textTemplateId;
+    public void setTextTemplate(Template textTemplate) {
+        this.textTemplate = textTemplate;
     }
 
     /**
-     * Get email template id
-     * @return email template id
+     * Get email template
+     * @return email template
      */
-    public long getEmailTemplateId() {
-        return emailTemplateId;
+    public Template getEmailTemplate() {
+        return emailTemplate;
     }
 
     /**
-     * Set email template id
-     * @param emailTemplateId email template id
+     * Set email template
+     * @param emailTemplateId email template
      */
-    public void setEmailTemplateId(long emailTemplateId) {
-        this.emailTemplateId = emailTemplateId;
+    public void setEmailTemplate(Template emailTemplate) {
+        this.emailTemplate = emailTemplate;
     }
 }

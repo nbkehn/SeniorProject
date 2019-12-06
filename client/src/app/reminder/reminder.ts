@@ -1,3 +1,8 @@
+import { Template } from '../template/template';
+import { TimeToSend } from './timetosend';
+import { UserType } from './usertype';
+
+
 /**
  * Defines a reminder class with it's necessary components
  *
@@ -6,8 +11,8 @@
  */
 export class Reminder {
   id: number;
-  emailTemplateId: number;
-  textTemplateId: number;
-  timeToSend: number;
-  user: string;
+  emailTemplate: Template;
+  textTemplate: Template;
+  timeToSend: TimeToSend;
+  userType: UserType;
 }

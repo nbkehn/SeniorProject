@@ -54,11 +54,8 @@ public class NotificationSender {
         for (AppointmentQueue appointmentQueueItem : appointmentQueueItems) {
             try {
                 // Get necessary attached object to appointment queue item
-                Appointment appointment = appointmentRepository.findById(appointmentQueueItem.getAppointmentId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Appointment not found."));
-                Reminder reminder = reminderRepository.findById(appointmentQueueItem.getReminderId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Reminder not found."));
-
+                Appointment appointment = appointmentQueueItem.getAppointment();
+                Reminder reminder = appointmentQueueItem.getReminder();
                 this.sendNotification(reminder, appointment);
 
                 // Set that the appointment reminder has been sent in the appointment queue
@@ -117,13 +114,11 @@ public class NotificationSender {
             return;
         }
 
-        Template emailTemplate = templateRepository.findById(reminder.getEmailTemplateId())
-                .orElseThrow(() -> new ResourceNotFoundException("Email template not found."));
-        Template textTemplate = templateRepository.findById(reminder.getTextTemplateId())
-                .orElseThrow(() -> new ResourceNotFoundException("Text template not found."));
+        Template emailTemplate = reminder.getEmailTemplate();
+        Template textTemplate = reminder.getTextTemplate();
 
         // Determine which user to send message to
-        switch(reminder.getUser()) {
+        switch(reminder.getUserType()) {
             case CUSTOMER:
                 Customer customer = appointment.getCustomer();
 

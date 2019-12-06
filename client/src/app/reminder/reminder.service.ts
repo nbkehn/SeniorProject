@@ -7,6 +7,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Reminder } from './reminder';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class ReminderService {
    * @param reminder Reminder to be created
    * @return newly created reminder
    */
-  createReminder(reminder: Object): Observable<Object> {
+  createReminder(reminder: Reminder): Observable<Object> {
     return this.http.post(`${this.baseUrl}`, reminder);
   }
 
@@ -45,8 +46,8 @@ export class ReminderService {
    * @param value Updated date for the reminder
    * @return reminder with updated data
    */
-  updateReminder(id: number, value: any): Observable<Object> {
-    return this.http.put(`${this.baseUrl}/${id}`, value);
+  updateReminder(id: number, reminder: Reminder): Observable<Object> {
+    return this.http.put(`${this.baseUrl}/${id}`, reminder);
   }
 
   /**
@@ -70,23 +71,15 @@ export class ReminderService {
    * Get possible times to send
    * @return times to send
    */
-  getTimesToSend() {
+  getTimesToSend(): Observable<any> {
     return this.http.get(`${this.baseUrl}/timeToSend`);
-  }
-
-  /**
-   * Get templates
-   * @return templates
-   */
-  getTemplates() {
-    return this.http.get(`${this.baseUrl}/template`);
   }
 
   /**
    * Get user types
    * @return user types
    */
-  getUserTypes() {
+  getUserTypes(): Observable<any> {
     return this.http.get(`${this.baseUrl}/userType`);
   }
 }

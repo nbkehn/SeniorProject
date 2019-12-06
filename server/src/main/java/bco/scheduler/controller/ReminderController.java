@@ -11,10 +11,10 @@ import bco.scheduler.repository.TemplateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 @RestController
@@ -74,10 +74,10 @@ public class ReminderController {
         Reminder reminder = reminderRepository.findById(reminderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reminder not found for this id :: " + reminderId));
 
-        reminder.setEmailTemplateId(reminderDetails.getEmailTemplateId());
-        reminder.setTextTemplateId(reminderDetails.getTextTemplateId());
+        reminder.setEmailTemplate(reminderDetails.getEmailTemplate());
+        reminder.setTextTemplate(reminderDetails.getTextTemplate());
         reminder.setTimeToSend(reminderDetails.getTimeToSend());
-        reminder.setUser(reminderDetails.getUser());
+        reminder.setUserType(reminderDetails.getUserType());
         
         return ResponseEntity.ok(reminderRepository.save(reminder));
     }
@@ -103,25 +103,15 @@ public class ReminderController {
      * @return array of times to send
      */
     @GetMapping("/reminders/timeToSend")
-    public ResponseEntity<Map<Integer, String>> getTimesToSend() {
-        Map<Integer, String> map = new HashMap<Integer, String>();
-        for (TimeToSend timeToSend : TimeToSend.values()) {
-            map.put(timeToSend.getOffset(), timeToSend.getName());
+    public  List<Map<String, String>> getTimesToSend() {
+        List<Map<String, String>> timesToSend = new ArrayList<Map<String, String>>();  
+        for (TimeToSend timeToSendValue : TimeToSend.values()) {
+            HashMap<String, String> timeToSend = new HashMap<String, String>();
+            timeToSend.put("offset", Integer.toString(timeToSendValue.getOffset()));
+            timeToSend.put("name", timeToSendValue.getName());
+            timesToSend.add(timeToSend);
         }
-        return ResponseEntity.ok(map);
-    }
-
-    /**
-     * Get templates
-     * @return array of templates
-     */
-    @GetMapping("/reminders/template")
-    public ResponseEntity<Map<Long, String>> getTemplates() {
-        Map<Long, String> map = new HashMap<Long, String>();
-        for (Template template : templateRepository.findAll()) {
-            map.put(template.getId(), template.getTitle());
-        }
-        return ResponseEntity.ok(map);
+        return timesToSend;
     }
 
     /**
@@ -129,11 +119,14 @@ public class ReminderController {
      * @return array of user types
      */
     @GetMapping("/reminders/userType")
-    public ResponseEntity<Map<UserType, String>> getUserTypes() {
-        Map<UserType, String> map = new HashMap<>();
-        for (UserType userType : UserType.values()) {
-            map.put(userType, userType.getName());
+    public List<Map<String, String>> getUserTypes() {
+        List<Map<String, String>> userTypes = new ArrayList<Map<String, String>>();  
+        for (UserType userTypeValue : UserType.values()) {
+            HashMap<String, String> userType = new HashMap<String, String>();
+            userType.put("id", userTypeValue.name());
+            userType.put("name", userTypeValue.getName());
+            userTypes.add(userType);
         }
-        return ResponseEntity.ok(map);
+        return userTypes;
     }
 }
