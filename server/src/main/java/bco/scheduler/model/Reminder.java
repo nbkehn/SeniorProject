@@ -22,7 +22,7 @@ public class Reminder {
 
     /** chosen text template */
     @ManyToOne
-    @JoinColumn(name="text_template_id")
+    @JoinColumn(name="text_template_id", nullable = false)
     private Template textTemplate;
 
     /** user to send reminder to */
@@ -32,7 +32,7 @@ public class Reminder {
 
     /** chosen email template */
     @ManyToOne
-    @JoinColumn(name="email_template_id")
+    @JoinColumn(name="email_template_id", nullable = false)
     private Template emailTemplate;
 
     /** default constructor */
