@@ -11,6 +11,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {AlertService} from '../../alert/alert.service';
 import {NgxSmartModalService} from 'ngx-smart-modal';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-appointment-list',
@@ -45,7 +46,16 @@ export class AppointmentListComponent implements OnInit {
    * calls from the appointment service so that it makes the DB call
    */
   reloadData() {
-    this.appointments = this.appointmentService.getAppointmentsList();
+    this.appointments = this.appointmentService.getAppointmentsList().pipe(
+		map((data) => {
+    		data.sort((appointment1, appointment2) => {
+				let date1 = new Date(appointment1.startDateTime);
+				let date2 = new Date(appointment2.startDateTime);
+        		return date2.getTime() - date1.getTime();
+     		});
+    		return data;
+		})	
+	)
   }
 
   /**
