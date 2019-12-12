@@ -4,7 +4,7 @@ import org.mockito.Mock;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.springframework.http.ResponseEntity;
-import bco.scheduler.model.User;
+import bco.scheduler.model.Template;
 import java.util.*;
 import java.util.ArrayList;
 import bco.scheduler.model.CommunicationType;
@@ -12,154 +12,154 @@ import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.*;
 
 /**
- * Tests the User controller class.
+ * Tests the Template controller class.
  * Uses Mockiato for mocking of relevant pieces. 
  * 
  * @author Will Duke
  */
 @RunWith(MockitoJUnitRunner.Silent.class)
-public class UserControllerTest {
+public class TemplateControllerTest {
 
-    // A mock of the user controller class.
+    // A mock of the template controller class.
     @Mock
-    private UserController userController = new UserController();
+    private TemplateController templateController = new TemplateController();
 
     /**
-     * Tests the getting of all the users through the
-     * getAllUsers method.
+     * Tests the getting of all the templates through the
+     * getAllTemplates method.
      */
     @Test
-    public void getAllUsersTest() throws Exception {
+    public void getAllTemplatesTest() throws Exception {
      
-        // An user object to use.
-        User testUser = new User("John", "Doe", "jdoe@gmail.com", "919-515-3000", "jdoe", "securepassword");
+        // An template object to use.
+        Template testTemplate = new Template("title", "subject", "content");
 
-        // An user object list to use.
-        List<User> allUsers = Arrays.asList(testUser);
+        // An template object list to use.
+        List<Template> allTemplates = Arrays.asList(testTemplate);
  
         // Response Entity representation of the desired output
-        ResponseEntity<List<User>> re = ResponseEntity.ok(allUsers);
+        ResponseEntity<List<Template>> re = ResponseEntity.ok(allTemplates);
 
-        // Ensure the users are null.
-        assertNull(userController.getAllUsers());
+        // Ensure the templates are null.
+        assertNull(templateController.getAllTemplates());
 
         // Telling Mockiato how to handle the methods.
-        when(userController.getAllUsers()).thenReturn(re);
+        when(templateController.getAllTemplates()).thenReturn(re);
 
-        // Ensure the user is in there. 
-        assertEquals(userController.getAllUsers(), re);
+        // Ensure the template is in there. 
+        assertEquals(templateController.getAllTemplates(), re);
     }
 
     /**
-     * Tests the getting of the users by their id through
-     * the getUserById method.
+     * Tests the getting of the templates by their id through
+     * the getTemplateById method.
      */
     @Test
-    public void getUserByIdTest() throws Exception {
+    public void getTemplateByIdTest() throws Exception {
 
-        // A user object to use.
-        User testUser = new User("John", "Doe", "jdoe@gmail.com", "919-515-3000", "jdoe", "securepassword");
+        // A template object to use.
+        Template testTemplate = new Template("title", "subject", "content");
 
-        // A user object list to use.
-        List<User> allUsers = Arrays.asList(testUser);
+        // A template object list to use.
+        List<Template> allTemplates = Arrays.asList(testTemplate);
  
         // Response Entity representation of the desired output
-        ResponseEntity<User> re = ResponseEntity.ok(testUser);
+        ResponseEntity<Template> re = ResponseEntity.ok(testTemplate);
 
-        // Ensure there are no users when they aren't in there.
-        assertNull(userController.getUserById((long) testUser.getId()));
+        // Ensure there are no templates when they aren't in there.
+        assertNull(templateController.getTemplateById((long) testTemplate.getId()));
 
         // Telling Mockiato how to handle the methods.
-        when(userController.getUserById((long) testUser.getId())).thenReturn(re);
+        when(templateController.getTemplateById((long) testTemplate.getId())).thenReturn(re);
 
-        // Ensuring the user can be found. 
-        assertEquals(userController.getUserById((long) testUser.getId()), re);
+        // Ensuring the template can be found. 
+        assertEquals(templateController.getTemplateById((long) testTemplate.getId()), re);
         
     }
 
     /**
-     * Tests that the user is created successfully through 
-     * the create user method.
+     * Tests that the template is created successfully through 
+     * the create template method.
      */
     @Test
-    public void createUserTest() throws Exception {
+    public void createTemplateTest() throws Exception {
         
-        // A user object to use.
-        User testUser = new User("John", "Doe", "jdoe@gmail.com", "919-515-3000", "jdoe", "securepassword");
+        // A template object to use.
+        Template testTemplate = new Template("title", "subject", "content");
 
         // Response Entity representation of the desired output
-        ResponseEntity<User> re = ResponseEntity.ok(testUser);
+        ResponseEntity<Template> re = ResponseEntity.ok(testTemplate);
 
         // Telling Mockiato how to handle the methods.
-        when(userController.createUser(testUser)).thenReturn(re);
+        when(templateController.createTemplate(testTemplate)).thenReturn(re);
 
-        // Ensuring the user is created 
-        assertEquals(userController.createUser(testUser), re);
+        // Ensuring the template is created 
+        assertEquals(templateController.createTemplate(testTemplate), re);
 
     }
 
     /**
-     * Tests that the users are updated properly through the
-     * update user method.
+     * Tests that the templates are updated properly through the
+     * update template method.
      */
     @Test
-    public void updateUserTest() throws Exception {
+    public void updateTemplateTest() throws Exception {
      
-        // A user object to use.
-        User testUser = new User("John", "Doe", "jdoe@gmail.com", "919-515-3000", "jdoe", "securepassword");
+        // A template object to use.
+        Template testTemplate = new Template("title", "subject", "content");
 
-        // A user object to update to. 
-        User testUserUpdated = new User("Jane", "Dhoe", "janedoe@gmail.com", "336-344-0576", "janedoe", "securejanepassword");
-
-        // Response Entity representation of the desired output
-        ResponseEntity<User> re = ResponseEntity.ok(testUser);
+        // A template object to update to. 
+        Template testTemplateUpdated = new Template("changed", "this", "text");
 
         // Response Entity representation of the desired output
-        ResponseEntity<User> updatedRe = ResponseEntity.ok(testUserUpdated);
+        ResponseEntity<Template> re = ResponseEntity.ok(testTemplate);
+
+        // Response Entity representation of the desired output
+        ResponseEntity<Template> updatedRe = ResponseEntity.ok(testTemplateUpdated);
 
         // Telling Mockiato how to handle the methods.
-        when(userController.createUser(testUser)).thenReturn(re);
+        when(templateController.createTemplate(testTemplate)).thenReturn(re);
 
-        // Ensuring the user is create
-        assertEquals(userController.createUser(testUser), re);
+        // Ensuring the template is create
+        assertEquals(templateController.createTemplate(testTemplate), re);
 
         // Telling Mockiato how to handle the methods.
-        when(userController.updateUser(testUser.getId(), testUserUpdated)).thenReturn(updatedRe);
+        when(templateController.updateTemplate(testTemplate.getId(), testTemplateUpdated)).thenReturn(updatedRe);
 
-        // Ensure the user is updated correctly. 
-        assertEquals(userController.updateUser(testUser.getId(), testUserUpdated), updatedRe);
+        // Ensure the template is updated correctly. 
+        assertEquals(templateController.updateTemplate(testTemplate.getId(), testTemplateUpdated), updatedRe);
 
     }
 
     /**
-     * Tests that users are deleted using the delete user method.
+     * Tests that templates are deleted using the delete template method.
      */
     @Test
-    public void deleteUserTest() throws Exception {
+    public void deleteTemplateTest() throws Exception {
 
-        // A user object to use.
-        User testUser = new User("John", "Doe", "jdoe@gmail.com", "919-515-3000", "jdoe", "securepassword");
+        // A template object to use.
+        Template testTemplate = new Template("title", "subject", "content");
 
-        // A user object to update to. 
-        User testUserUpdated = new User("Jane", "Dhoe", "janedoe@gmail.com", "336-344-0576", "janedoe", "securejanepassword");
+        // A template object to update to. 
+        Template testTemplateUpdated = new Template("changed", "this", "text");
 
         // Response Entity representation of the desired output
-        ResponseEntity<User> re = ResponseEntity.ok(testUser);
+        ResponseEntity<Template> re = ResponseEntity.ok(testTemplate);
         
         // Response Entity representation of the desired output
-        ResponseEntity<User> deletedRe = ResponseEntity.ok(testUser);
+        ResponseEntity<Template> deletedRe = ResponseEntity.ok(testTemplate);
 
         // Telling Mockiato how to handle the methods.
-        when(userController.createUser(testUser)).thenReturn(re);
+        when(templateController.createTemplate(testTemplate)).thenReturn(re);
 
         // Telling Mockiato how to handle the methods.
-        when(userController.deleteUser(testUser.getId())).thenReturn(deletedRe);
+        when(templateController.deleteTemplate(testTemplate.getId())).thenReturn(deletedRe);
 
-        // Ensure that the user is created. 
-        assertEquals(userController.createUser(testUser), re);
+        // Ensure that the template is created. 
+        assertEquals(templateController.createTemplate(testTemplate), re);
 
-        // Ensure the user is deleted. 
-        assertEquals(userController.deleteUser(testUser.getId()), deletedRe);
+        // Ensure the template is deleted. 
+        assertEquals(templateController.deleteTemplate(testTemplate.getId()), deletedRe);
 
     }
 
