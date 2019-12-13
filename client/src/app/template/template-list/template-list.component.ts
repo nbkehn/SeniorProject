@@ -60,7 +60,7 @@ export class TemplateListComponent implements OnInit {
           this.reloadData();
         },
         error => {
-          this.alertService.error('Template could not be deleted.', false);
+          this.alertService.error('Template could not be deleted. Is it currently used in a reminder?', false);
         });
   }
 

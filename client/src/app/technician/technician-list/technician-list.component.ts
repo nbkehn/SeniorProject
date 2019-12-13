@@ -59,7 +59,7 @@ export class TechnicianListComponent implements OnInit {
           this.reloadData();
         },
         error => {
-          this.alertService.error('Technician could not be deleted.', false);
+          this.alertService.error('Technician could not be deleted. Are they currently used in an appointment?', false);
         });
   }
 

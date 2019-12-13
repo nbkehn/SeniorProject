@@ -77,7 +77,7 @@ export class CustomerListComponent implements OnInit {
           this.reloadData();
         },
         error => {
-          this.alertService.error('Customer could not be deleted.', false);
+          this.alertService.error('Customer could not be deleted. Are they currently used in an appointment?', false);
         });
   }
 
