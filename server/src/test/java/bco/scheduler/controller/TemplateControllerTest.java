@@ -57,6 +57,7 @@ public class TemplateControllerTest {
     @Test
     public void getTemplateByIdTest() throws Exception {
 
+        
         // A template object to use.
         Template testTemplate = new Template("title", "subject", "content");
 

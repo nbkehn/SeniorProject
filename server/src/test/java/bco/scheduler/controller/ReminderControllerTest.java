@@ -11,6 +11,8 @@ import bco.scheduler.model.CommunicationType;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.*;
 import bco.scheduler.model.UserType;
+import bco.scheduler.model.Template;
+import bco.scheduler.model.TimeToSend;
 
 
 /**
@@ -26,6 +28,12 @@ public class ReminderControllerTest {
     @Mock
     private ReminderController reminderController = new ReminderController();
 
+    // Text in the reminder
+    private Template textTemplate = new Template("TestTitle1", "TestSubject1", "TestContent1");
+    
+    // Email in the reminder 
+    private Template emailTemplate = new Template("TestTitle2", "TestSubject2", "TestContent2");
+
     /**
      * Tests the getting of all the reminders through the
      * getAllReminders method.
@@ -33,8 +41,8 @@ public class ReminderControllerTest {
     @Test
     public void getAllRemindersTest() throws Exception {
      
-        // An reminder object to use.
-        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
+        // A test reminder object to use
+        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.RSA);
 
         // An reminder object list to use.
         List<Reminder> allReminders = Arrays.asList(testReminder);
@@ -59,8 +67,8 @@ public class ReminderControllerTest {
     @Test
     public void getReminderByIdTest() throws Exception {
 
-        // A reminder object to use.
-        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
+        // A test reminder object to use
+        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.RSA);
 
         // A reminder object list to use.
         List<Reminder> allReminders = Arrays.asList(testReminder);
@@ -86,8 +94,8 @@ public class ReminderControllerTest {
     @Test
     public void createReminderTest() throws Exception {
         
-        // A reminder object to use.
-        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
+        // A test reminder object to use
+        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.RSA);
 
         // Response Entity representation of the desired output
         ResponseEntity<Reminder> re = ResponseEntity.ok(testReminder);
@@ -107,11 +115,11 @@ public class ReminderControllerTest {
     @Test
     public void updateReminderTest() throws Exception {
      
-        // A reminder object to use.
-        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
+        // A test reminder object to use
+        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.RSA);
 
-        // A reminder object to update to. 
-        Reminder testReminderUpdated = new Reminder(365, 2, 3, UserType.CUSTOMER);
+        // A test reminder object to use
+        Reminder testReminderUpdated = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.CUSTOMER);
 
         // Response Entity representation of the desired output
         ResponseEntity<Reminder> re = ResponseEntity.ok(testReminder);
@@ -139,11 +147,11 @@ public class ReminderControllerTest {
     @Test
     public void deleteReminderTest() throws Exception {
 
-        // A reminder object to use.
-        Reminder testReminder = new Reminder(365, 1, 2, UserType.CUSTOMER);
+        // A test reminder object to use
+        Reminder testReminder = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.RSA);
 
-        // A reminder object to update to. 
-        Reminder testReminderUpdated = new Reminder(365, 2, 3, UserType.CUSTOMER);
+        // A test reminder object to use
+        Reminder testReminderUpdated = new Reminder(TimeToSend.ONE_YEAR_AFTER.getOffset(), textTemplate, emailTemplate, UserType.CUSTOMER);
 
         // Response Entity representation of the desired output
         ResponseEntity<Reminder> re = ResponseEntity.ok(testReminder);

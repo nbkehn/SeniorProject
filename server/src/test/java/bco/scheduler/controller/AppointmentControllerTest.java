@@ -185,25 +185,4 @@ public class AppointmentControllerTest {
 
     }
 
-    /**
-     * Tests the send the on the way message message.
-     */
-    @Test
-    public void sendOTWMessageTest() throws Exception {
-
-        // An appointment object to use.
-        RSA rsa = new RSA(); 
-        rsa.setFirstName("Will");
-        rsa.setLastName("Duke");
-        rsa.setEmail("wfduke@ncsu.edu");
-        rsa.setPhone("3363440576");
-        Appointment testAppointment = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
-
-        // Telling Mockiato how to handle the methods.
-        when(appointmentController.sendOTWMessage(testAppointment)).thenReturn(true);
-
-        // Ensure the appointment is deleted. 
-        assertEquals(appointmentController.sendOTWMessage(testAppointment), true);
-    }
-
 }
