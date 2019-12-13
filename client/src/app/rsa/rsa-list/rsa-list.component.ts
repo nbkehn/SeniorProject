@@ -59,7 +59,7 @@ export class RsaListComponent implements OnInit {
           this.reloadData();
         },
         error => {
-          this.alertService.error('RSA could not be deleted.', false);
+          this.alertService.error('RSA could not be deleted. Are they currently used in an appointment?', false);
         });
   }
 

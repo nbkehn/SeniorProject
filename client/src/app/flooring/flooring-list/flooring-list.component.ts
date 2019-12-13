@@ -59,7 +59,7 @@ export class FlooringListComponent implements OnInit {
           this.reloadData();
         },
         error => {
-          this.alertService.error('Flooring could not be deleted.', false);
+          this.alertService.error('Flooring could not be deleted. Is is currently used in an appointment?', false);
         });
   }
 
