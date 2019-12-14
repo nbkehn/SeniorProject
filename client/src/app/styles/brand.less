@@ -1,0 +1,39 @@
+/**
+ * Sitewide LESS variables and mixins
+ *
+ * @author Noah Trimble
+ */
+// Indents
+@brand__indent__xlarge: 40px;
+@brand__indent: 20px;
+@brand__indent__small: 10px;
+@brand__indent__xsmall: 5px;
+
+// Colors
+@brand__color__green: green;
+@brand__color__red: red;
+@brand__color__white: #fff;
+@brand__color__light-grey: lightgrey;
+@brand__color__bco-blue: #008C9D;
+
+// Background colors
+@brand__background-color__confirm: @brand__color__green;
+@brand__background-color__cancel: @brand__color__red;
+@brand__background-color__navbar: @brand__color__bco-blue;
+
+// Font colors
+@brand__font-color__button: @brand__color__white;
+@brand__font-color__disabled: @brand__color__light-grey;
+
+// Mixins
+.clearfix {
+  &:before,
+  &:after {
+    content:"";
+    display:table;
+  }
+
+  &:after {
+    clear: both;
+  }
+}

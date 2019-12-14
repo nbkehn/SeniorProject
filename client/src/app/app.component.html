@@ -1,0 +1,40 @@
+<!--
+/**
+ * Landing page
+ *
+ * @author Noah Trimble, Soumya Bagade, Will Duke
+ */
+-->
+<nav class="navbar navbar-expand-sm bg-primary navbar-dark bg-navbar">
+  <!-- Links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a routerLink="appointment/index" class="nav-link" routerLinkActive="active">Appointments</a>
+    </li>
+    <li class="nav-item">
+      <div class="dropdown management-dropdown" ngbDropdown>
+        <button class="btn" id="management-dropdown-toggle" ngbDropdownToggle>Management</button>
+        <div ngbDropdownMenu aria-labelledby="management-dropdown-toggle">
+          <p class="nav-descriptor">User and Installation</p>
+          <a routerLink="technician/index" ngbDropdownItem>Technician Management</a>
+          <a routerLink="customer/index" ngbDropdownItem>Customer Management</a>
+          <a routerLink="rsa/index" ngbDropdownItem>RSA Management</a>
+          <a routerLink="flooring/index" ngbDropdownItem>Flooring Management</a>
+          <p class="nav-descriptor">Notifications</p>
+          <a routerLink="template/index" ngbDropdownItem>Template Management</a>
+          <a routerLink="reminder/index" ngbDropdownItem>Reminder Management</a>
+          <a routerLink="reminderError/index" ngbDropdownItem>Reminder Errors</a>
+        </div>
+      </div>
+    </li>
+  </ul>
+</nav>
+<div class="container">
+  <br>
+  <!-- Alert message container -->
+  <alert></alert>
+
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

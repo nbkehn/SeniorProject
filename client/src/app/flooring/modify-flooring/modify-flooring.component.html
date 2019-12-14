@@ -1,0 +1,35 @@
+<!--
+/**
+ * Flooring add/edit form page
+ *
+ * @package flooring
+ * @author Noah Trimble, Will Duke
+ */
+-->
+<!-- title, which will change depending on whether it is the add or edit page-->
+<div class="panel-heading">
+  <h2>{{title}}</h2>
+</div>
+<div class="panel-actions">
+  <!-- form component for the submit button -->
+  <button type="submit" class="btn btn-primary panel-action" form="flooring-form">Save</button>
+</div>
+<div class="panel-body">
+  <div class="form-container">
+    <!-- the ngSubmit calls on the data from the ngModel, which is required. The ngModel automatically populates the flooring object with relevant data-->
+    <form #flooringForm="ngForm" (ngSubmit)="flooringForm.valid && onSubmit()" id="flooring-form">
+      <!-- form component for the flooring's name -->
+      <div class="form-group">
+        <label for="name">Flooring Type</label>
+        <input type="text" class="form-control" id="name" required [(ngModel)]="flooring.name"
+               name="name" #name="ngModel">
+        <div *ngIf="name.invalid && (name.dirty || name.touched || flooringForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="name.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

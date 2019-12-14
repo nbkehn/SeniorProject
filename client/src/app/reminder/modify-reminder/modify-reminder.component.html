@@ -1,0 +1,100 @@
+<!--
+/**
+ * Reminder add/edit form page
+ *
+ * @package reminder
+ * @author Noah Trimble
+ */
+-->
+<!-- title, which will change depending on whether it is the add or edit page-->
+<div class="panel-heading">
+  <h2>{{title}}</h2>
+</div>
+<div class="panel-actions">
+  <!-- form component for the submit button -->
+  <button type="submit" class="btn btn-primary panel-action" form="reminder-form">Save</button>
+</div>
+<div class="panel-body">
+  <div class="form-container">
+    <!-- the ngSubmit calls on the data from the ngModel, which is required. The ngModel automatically populates the reminder object with relevant data-->
+    <form #reminderForm="ngForm" (ngSubmit)="reminderForm.valid && onSubmit()" id="reminder-form">
+      
+      <!-- form component for reminder's email template -->
+      <div class="form-group">
+        <label for="emailTemplate">Email Template</label>
+        <select class="form-control" id="emailTemplate" required #emailTemplate="ngModel"
+               [(ngModel)]="reminder.emailTemplate.id" name="emailTemplate">
+          <option *ngFor="let templateOption of templateOptions"
+                  [ngValue]="templateOption.id">
+            {{templateOption.title}}
+          </option>
+        </select>
+        <div *ngIf="emailTemplate.invalid &&
+                    (emailTemplate.dirty || emailTemplate.touched || reminderForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="emailTemplate.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>     
+
+      <!-- form component for reminder's text template -->
+      <div class="form-group">
+        <label for="textTemplate">Text Template</label>
+        <select class="form-control" id="textTemplate" required #textTemplate="ngModel"
+                [(ngModel)]="reminder.textTemplate.id" name="textTemplate">
+          <option *ngFor="let templateOption of templateOptions"
+                  [ngValue]="templateOption.id">
+            {{templateOption.title}}
+          </option>
+        </select>
+        <div *ngIf="textTemplate.invalid &&
+                    (textTemplate.dirty || textTemplate.touched || reminderForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="textTemplate.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
+
+      <!-- form component for reminder's time to send -->
+      <div class="form-group">
+        <label for="timeToSend">Time To Send</label>
+        <select  [compareWith]="timeToSendCompare" class="form-control" id="timeToSend" required #timeToSend="ngModel"
+                [(ngModel)]="reminder.timeToSend" name="timeToSend">
+          <option *ngFor="let timeToSendOption of timeToSendOptions"
+                  [ngValue]="timeToSendOption.offset">
+            {{timeToSendOption.name}}
+          </option>
+        </select>
+        <div *ngIf="timeToSend.invalid &&
+                    (timeToSend.dirty || timeToSend.touched || reminderForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="timeToSend.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
+
+
+      <!-- form component for reminder's user -->
+      <div class="form-group">
+        <label for="userType">User Type</label>
+        <select class="form-control" id="userType" required #userType="ngModel"
+                [(ngModel)]="reminder.userType" name="userType">
+          <option *ngFor="let userTypeOption of userTypeOptions"
+                  [ngValue]="userTypeOption.id">
+            {{userTypeOption.name}}
+          </option>
+        </select>
+        <div *ngIf="userType.invalid &&
+                    (userType.dirty || userType.touched || reminderForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="userType.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
