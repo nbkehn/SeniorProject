@@ -12,6 +12,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 
 import { Component, OnInit } from "@angular/core";
+import { MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
     selector: "app-calendar-list",
@@ -22,8 +23,8 @@ import { Component, OnInit } from "@angular/core";
     /**
      * Constructor for the CalendarComponent; does nothing
      */
-    constructor() {}
-  
+    constructor(private dialog: MatDialog) {}
+
     /**
      * reloads the data on initialize of the page show the table
      */
@@ -36,10 +37,35 @@ import { Component, OnInit } from "@angular/core";
             let calendar = new Calendar(calendarEl, {
               plugins: [ interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin ],
               droppable: true,
+              height: "auto",
               header: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                right: 'dayGridMonth,dayGridWeek,dayGridDay'
+              },
+              customButtons: {
+                addApptButton: {
+                  text: "Add Appointment",
+                  click: function () {
+                  }
+                },
+                editApptButton: {
+                  text: "Edit Appointment",
+                  click: function () {
+                    
+                  }
+                },
+                deleteApptButton: {
+                  text: "Delete Appointment",
+                  click: function () {
+                    
+                  }
+                }
+              },
+              footer: {
+                left: '',
+                center: 'addApptButton editApptButton deleteApptButton',
+                right: '',
               },
               defaultDate: '2018-01-12',
               navLinks: true, // can click day/week names to navigate views
@@ -59,50 +85,10 @@ import { Component, OnInit } from "@angular/core";
                   end: '2018-01-10'
                 },
                 {
-                  id: 999,
-                  title: 'Repeating Event',
-                  start: '2018-01-09T16:00:00'
+                  title: 'Semi-Long Event',
+                  start: '2018-01-08',
+                  end: '2018-01-09'
                 },
-                {
-                  id: 999,
-                  title: 'Repeating Event',
-                  start: '2018-01-16T16:00:00'
-                },
-                {
-                  title: 'Conference',
-                  start: '2018-01-11',
-                  end: '2018-01-13'
-                },
-                {
-                  title: 'Meeting',
-                  start: '2018-01-12T10:30:00',
-                  end: '2018-01-12T12:30:00'
-                },
-                {
-                  title: 'Lunch',
-                  start: '2018-01-12T12:00:00'
-                },
-                {
-                  title: 'Meeting',
-                  start: '2018-01-12T14:30:00'
-                },
-                {
-                  title: 'Happy Hour',
-                  start: '2018-01-12T17:30:00'
-                },
-                {
-                  title: 'Dinner',
-                  start: '2018-01-12T20:00:00'
-                },
-                {
-                  title: 'Birthday Party',
-                  start: '2018-01-13T07:00:00'
-                },
-                {
-                  title: 'Click for Google',
-                  url: 'http://google.com/',
-                  start: '2018-01-28'
-                }
               ]
             });
           
