@@ -15,7 +15,7 @@ import bco.scheduler.model.Appointment;
 import java.util.List;
 import java.util.Map;
 
-import bco.scheduler.controller.AppointmentController.java;
+import bco.scheduler.controller.AppointmentController;
 
 /**
  * Assignment Controller
@@ -25,6 +25,6 @@ import bco.scheduler.controller.AppointmentController.java;
 @RestController
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = "http://localhost:4200")
-public class AssignmentController(){
+public class AssignmentController{
 
 }
