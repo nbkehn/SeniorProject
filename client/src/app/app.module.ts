@@ -32,7 +32,6 @@ import {ModifyTemplateComponent} from "./template/modify-template/modify-templat
 import {ReminderListComponent} from "./reminder/reminder-list/reminder-list.component";
 import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminder.component";
 import {CalendarComponent} from './calendar/calendar.component';
-import { DialogBodyComponent } from './dialog-body/dialog-body.component';
 
 
 @NgModule({
@@ -53,7 +52,6 @@ import { DialogBodyComponent } from './dialog-body/dialog-body.component';
     ReminderListComponent,
     ModifyReminderComponent,
     CalendarComponent,
-    DialogBodyComponent
   ],
   imports: [
     BrowserModule,
@@ -63,9 +61,6 @@ import { DialogBodyComponent } from './dialog-body/dialog-body.component';
     NgxSmartModalModule.forRoot(),
     NgbModule,
     MatDialogModule
-  ],
-  entryComponents: [
-    DialogBodyComponent
   ],
   providers: [
     AlertService
