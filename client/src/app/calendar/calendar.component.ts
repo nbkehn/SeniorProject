@@ -13,88 +13,97 @@ import listPlugin from '@fullcalendar/list';
 
 import { Component, OnInit } from "@angular/core";
 import { MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
+import { AddDialogComponent } from '../add-dialog/add-dialog.component';
 
 @Component({
     selector: "app-calendar-list",
     templateUrl: "./calendar.html"
   })
   export class CalendarComponent implements OnInit {
-  
+
     /**
      * Constructor for the CalendarComponent; does nothing
      */
-    constructor(private dialog: MatDialog) {}
+    constructor(public dialog: MatDialog) {}
+
+    openDialog(): void {
+      const dialogRef = this.dialog.open(AddDialogComponent,{
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+      });
+    }
 
     /**
      * reloads the data on initialize of the page show the table
      */
     ngOnInit() {
-        document.addEventListener('DOMContentLoaded', function() {
-            // initialize the calendar element on page
-            let calendarEl: HTMLElement = document.getElementById('calendar')!;
-          
-            // initialize the details for the calendar
-            let calendar = new Calendar(calendarEl, {
-              plugins: [ interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin ],
-              droppable: true,
-              height: "auto",
-              header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,dayGridWeek,dayGridDay'
+        const inScopeFunction = this.openDialog.bind(this);
+        document.addEventListener('DOMContentLoaded', function(event: Event) {
+          // initialize the calendar element on page
+          let calendarEl: HTMLElement = document.getElementById('calendar')!;
+          // initialize the details for the calendar
+          let calendar = new Calendar(calendarEl, {
+            plugins: [ interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin ],
+            droppable: true,
+            height: "auto",
+            header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,dayGridWeek,dayGridDay'
+            },
+            customButtons: {
+              addApptButton: {
+                text: "Add Appointment",
+                click: inScopeFunction,
               },
-              customButtons: {
-                addApptButton: {
-                  text: "Add Appointment",
-                  click: function () {
-                  }
-                },
-                editApptButton: {
-                  text: "Edit Appointment",
-                  click: function () {
-                    
-                  }
-                },
-                deleteApptButton: {
-                  text: "Delete Appointment",
-                  click: function () {
-                    
-                  }
+              editApptButton: {
+                text: "Edit Appointment",
+                click: function () {
+                  
                 }
               },
-              footer: {
-                left: '',
-                center: 'addApptButton editApptButton deleteApptButton',
-                right: '',
-              },
-              defaultDate: '2018-01-12',
-              navLinks: true, // can click day/week names to navigate views
-              editable: true,
-              eventLimit: true, // allow "more" link when too many events
-              selectable: true, // allow the selection of multiple dates (for scheduling)
+              deleteApptButton: {
+                text: "Delete Appointment",
+                click: function () {
+                  
+                }
+              }
+            },
+            footer: {
+              left: '',
+              center: 'addApptButton editApptButton deleteApptButton',
+              right: '',
+            },
+            defaultDate: '2018-01-12',
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+            selectable: true, // allow the selection of multiple dates (for scheduling)
 
-              //TODO: later delete this dummy data
-              events: [
-                {
-                  title: 'All Day Event',
-                  start: '2018-01-01',
-                },
-                {
-                  title: 'Long Event',
-                  start: '2018-01-07',
-                  end: '2018-01-10'
-                },
-                {
-                  title: 'Semi-Long Event',
-                  start: '2018-01-08',
-                  end: '2018-01-09'
-                },
-              ]
-            });
-          
-            // generate the calendar
-            calendar.render();
+            //TODO: later delete this dummy data
+            events: [
+              {
+                title: 'All Day Event',
+                start: '2018-01-01',
+              },
+              {
+                title: 'Long Event',
+                start: '2018-01-07',
+                end: '2018-01-10'
+              },
+              {
+                title: 'Semi-Long Event',
+                start: '2018-01-08',
+                end: '2018-01-09'
+              },
+            ]
           });
+        
+          // generate the calendar
+          calendar.render();
+        });
     }
   }
   

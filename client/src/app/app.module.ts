@@ -14,6 +14,7 @@ import { ModifyTechnicianComponent } from './technician/modify-technician/modify
 import { TechnicianListComponent } from './technician/technician-list/technician-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // import alert service and component
 import { AlertComponent } from './alert/alert/alert.component';
@@ -32,6 +33,7 @@ import {ModifyTemplateComponent} from "./template/modify-template/modify-templat
 import {ReminderListComponent} from "./reminder/reminder-list/reminder-list.component";
 import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminder.component";
 import {CalendarComponent} from './calendar/calendar.component';
+import { AddDialogComponent } from './add-dialog/add-dialog.component';
 
 
 @NgModule({
@@ -52,6 +54,7 @@ import {CalendarComponent} from './calendar/calendar.component';
     ReminderListComponent,
     ModifyReminderComponent,
     CalendarComponent,
+    AddDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,7 +63,11 @@ import {CalendarComponent} from './calendar/calendar.component';
     HttpClientModule,
     NgxSmartModalModule.forRoot(),
     NgbModule,
-    MatDialogModule
+    MatDialogModule,
+    BrowserAnimationsModule,
+  ],
+  entryComponents: [
+    AddDialogComponent
   ],
   providers: [
     AlertService
