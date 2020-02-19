@@ -191,8 +191,8 @@ public class Appointment {
      */
     public Map<String, String> getTemplateVariables() {
         final Map<String, String> map = new HashMap<String, String>();
-        map.put(CLASS_NAME + ".start_date", this.getStartDate().format(DateTimeFormatter.ofPattern("MM/dd/uuuu")));
-        map.put(CLASS_NAME + ".end_date", this.getEndDate().format(DateTimeFormatter.ofPattern("MM/dd/uuuu")));
+        map.put(CLASS_NAME + ".start_date", this.getStartDate().toString());
+        map.put(CLASS_NAME + ".end_date", this.getEndDate().toString());
         map.put(CLASS_NAME + ".customer_name", this.getCustomer().getFirstName() + " " + this.getCustomer().getLastName());
         map.put(CLASS_NAME + ".rsa_name", this.getRSA().getFirstName() + " " + this.getRSA().getLastName());
         map.put(CLASS_NAME + ".tech_names", this.getTechnicianNames());

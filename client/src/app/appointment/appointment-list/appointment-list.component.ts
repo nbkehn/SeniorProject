@@ -50,7 +50,9 @@ export class AppointmentListComponent implements OnInit {
     this.appointments = this.appointmentService.getAppointmentsList().pipe(
 		map((data) => {
     		data.sort((appointment1, appointment2) => {
-				let date1 = new Date(appointment1.startDate);
+        let date1 = new Date(appointment1.startDate);
+        console.log(appointment1);
+        console.log(appointment2);
 				let date2 = new Date(appointment2.startDate);
         		return date2.getTime() - date1.getTime();
      		});

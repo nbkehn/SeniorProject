@@ -23,6 +23,12 @@
         </ul>
       </li>
       <li class="active">
+        <a href="#appointManage" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Appointment</a>
+        <ul class="collapse list-unstyled" id="appointManage">
+          <a routerLink="appointment/index" ngbDropdownItem>Calendar</a>      
+        </ul>
+      </li>
+      <li class="active">
         <a href="#installManagement" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Install</a>
         <ul class="collapse list-unstyled" id="installManagement">
           <a routerLink="flooring/index" ngbDropdownItem>Flooring</a>
@@ -46,10 +52,10 @@
 <div class="container-fluid" id="#main">
   
   <br>
-  <!-- Alert message container -->
-  <alert></alert>
+  
   <div class="content">
-    
+    <!-- Alert message container -->
+  <alert></alert>
     <router-outlet></router-outlet>
   </div> -->
 </div>
