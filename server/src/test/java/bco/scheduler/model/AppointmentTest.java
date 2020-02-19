@@ -4,6 +4,7 @@
  * @author Will Duke
  */
 package bco.scheduler.model;
+
 import bco.scheduler.model.RSA;
 import bco.scheduler.model.Technician;
 import bco.scheduler.model.FlooringType;
@@ -13,8 +14,10 @@ import java.util.Set;
 import org.junit.Test;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -38,10 +41,10 @@ public class AppointmentTest {
     Set<Technician> technicians2 = new HashSet<Technician>(Arrays.asList(array2));
     FlooringType flooringtype = new FlooringType("hardwood");
     FlooringType flooringtype2 = new FlooringType("tile");
-    LocalDateTime startDateTime = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
-    LocalDateTime startDateTime2 = LocalDateTime.of(2015, Month.JUNE, 25, 12, 30, 40);
-    LocalDateTime endDateTime = LocalDateTime.of(2015, Month.SEPTEMBER, 29, 19, 30, 40);
-    LocalDateTime endDateTime2 = LocalDateTime.of(2015, Month.DECEMBER, 25, 12, 30, 40);
+    Date startDateTime = new Date(2015, 7, 29);
+    Date startDateTime2 = new Date(2015, 6, 25);
+    Date endDateTime = new Date(2015, 9, 29);
+    Date endDateTime2 = new Date(2015, 12, 25);
 
 
 
@@ -144,9 +147,9 @@ public class AppointmentTest {
         rsa.setPhone("3363440576");
         Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
         
-        assertEquals(startDateTime, test.getStartDateTime());
-        test.setStartDateTime(startDateTime2);
-        assertEquals(startDateTime2, test.getStartDateTime());
+        assertEquals(startDateTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), test.getStartDate());
+        test.setStartDateTime(startDateTime2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        assertEquals(startDateTime2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), test.getStartDate());
     }
 
     /**
@@ -161,9 +164,9 @@ public class AppointmentTest {
         rsa.setPhone("3363440576");
         Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
         
-        assertEquals(endDateTime, test.getEndDateTime());
-        test.setEndDateTime(endDateTime2);
-        assertEquals(endDateTime2, test.getEndDateTime());
+        assertEquals(endDateTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), test.getEndDate());
+        test.setEndDateTime(endDateTime2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        assertEquals(endDateTime2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), test.getEndDate());
     }
 
     /**
@@ -218,9 +221,8 @@ public class AppointmentTest {
         Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
 
         Map<String, String> map = new HashMap<>();
-        map.put("${" + "appointment" + ".start_date_time" + "}", "Appointment Start Date and Time");
         map.put("${" + "appointment" + ".start_date" + "}", "Appointment Start Date");
-        map.put("${" + "appointment" + ".start_time" + "}", "Appointment Start Time");
+        map.put("${" + "appointment" + ".end_date" + "}", "Appointment End Date");
         map.put("${" + "appointment" + ".customer_name" + "}", "Appointment Customer Name");
         map.put("${" + "appointment" + ".rsa_name" + "}", "Appointment RSA Name");
         map.put("${" + "appointment" + ".tech_names" + "}", "Appointment Technician Names");

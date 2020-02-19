@@ -12,8 +12,8 @@ import { Flooring } from '../flooring/flooring';
  */
 export class Appointment {
   id: number;
-  startDateTime: Date;
-  endDateTime: Date;
+  startDate: Date;
+  endDate: Date;
   customer: Customer;
   technicians: Technician[];
   rsa: Rsa;

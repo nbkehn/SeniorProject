@@ -26,8 +26,8 @@
       <!-- form component for the appointment's start datetime -->
       <div class="form-group">
         <label for="start-datetime">Start Date/Time</label>
-        <input type="datetime-local" class="form-control" id="start-datetime" required
-          [(ngModel)]="appointment.startDateTime" name="start-datetime" #startDateTime="ngModel">
+        <input type="date" class="form-control" id="start-datetime" required
+          [(ngModel)]="appointment.startDate" name="start-datetime" #startDateTime="ngModel">
         <div
           *ngIf="startDateTime.invalid && (startDateTime.dirty || startDateTime.touched || appointmentForm.submitted)"
           class="alert alert-danger">
@@ -40,8 +40,8 @@
       <!-- form component for the appointment's end datetime -->
       <div class="form-group">
         <label for="end-datetime">End Date/Time</label>
-        <input type="datetime-local" class="form-control" id="end-datetime" required
-          [(ngModel)]="appointment.endDateTime" name="end-datetime" #endDateTime="ngModel">
+        <input type="date" class="form-control" id="end-datetime" required
+          [(ngModel)]="appointment.endDate" name="end-datetime" #endDateTime="ngModel">
         <div *ngIf="endDateTime.invalid && (endDateTime.dirty || endDateTime.touched || appointmentForm.submitted)"
           class="alert alert-danger">
           <div *ngIf="endDateTime.errors.required">

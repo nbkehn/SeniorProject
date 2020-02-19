@@ -32,8 +32,8 @@
       <tbody>
       <!-- each row of the table that is populated with data from every appointment (essentially a for loop going through every appointment and printing)-->
       <tr *ngFor="let appointment of appointments | async">
-        <td>{{appointment.startDateTime | date : "short"}}</td>
-        <td>{{appointment.endDateTime | date: "short"}}</td>
+        <td>{{appointment.startDate | date : "MM/dd/yyyy"}}</td>
+        <td>{{appointment.endDate | date: "MM/dd/yyyy"}}</td>
         <td>{{appointment.customer?.firstName}} {{appointment.customer?.lastName}} </td>
         <td>
           <div *ngFor="let technician of appointment.technicians">{{technician?.firstName}} {{technician?.lastName}}</div>

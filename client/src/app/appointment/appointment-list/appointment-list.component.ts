@@ -38,6 +38,7 @@ export class AppointmentListComponent implements OnInit {
    * reloads the data on initialize of the page to ensure that the page has the most updated details
    */
   ngOnInit() {
+    console.log(this.appointments);
     this.reloadData();
   }
 
@@ -49,8 +50,8 @@ export class AppointmentListComponent implements OnInit {
     this.appointments = this.appointmentService.getAppointmentsList().pipe(
 		map((data) => {
     		data.sort((appointment1, appointment2) => {
-				let date1 = new Date(appointment1.startDateTime);
-				let date2 = new Date(appointment2.startDateTime);
+				let date1 = new Date(appointment1.startDate);
+				let date2 = new Date(appointment2.startDate);
         		return date2.getTime() - date1.getTime();
      		});
     		return data;

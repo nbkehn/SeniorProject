@@ -43,7 +43,8 @@ public class AppointmentController {
      */
     @GetMapping("/appointments")
     public List<Appointment> getAllAppointments() {
-        return appointmentRepository.findAll();
+        List<Appointment> aps = appointmentRepository.findAll();
+        return aps;
     }
 
     /**
@@ -67,8 +68,7 @@ public class AppointmentController {
      */
     @PostMapping("/appointments")
     public Appointment createAppointment (
-            @Valid @RequestBody Appointment appointment
-    ) {
+            @Valid @RequestBody Appointment appointment) {
         final Appointment newAppointment = appointmentRepository.saveAndFlush(appointment);
         appointmentRepository.refresh(newAppointment);
         appointmentQueueRepository.addNewAppointment(newAppointment.getId());
@@ -95,8 +95,8 @@ public class AppointmentController {
         appointment.setTechnicians(appointmentDetails.getTechnicians());
         appointment.setRSA(appointmentDetails.getRSA());
         appointment.setCustomer(appointmentDetails.getCustomer());
-        appointment.setStartDateTime(appointmentDetails.getStartDateTime());
-        appointment.setEndDateTime(appointmentDetails.getEndDateTime());
+        appointment.setStartDateTime(appointmentDetails.getStartDate());
+        appointment.setEndDateTime(appointmentDetails.getEndDate());
         appointment.setFlooring(appointmentDetails.getFlooring());
         
         return appointmentRepository.save(appointment);

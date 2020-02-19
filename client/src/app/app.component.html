@@ -5,36 +5,51 @@
  * @author Noah Trimble, Soumya Bagade, Will Duke
  */
 -->
-<nav class="navbar navbar-expand-sm bg-primary navbar-dark bg-navbar">
-  <!-- Links -->
-  <ul class="navbar-nav">
-    <li class="nav-item">
-      <a routerLink="appointment/index" class="nav-link" routerLinkActive="active">Appointments</a>
-    </li>
-    <li class="nav-item">
-      <div class="dropdown management-dropdown" ngbDropdown>
-        <button class="btn" id="management-dropdown-toggle" ngbDropdownToggle>Management</button>
-        <div ngbDropdownMenu aria-labelledby="management-dropdown-toggle">
-          <p class="nav-descriptor">User and Installation</p>
-          <a routerLink="technician/index" ngbDropdownItem>Technician Management</a>
-          <a routerLink="customer/index" ngbDropdownItem>Customer Management</a>
-          <a routerLink="rsa/index" ngbDropdownItem>RSA Management</a>
-          <a routerLink="flooring/index" ngbDropdownItem>Flooring Management</a>
-          <p class="nav-descriptor">Notifications</p>
-          <a routerLink="template/index" ngbDropdownItem>Template Management</a>
-          <a routerLink="reminder/index" ngbDropdownItem>Reminder Management</a>
+<div class="wrapper ">
+  <!-- Sidebar -->
+  <nav id="sidebar">
+    
+    <div class="sidebar-header">
+      <h3>BCO</h3>
+    </div>
+
+    <ul class="list-unstyled components">
+      <li class="active">
+        <a href="#userManagement" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">User</a>
+        <ul class="collapse list-unstyled" id="userManagement">
+          <a routerLink="technician/index" ngbDropdownItem>Technician</a>
+          <a routerLink="customer/index" ngbDropdownItem>Customer</a>
+          <a routerLink="rsa/index" ngbDropdownItem>RSA</a>
+        </ul>
+      </li>
+      <li class="active">
+        <a href="#installManagement" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Install</a>
+        <ul class="collapse list-unstyled" id="installManagement">
+          <a routerLink="flooring/index" ngbDropdownItem>Flooring</a>
+        </ul>
+      </li>
+      <li class="active">
+        <a href="#notificationManagement" data-toggle="collapse" aria-expanded="false"
+          class="dropdown-toggle">Notification</a>
+        <ul class="collapse list-unstyled" id="notificationManagement">
+          <a routerLink="template/index" ngbDropdownItem>Template</a>
+          <a routerLink="reminder/index" ngbDropdownItem>Reminder</a>
           <a routerLink="reminderError/index" ngbDropdownItem>Reminder Errors</a>
-        </div>
-      </div>
-    </li>
-  </ul>
-</nav>
-<div class="container">
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+</div>
+
+
+<div class="container-fluid" id="#main">
+  
   <br>
   <!-- Alert message container -->
   <alert></alert>
-
   <div class="content">
+    
     <router-outlet></router-outlet>
-  </div>
+  </div> -->
 </div>
