@@ -16,6 +16,9 @@ import { Component, OnInit } from "@angular/core";
 import { MatDialog} from '@angular/material/dialog';
 import { AddDialogComponent } from '../add-dialog/add-dialog.component';
 import { EditDialogComponent } from '../edit-dialog/edit-dialog.component';
+import { AbstractFormDialogComponent } from '../abstract-dialog/abstract-form-dialog-component';
+import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
+import { ComponentType } from '@angular/cdk/portal';
 
 @Component({
     selector: "app-calendar-list",
@@ -28,21 +31,13 @@ import { EditDialogComponent } from '../edit-dialog/edit-dialog.component';
      */
     constructor(public dialog: MatDialog) {}
 
-    openAddDialog(): void {
-      const dialogRef = this.dialog.open(AddDialogComponent,{
-      });
-  
+    openDialog(dialogComponentClass: ComponentType<AbstractFormDialogComponent>): void {
+      /* The parameter must be indexed to retrieve the class which was passed as an argument
+      (discovered through debugging in Google Chrome source) */
+      const dialogRef = this.dialog.open(dialogComponentClass[0], {});
       dialogRef.afterClosed().subscribe(result => {
         console.log(result);
-      });
-    }
-
-    openEditDialog(): void {
-      const dialogRef = this.dialog.open(EditDialogComponent, {});
-
-      dialogRef.afterClosed().subscribe(result => {
-        console.log(result);
-      });
+      })
     }
 
     /**
@@ -50,11 +45,12 @@ import { EditDialogComponent } from '../edit-dialog/edit-dialog.component';
      */
     ngOnInit() {
       /* The below function is necessary so the openAddDialog function can run in the correct scope
-      (aka have the right value of "this"). For the same reason, we create an inScopeOpenEditDialog
-      function as well.
+      (aka have the right value of "this"). For the same reason, we create inScopeOpenEditDialog
+      and inScopeOpenDeleteDialog functions as well.
       */
-        const inScopeOpenAddDialog = this.openAddDialog.bind(this);
-        const inScopeEditAddDialog = this.openEditDialog.bind(this);
+        const inScopeOpenAddDialog = this.openDialog.bind(this, [AddDialogComponent]);
+        const inScopeOpenEditDialog = this.openDialog.bind(this, [EditDialogComponent]);
+        const inScopeOpenDeleteDialog = this.openDialog.bind(this, [DeleteDialogComponent]);
         document.addEventListener('DOMContentLoaded', function(event: Event) {
           // initialize the calendar element on page
           let calendarEl: HTMLElement = document.getElementById('calendar')!;
@@ -75,13 +71,11 @@ import { EditDialogComponent } from '../edit-dialog/edit-dialog.component';
               },
               editApptButton: {
                 text: "Edit Appointment",
-                click: inScopeEditAddDialog,
+                click: inScopeOpenEditDialog,
               },
               deleteApptButton: {
                 text: "Delete Appointment",
-                click: function () {
-                  
-                }
+                click: inScopeOpenDeleteDialog,
               }
             },
             footer: {

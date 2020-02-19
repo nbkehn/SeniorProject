@@ -35,6 +35,7 @@ import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminde
 import {CalendarComponent} from './calendar/calendar.component';
 import { AddDialogComponent } from './add-dialog/add-dialog.component';
 import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
     ModifyReminderComponent,
     CalendarComponent,
     AddDialogComponent,
-    EditDialogComponent
+    EditDialogComponent,
+    DeleteDialogComponent,
   ],
   imports: [
     BrowserModule,
