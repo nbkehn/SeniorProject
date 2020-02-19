@@ -7,7 +7,6 @@
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app.routing.module';
 import { AppComponent } from './app.component';
 import { ModifyTechnicianComponent } from './technician/modify-technician/modify-technician.component';
@@ -15,6 +14,7 @@ import { TechnicianListComponent } from './technician/technician-list/technician
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 // import alert service and component
 import { AlertComponent } from './alert/alert/alert.component';
@@ -65,6 +65,8 @@ import { AddDialogComponent } from './add-dialog/add-dialog.component';
     NgbModule,
     MatDialogModule,
     BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   entryComponents: [
     AddDialogComponent

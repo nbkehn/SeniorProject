@@ -3,6 +3,7 @@
  *
  * @package calendar
  * @author Soumya Bagade
+ * @author Renee Segda
  */
 
 import { Calendar } from '@fullcalendar/core';
@@ -12,8 +13,9 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 
 import { Component, OnInit } from "@angular/core";
-import { MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
+import { MatDialog} from '@angular/material/dialog';
 import { AddDialogComponent } from '../add-dialog/add-dialog.component';
+import { EditDialogComponent } from '../edit-dialog/edit-dialog.component';
 
 @Component({
     selector: "app-calendar-list",
@@ -26,12 +28,20 @@ import { AddDialogComponent } from '../add-dialog/add-dialog.component';
      */
     constructor(public dialog: MatDialog) {}
 
-    openDialog(): void {
+    openAddDialog(): void {
       const dialogRef = this.dialog.open(AddDialogComponent,{
       });
   
       dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed');
+        console.log(result);
+      });
+    }
+
+    openEditDialog(): void {
+      const dialogRef = this.dialog.open(EditDialogComponent, {});
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(result);
       });
     }
 
@@ -39,7 +49,12 @@ import { AddDialogComponent } from '../add-dialog/add-dialog.component';
      * reloads the data on initialize of the page show the table
      */
     ngOnInit() {
-        const inScopeFunction = this.openDialog.bind(this);
+      /* The below function is necessary so the openAddDialog function can run in the correct scope
+      (aka have the right value of "this"). For the same reason, we create an inScopeOpenEditDialog
+      function as well.
+      */
+        const inScopeOpenAddDialog = this.openAddDialog.bind(this);
+        const inScopeEditAddDialog = this.openEditDialog.bind(this);
         document.addEventListener('DOMContentLoaded', function(event: Event) {
           // initialize the calendar element on page
           let calendarEl: HTMLElement = document.getElementById('calendar')!;
@@ -56,13 +71,11 @@ import { AddDialogComponent } from '../add-dialog/add-dialog.component';
             customButtons: {
               addApptButton: {
                 text: "Add Appointment",
-                click: inScopeFunction,
+                click: inScopeOpenAddDialog,
               },
               editApptButton: {
                 text: "Edit Appointment",
-                click: function () {
-                  
-                }
+                click: inScopeEditAddDialog,
               },
               deleteApptButton: {
                 text: "Delete Appointment",
