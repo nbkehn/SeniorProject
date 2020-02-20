@@ -12,13 +12,14 @@ export class DeleteDialogComponent extends AbstractFormDialogComponent implement
 
   constructor(builder: FormBuilder, public dialogRef: MatDialogRef<AbstractFormDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     super(builder, dialogRef, data);
+    debugger;
   }
 
   ngOnInit(): void {
   }
 
   delete() {
-    this.close();
+    this.close(true);
   }
 
 }

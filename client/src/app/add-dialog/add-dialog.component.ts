@@ -10,8 +10,11 @@ import {AbstractFormDialogComponent} from '../abstract-dialog/abstract-form-dial
 })
 export class AddDialogComponent extends AbstractFormDialogComponent implements OnInit {
   
+  private minDate: Date;
+
   constructor(builder: FormBuilder, public dialogRef: MatDialogRef<AbstractFormDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     super(builder, dialogRef, data);
+    this.minDate = new Date();
   }
 
   ngOnInit(): void {

@@ -1,4 +1,9 @@
 <h2 mat-dialog-title>Delete Appointment</h2>
+<mat-dialog-content>
+    <div><strong>{{data.title}}</strong></div><br>
+    <div><strong>Start Date:</strong> {{data.start.toDateString()}}</div><br>
+    <div><strong>End Date:</strong> {{data.end.toDateString()}}</div><br>
+</mat-dialog-content>
 <mat-dialog-actions>
     <button mat-button (click)="close()">Cancel</button>
     <button mat-button-raised (click)="delete()">Confirm</button>

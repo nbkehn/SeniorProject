@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 // import alert service and component
 import { AlertComponent } from './alert/alert/alert.component';
@@ -36,6 +37,10 @@ import {CalendarComponent} from './calendar/calendar.component';
 import { AddDialogComponent } from './add-dialog/add-dialog.component';
 import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import { MatMomentDateModule } from "@angular/material-moment-adapter";
 
 
 @NgModule({
@@ -71,9 +76,16 @@ import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    MatDatepickerModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatMomentDateModule,
   ],
   entryComponents: [
-    AddDialogComponent
+    AddDialogComponent,
+    EditDialogComponent,
+    DeleteDialogComponent,
   ],
   providers: [
     AlertService
