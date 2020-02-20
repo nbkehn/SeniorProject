@@ -8,9 +8,9 @@
 <div class="wrapper ">
   <!-- Sidebar -->
   <nav id="sidebar">
-    
+
     <div class="sidebar-header">
-      <h3>BCO</h3>
+      <a routerLink="appointment/calendar"><img class="logo" src=favicon.ico></a>
     </div>
 
     <ul class="list-unstyled components">
@@ -25,7 +25,7 @@
       <li class="active">
         <a href="#appointManage" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Appointment</a>
         <ul class="collapse list-unstyled" id="appointManage">
-          <a routerLink="appointment/index" ngbDropdownItem>Calendar</a>      
+          <a routerLink="appointment/calendar" ngbDropdownItem>Calendar</a>
         </ul>
       </li>
       <li class="active">
@@ -46,16 +46,15 @@
     </ul>
   </nav>
 
-</div>
 
+  <div class="container-fluid" id="#main">
 
-<div class="container-fluid" id="#main">
-  
-  <br>
-  
-  <div class="content">
-    <!-- Alert message container -->
-  <alert></alert>
-    <router-outlet></router-outlet>
-  </div> -->
+    <br>
+
+    <div class="content">
+      <!-- Alert message container -->
+      <alert></alert>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>

@@ -11,18 +11,16 @@
 }
 
 #sidebar {
-  position: absolute;
+  position: relative;
   min-width: 11%;
   max-width: 11%;
   min-height: 100vh;
   background-color: @brand__color__bco-blue;
 }
 
-#sidebar.active {
-  margin-left: -250px;
-}
 
-@media (max-width: 768px) {
+
+@media screen and (max-width: 768px) {
   #sidebar {
       margin-left: -250px;
   }

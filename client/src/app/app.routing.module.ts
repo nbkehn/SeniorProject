@@ -22,6 +22,7 @@ import {ModifyTemplateComponent} from "./template/modify-template/modify-templat
 import {ReminderListComponent} from "./reminder/reminder-list/reminder-list.component";
 import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminder.component";
 import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/reminder-error-list.component";
+import {AppointmentCalendarComponent} from "./appointment/appointment-calendar/appointment-calendar.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'appointment/index', pathMatch: 'full' },
@@ -50,6 +51,7 @@ const routes: Routes = [
   { path: 'reminder/add', component: ModifyReminderComponent },
   { path: 'reminder/edit/:id', component: ModifyReminderComponent },
   { path: 'reminderError/index', component: ReminderErrorListComponent },
+  { path: 'appointment/calendar', component: AppointmentCalendarComponent},
 ];
 
 @NgModule({

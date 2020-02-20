@@ -1,0 +1,30 @@
+
+    <div class="row buttonRow">
+            <button class="btn btn-primary mx-5 changeView appointView">Appointment View</button>
+            <button class="btn btn-primary mx-5 changeView installView">Install View</button>
+    </div>
+    <div class="row calRow">
+            <button class="btn btn-primary mx-3  dayView">Day</button>
+            <button class="btn btn-primary mx-3  weekView">Week</button>
+            <button class="btn btn-primary mx-3  monthView">Month</button>
+    </div>
+
+    <div class="row calendarRow">
+
+    </div>
+    
+<div class="row appointOptions">
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <button routerLink="/appointment/add" type="button" class="btn btn-info">
+                <span>Add Appointment</span>
+            </button>
+            <button type="button" (click)="editAppointment(appointment)"  class="btn btn-info">
+                <span>Edit Appointment</span>
+            </button>
+            <button type="button" (click)="deleteAppointment(appointment)"class="btn btn-info">
+                <span>Delete Appointment</span>
+            </button>
+        </div>
+    </nav>
+</div>
