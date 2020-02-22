@@ -5,8 +5,6 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Set;
 import java.time.LocalDate;
@@ -55,6 +53,10 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "flooring_id")   
     private FlooringType flooring;
+
+    /** Assignments set */     
+
+    private ArrayList<Assignment> assignments;
     
     /** default constructor */
     public Appointment() {}
@@ -64,13 +66,19 @@ public class Appointment {
      * 
      * @param startDateTime starting time of the 
      */
-    public Appointment(final RSA rsa, final Customer customer, final Set<Technician> technicians, final FlooringType flooringtype, final Date startDateTime, final Date endDateTime) {
+    public Appointment(final RSA rsa, final Customer customer, final Set<Technician> technicians, final FlooringType flooringtype, final Date startDate, final Date endDate) {
         this.rsa = rsa;
         this.customer = customer;
         this.technicians = technicians;
         this.flooring = flooring; 
-        this.startDate = startDateTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        this.endDate = endDateTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        this.startDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        this.endDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        this.assignments = new ArrayList<Assignment>();
+        LocalDate temp = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        for(int i = 0; i <= getExtraDays(); i++ ) {
+            assignments.add(new Assignment(temp, technicians));
+            temp = temp.plusDays(1);
+        }
     }
 
     /**
@@ -147,7 +155,7 @@ public class Appointment {
 
     /**
      * sets start date time
-     * @param startDateTime 
+     * @param startDate 
      */
     public void setStartDateTime(final LocalDate startDateTime) {
         this.startDate = startDateTime;
@@ -163,7 +171,7 @@ public class Appointment {
 
     /**
      * sets end date time
-     * @param endDateTime endDateTime 
+     * @param endDate endDate 
      */
     public void setEndDateTime(final LocalDate endDateTime) {
         this.endDate = endDateTime;
@@ -226,5 +234,56 @@ public class Appointment {
         map.put("${" + CLASS_NAME + ".tech_names" + "}", "Appointment Technician Names");
         map.put("${" + CLASS_NAME + ".flooring" + "}", "Appointment Flooring Type");
         return map;
+    }
+
+    public void assignAll(Set<Technician> technicians) {
+        for(int i = 0; i < assignments.size(); i++ ) {
+            
+        }
+    }
+
+    public void assignDay(int day, Set<Technician> technicians) {
+        assignments.get(day).setTechnicians(technicians);
+    }
+
+    public void moveDate(LocalDate startDate, LocalDate endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        LocalDate temp = startDate;
+        for(int i = 0; i < assignments.size(); i++ ) {
+            assignments.get(i).setStartDate(temp);
+            temp = temp.plusDays(1);
+        }
+    }
+public int getExtraDays() {
+        int year1 = startDate.getYear();
+        int year2 = endDate.getYear();
+        int month1 = startDate.getMonthValue();
+        int month2 = endDate.getMonthValue();
+        int day1 = startDate.getDayOfMonth();
+        int day2 = endDate.getDayOfMonth();
+        if(year1 != year2){
+            day2 += 31;// add days in December
+            return day2 - day1;
+        } else if(month1 != month2) {
+            if(month1 == 2) {
+                if((year1 % 4 == 0 && year1 % 100 != 0) ||  year1 %400 == 0) {
+                    day2 += 29;//add days in Febuary on a leap year
+                    return day2 - day1;
+                } else {
+                    day2 += 28;//add days in Febuary non leap year
+                    return day2 - day1;
+                }
+
+            } else if(month1 == 4 || month1 == 6 || month1 == 9 || month1 == 11) {
+                day2 += 30;//add days in any of the 30 day months
+                return day2 - day1;
+            } else {
+                day2 += 31;//add days in any of the 31 day months that are not December
+                return day2 - day1;
+            }
+        } else {
+            return day2 - day1;
+        }
     }
 }

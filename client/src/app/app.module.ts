@@ -35,6 +35,7 @@ import {ReminderListComponent} from "./reminder/reminder-list/reminder-list.comp
 import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminder.component";
 import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/reminder-error-list.component";
 import { AppointmentCalendarComponent } from './appointment/appointment-calendar/appointment-calendar.component';
+import {AssignmentCalendarComponent} from "./assignment/assignment/assignment-calendar.component";
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import { AppointmentCalendarComponent } from './appointment/appointment-calendar
     ModifyReminderComponent,
     ReminderErrorListComponent,
     AppointmentCalendarComponent,
+    AssignmentCalendarComponent,
   ],
   imports: [
     BrowserModule,

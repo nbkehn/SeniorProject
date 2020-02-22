@@ -23,6 +23,7 @@ import {ReminderListComponent} from "./reminder/reminder-list/reminder-list.comp
 import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminder.component";
 import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/reminder-error-list.component";
 import {AppointmentCalendarComponent} from "./appointment/appointment-calendar/appointment-calendar.component";
+import {AssignmentCalendarComponent} from "./assignment/assignment/assignment-calendar.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'appointment/index', pathMatch: 'full' },
@@ -52,6 +53,7 @@ const routes: Routes = [
   { path: 'reminder/edit/:id', component: ModifyReminderComponent },
   { path: 'reminderError/index', component: ReminderErrorListComponent },
   { path: 'appointment/calendar', component: AppointmentCalendarComponent},
+  { path: 'install/calendar', component: AssignmentCalendarComponent},
 ];
 
 @NgModule({
