@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export abstract class AbstractFormDialogComponent implements OnInit {
 
   /* Variables for form data (to be shared with child classes) */
+  private id: number;
   @Input() private firstName: String = "";
   @Input() private lastName: String = "";
   @Input() private start: Date;
@@ -20,6 +21,7 @@ export abstract class AbstractFormDialogComponent implements OnInit {
   /* Initializes form group so it can be accessed when the dialog opens */
   constructor(private builder: FormBuilder, public dialogRef: MatDialogRef<AbstractFormDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     if (data) {
+      this.id = data.id;
       const titleNamePortion: string = data.title;
       const fullName = titleNamePortion.split(":")[1].trim();
       const firstAndLastName = fullName.split(" ");
@@ -77,10 +79,15 @@ export abstract class AbstractFormDialogComponent implements OnInit {
 
   /* Returns the form data when the dialog is closed */
   close(eventDeleted: boolean = false) {
-    this.dialogRef.close({
-      ...this.formGroup.value,
-      deleted: eventDeleted
-    });
+    if (this.formGroup.value.end < this.formGroup.value.start) {
+      alert("Error: end date cannot be earlier than start date");
+    } else {
+      this.dialogRef.close({
+        id: this.id,
+        ...this.formGroup.value,
+        deleted: eventDeleted
+      });
+    }
   }
 
 }

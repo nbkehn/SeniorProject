@@ -19,7 +19,7 @@
     <br>
     <mat-form-field>
         <mat-label>End Date</mat-label>
-        <input matInput [min]="start + 1" formControlName="end" [matDatepicker]="endPicker">
+        <input matInput [min]="minDate" formControlName="end" [matDatepicker]="endPicker">
         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
         <mat-datepicker #endPicker></mat-datepicker>
     </mat-form-field>

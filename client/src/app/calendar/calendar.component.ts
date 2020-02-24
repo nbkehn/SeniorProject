@@ -28,13 +28,15 @@ import { ComponentType } from '@angular/cdk/portal';
 
     private calendarObject: Calendar;
 
-    private selectedEvent: {title: string, start: Date, end: Date}
+    private selectedEvent: {id: number, title: string, start: Date, end: Date}
+
+    private static nextId: number = 3;
 
     setCalendar(cal: Calendar) {
       this.calendarObject = cal;
     }
 
-    setSelectedEvent(event: {title: string, start: Date, end: Date}) {
+    setSelectedEvent(event: {id: number, title: string, start: Date, end: Date}) {
       this.selectedEvent = event;
     }
 
@@ -57,6 +59,11 @@ import { ComponentType } from '@angular/cdk/portal';
       return new Date(date.valueOf() - dayLength);
     }
 
+    private getTomorrow(date: Date) {
+      const dayLength = new Date("2000-01-02").valueOf() - new Date("2000-01-01").valueOf();
+      return new Date(date.valueOf() + dayLength);
+    }
+
     private openDialog(dialogComponentClass: ComponentType<AbstractFormDialogComponent>, eventSelectionRequired: boolean = false): MatDialogRef<unknown, any> {
       const dialogWidthProperties = {width: '30%'};
       let dialogProperties;
@@ -68,6 +75,7 @@ import { ComponentType } from '@angular/cdk/portal';
           dialogProperties = {
             ...dialogWidthProperties,
             data: {
+              id: this.selectedEvent.id,
               title: this.selectedEvent.title,
               start: this.selectedEvent.start,
               end: this.selectedEvent.end ? this.getYesterday(this.selectedEvent.end) : null
@@ -84,12 +92,13 @@ import { ComponentType } from '@angular/cdk/portal';
       const dialogRef = this.openDialog(AddDialogComponent);
       dialogRef.afterClosed().subscribe(returnedValue => {
         const appt = {
-          id: 0,
+          id: CalendarComponent.nextId,
           title: `Customer: ${returnedValue.firstName} ${returnedValue.lastName}`,
           start: returnedValue.start ? returnedValue.start.format("YYYY-MM-DD") : (new Date()).toDateString(),
           end: returnedValue.end ? returnedValue.end.add(1, "days").format("YYYY-MM-DD") : "",
         }
         this.calendarObject.addEvent(appt);
+        CalendarComponent.nextId += 1;
         console.log(this.calendarObject.getEvents());
       })
     }
@@ -99,12 +108,15 @@ import { ComponentType } from '@angular/cdk/portal';
       if (dialogRef) {
         dialogRef.afterClosed().subscribe(returnedValue => {
           const appt = {
-            id: 0,
+            id: returnedValue.id,
             title: returnedValue.firstName + " " + returnedValue.lastName,
-            start: returnedValue.start.toDateString() || (new Date()).toDateString,
-            end: returnedValue.end ? returnedValue.end.toDateString() : "",
+            start: new Date(returnedValue.start) || new Date(),
+            end: this.getTomorrow(returnedValue.end) || "",
           }
           console.log(this.calendarObject.getEvents());
+          const editedEvent = this.calendarObject.getEventById(appt.id);
+          editedEvent.setStart(appt.start);
+          editedEvent.setEnd(appt.end);
         });
       }
     }
@@ -118,6 +130,7 @@ import { ComponentType } from '@angular/cdk/portal';
               return event.title == `Customer: ${returnedValue.firstName} ${returnedValue.lastName}`;
             })
             deleteEvent.remove();
+            this.selectedEvent = null;
             console.log(returnedValue);
           }
         });
@@ -159,6 +172,7 @@ import { ComponentType } from '@angular/cdk/portal';
             },
             eventClick: (clickEvent) => {
               const eventShape = {
+                id: clickEvent.event.id,
                 title: clickEvent.event.title,
                 start: clickEvent.event.start,
                 end: clickEvent.event.end,
@@ -171,10 +185,12 @@ import { ComponentType } from '@angular/cdk/portal';
                 const currentEventObject = calendar.getEvents().find((event) => compareToCurrentEvent(event));
                 currentEventObject.setProp("backgroundColor", "#198E97");
                 currentEventObject.setProp("textColor", "#FFFFFF");
+                currentEventObject.setProp("borderColor", "#198E97");
               }
               inScopeSetSelectedEvent(eventShape);
               clickEvent.event.setProp("backgroundColor", "#FFAA1D");
               clickEvent.event.setProp("textColor", "");
+              clickEvent.event.setProp("borderColor", "#FFAA1D")
 
             },
             customButtons: {
@@ -205,15 +221,18 @@ import { ComponentType } from '@angular/cdk/portal';
             //TODO: later delete this dummy data
             events: [
               {
+                id: 0,
                 title: "Customer: Renee Segda",
                 start: "2020-02-16"
               },
               {
+                id: 1,
                 title: "Customer: Nico Kehn",
                 start: "2020-02-16",
                 end: "2020-02-18"
               },
               {
+                id: 2,
                 title: "Customer: Koby Brown",
                 start: "2020-02-25",
                 end: "2020-02-28"
@@ -221,6 +240,7 @@ import { ComponentType } from '@angular/cdk/portal';
             ],
             eventBackgroundColor: '#198E97',
             eventTextColor: '#FFFFFF',
+            eventBorderColor: '#198E97',
           });
         
           // generate the calendar
