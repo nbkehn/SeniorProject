@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Add Appointment</h2>
+<form [formGroup]="formGroup">
+    <span>
+    <mat-form-field appearance="outline">
+        <mat-label>Customer First Name</mat-label>
+        <input matInput formControlName="firstName" placeholder="Enter first name here">
+        <mat-error *ngIf="!firstName || firstName == ''">First name required</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" [floatLabel]="never">
+        <mat-label>Customer Last Name</mat-label>
+        <input matInput formControlName="lastName" placeholder="Enter last name here">
+        <mat-error *ngIf="!lastName || lastName == ''">Last name required</mat-error>
+    </mat-form-field>
+    </span>
+    <br>
+    <br>
+    <mat-form-field>
+        <mat-label>Start Date</mat-label>
+        <input matInput [min]="minDate" formControlName="start" [matDatepicker]="startPicker">
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+        <mat-error *ngIf="!start">Start date required</mat-error>
+    </mat-form-field>
+    <mat-form-field hintLabel="Set as the start date or leave empty for 1-day appointments">
+        <mat-label>End Date</mat-label>
+        <input matInput [min]="minDate" formControlName="end" [matDatepicker]="endPicker">
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+    <br>
+    <br>
+</form>
+<mat-dialog-actions>
+    <button mat-button-raised (click)="cancel()">Cancel</button>
+    <button mat-button-raised (click)="add()">Add</button>
+</mat-dialog-actions>
