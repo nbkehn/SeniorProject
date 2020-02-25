@@ -97,6 +97,7 @@ import { ComponentType } from '@angular/cdk/portal';
           this.calendarObject.addEvent(appt);
           CalendarComponent.nextId += 1;
           console.log(this.calendarObject.getEvents());
+          this.updateSelectedEvent(this.calendarObject.getEventById(String(appt.id)));
         }
       })
     }
@@ -116,6 +117,7 @@ import { ComponentType } from '@angular/cdk/portal';
             const editedEvent = this.calendarObject.getEventById(appt.id);
             editedEvent.setStart(appt.start);
             editedEvent.setEnd(appt.end);
+            this.updateSelectedEvent(editedEvent);
           }
         });
       }
@@ -175,9 +177,6 @@ import { ComponentType } from '@angular/cdk/portal';
         const inScopeOpenEditDialog = this.openEditDialog.bind(this);
         const inScopeOpenDeleteDialog = this.openDeleteDialog.bind(this);
         const inScopeSetCalendar = this.setCalendar.bind(this);
-        const inScopeGetCalendar = this.getCalendar.bind(this);
-        const inScopeSetSelectedEvent = this.setSelectedEvent.bind(this);
-        const inScopeGetSelectedEvent = this.getSelectedEvent.bind(this);
         const inScopeUpdateSelectedEvent = this.updateSelectedEvent.bind(this);
         document.addEventListener('DOMContentLoaded', function(event: Event) {
           // initialize the calendar element on page

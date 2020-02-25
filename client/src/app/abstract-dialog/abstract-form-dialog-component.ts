@@ -88,7 +88,7 @@ export abstract class AbstractFormDialogComponent implements OnInit {
       ...this.formGroup.value,
       deleted: eventDeleted
     };
-    if (!this.end) {
+    if (!returnObject.end) {
       returnObject.end = returnObject.start;
     }
     try {
