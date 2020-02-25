@@ -36,16 +36,16 @@ import { ComponentType } from '@angular/cdk/portal';
       this.calendarObject = cal;
     }
 
+    getCalendar() {
+      return this.calendarObject;
+    }
+
     setSelectedEvent(event: {id: number, title: string, start: Date, end: Date}) {
       this.selectedEvent = event;
     }
 
     getSelectedEvent(): {title: string, start: Date, end: Date} {
       return this.selectedEvent;
-    }
-
-    getAppointments() {
-      return this.calendarObject.getEvents();
     }
 
     /**
@@ -137,6 +137,25 @@ import { ComponentType } from '@angular/cdk/portal';
     }
     }
 
+    updateSelectedEvent(newEvent: EventApi) {
+      const newEventShaped = {
+        id: Number(newEvent.id),
+        title: newEvent.title,
+        start: newEvent.start,
+        end: newEvent.end
+      };
+      if (this.getSelectedEvent()) {
+        const currentEvent = this.getCalendar().getEventById(String(this.selectedEvent.id));
+        currentEvent.setProp("backgroundColor", "#198E97");
+        currentEvent.setProp("textColor", "#FFFFFF");
+        currentEvent.setProp("borderColor", "#198E97");
+      }
+      this.setSelectedEvent(newEventShaped);
+      newEvent.setProp("backgroundColor", "#FFAA1D");
+      newEvent.setProp("textColor", "");
+      newEvent.setProp("borderColor", "#FFAA1D")
+    }
+
 
     /* Trying to get the added event to show up in the calendar but the event object returned isn't being parsed correctly.
     */
@@ -153,10 +172,11 @@ import { ComponentType } from '@angular/cdk/portal';
         const inScopeOpenAddDialog = this.openAddDialog.bind(this);
         const inScopeOpenEditDialog = this.openEditDialog.bind(this);
         const inScopeOpenDeleteDialog = this.openDeleteDialog.bind(this);
-        const inScopeGetAppointments = this.getAppointments.bind(this);
         const inScopeSetCalendar = this.setCalendar.bind(this);
+        const inScopeGetCalendar = this.getCalendar.bind(this);
         const inScopeSetSelectedEvent = this.setSelectedEvent.bind(this);
         const inScopeGetSelectedEvent = this.getSelectedEvent.bind(this);
+        const inScopeUpdateSelectedEvent = this.updateSelectedEvent.bind(this);
         document.addEventListener('DOMContentLoaded', function(event: Event) {
           // initialize the calendar element on page
           let calendarEl: HTMLElement = document.getElementById('calendar')!;
@@ -170,28 +190,15 @@ import { ComponentType } from '@angular/cdk/portal';
               center: 'title',
               right: 'dayGridMonth,dayGridWeek,dayGridDay'
             },
-            eventClick: (clickEvent) => {
-              const eventShape = {
-                id: clickEvent.event.id,
-                title: clickEvent.event.title,
-                start: clickEvent.event.start,
-                end: clickEvent.event.end,
-              };
-              const currentEvent = inScopeGetSelectedEvent();
-              const compareToCurrentEvent = function(otherEvent: EventApi) {
-                return otherEvent.title == currentEvent.title;
-              }.bind(this);
-              if (currentEvent) {
-                const currentEventObject = calendar.getEvents().find((event) => compareToCurrentEvent(event));
-                currentEventObject.setProp("backgroundColor", "#198E97");
-                currentEventObject.setProp("textColor", "#FFFFFF");
-                currentEventObject.setProp("borderColor", "#198E97");
-              }
-              inScopeSetSelectedEvent(eventShape);
-              clickEvent.event.setProp("backgroundColor", "#FFAA1D");
-              clickEvent.event.setProp("textColor", "");
-              clickEvent.event.setProp("borderColor", "#FFAA1D")
+            eventDrop: (dropEvent) => {
+              inScopeUpdateSelectedEvent(dropEvent.event);
 
+            },
+            eventResize: (resizeEvent) => {
+              inScopeUpdateSelectedEvent(resizeEvent.event);
+            },
+            eventClick: (clickEvent) => {
+              inScopeUpdateSelectedEvent(clickEvent.event);
             },
             customButtons: {
               addApptButton: {
