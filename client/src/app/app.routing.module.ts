@@ -7,8 +7,8 @@ import { ModifyTechnicianComponent } from './technician/modify-technician/modify
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TechnicianListComponent } from './technician/technician-list/technician-list.component';
-import {AppointmentListComponent} from "./appointment/appointment-list/appointment-list.component";
-import {ModifyAppointmentComponent} from "./appointment/modify-appointment/modify-appointment.component";
+// import {AppointmentListComponent} from "./appointment/appointment-list/appointment-list.component";
+// import {ModifyAppointmentComponent} from "./appointment/modify-appointment/modify-appointment.component";
 import {CustomerListComponent} from "./customer/customer-list/customer-list.component";
 import {ModifyCustomerComponent} from "./customer/modify-customer/modify-customer.component";
 import {RsaListComponent} from "./rsa/rsa-list/rsa-list.component";
@@ -22,15 +22,16 @@ import {ModifyTemplateComponent} from "./template/modify-template/modify-templat
 import {ReminderListComponent} from "./reminder/reminder-list/reminder-list.component";
 import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminder.component";
 import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/reminder-error-list.component";
+import { CalendarComponent } from './calendar/calendar.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'appointment/index', pathMatch: 'full' },
   { path: 'technician/index', component: TechnicianListComponent },
   { path: 'technician/add', component: ModifyTechnicianComponent },
   { path: 'technician/edit/:id', component: ModifyTechnicianComponent },
-  { path: 'appointment/index', component:  AppointmentListComponent },
-  { path: 'appointment/add', component: ModifyAppointmentComponent },
-  { path: 'appointment/edit/:id', component: ModifyAppointmentComponent },
+  // { path: 'appointment/index', component:  AppointmentListComponent },
+  // { path: 'appointment/add', component: ModifyAppointmentComponent },
+  // { path: 'appointment/edit/:id', component: ModifyAppointmentComponent },
   { path: 'customer/index', component:  CustomerListComponent },
   { path: 'customer/add', component: ModifyCustomerComponent },
   { path: 'customer/edit/:id', component: ModifyCustomerComponent },
@@ -49,6 +50,7 @@ const routes: Routes = [
   { path: 'reminder/index', component: ReminderListComponent },
   { path: 'reminder/add', component: ModifyReminderComponent },
   { path: 'reminder/edit/:id', component: ModifyReminderComponent },
+  { path: 'appointment/index', component: CalendarComponent },
   { path: 'reminderError/index', component: ReminderErrorListComponent },
 ];
 
