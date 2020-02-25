@@ -2,8 +2,7 @@
  * Angular component for viewing rsas
  *
  * @package rsa
- * @author Noah Trimble
- * @modifiedBy Soumya Bagade
+ * @author Noah Trimble and Soumya Bagade
  */
 import { Observable } from "rxjs";
 import { RsaService } from "../rsa.service";
@@ -60,7 +59,7 @@ export class RsaListComponent implements OnInit {
           this.reloadData();
         },
         error => {
-          this.alertService.error('RSA could not be deleted.', false);
+          this.alertService.error('RSA could not be deleted. Are they currently used in an appointment?', false);
         });
   }
 

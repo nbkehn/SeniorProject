@@ -1,8 +1,7 @@
 /**
  * Angular module dependencies
  *
- * @author Noah Trimble
- * @author Soumya Bagade
+ * @author Noah Trimble, Soumya Bagade, Will Duke
  */
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -22,6 +21,8 @@ import { AlertComponent } from './alert/alert/alert.component';
 import { AlertService } from './alert/alert.service';
 import {NgxSmartModalModule} from "ngx-smart-modal";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+// import {ModifyAppointmentComponent} from "./appointment/modify-appointment/modify-appointment.component";
+// import {AppointmentListComponent} from "./appointment/appointment-list/appointment-list.component";
 import {ModifyCustomerComponent} from "./customer/modify-customer/modify-customer.component";
 import {CustomerListComponent} from "./customer/customer-list/customer-list.component";
 import {ModifyRsaComponent} from "./rsa/modify-rsa/modify-rsa.component";
@@ -29,6 +30,8 @@ import {RsaListComponent} from "./rsa/rsa-list/rsa-list.component";
 import {ModifyUserComponent} from "./user/modify-user/modify-user.component";
 import {UserListComponent} from "./user/user-list/user-list.component";
 import {MustMatchDirective} from "./user/validator/must-match-directive";
+import { ModifyFlooringComponent } from './flooring/modify-flooring/modify-flooring.component';
+import { FlooringListComponent } from './flooring/flooring-list/flooring-list.component';
 import {TemplateListComponent} from "./template/template-list/template-list.component";
 import {ModifyTemplateComponent} from "./template/modify-template/modify-template.component";
 import {ReminderListComponent} from "./reminder/reminder-list/reminder-list.component";
@@ -41,6 +44,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
+import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/reminder-error-list.component";
 
 
 @NgModule({
@@ -49,6 +53,8 @@ import { MatMomentDateModule } from "@angular/material-moment-adapter";
     ModifyTechnicianComponent,
     TechnicianListComponent,
     AlertComponent,
+    // ModifyAppointmentComponent,
+    // AppointmentListComponent,
     ModifyCustomerComponent,
     CustomerListComponent,
     ModifyRsaComponent,
@@ -56,6 +62,8 @@ import { MatMomentDateModule } from "@angular/material-moment-adapter";
     ModifyUserComponent,
     UserListComponent,
     MustMatchDirective,
+    ModifyFlooringComponent,
+    FlooringListComponent,
     TemplateListComponent,
     ModifyTemplateComponent,
     ReminderListComponent,
@@ -64,6 +72,7 @@ import { MatMomentDateModule } from "@angular/material-moment-adapter";
     AddDialogComponent,
     EditDialogComponent,
     DeleteDialogComponent,
+    ReminderErrorListComponent
   ],
   imports: [
     BrowserModule,

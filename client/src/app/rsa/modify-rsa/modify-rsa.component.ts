@@ -2,8 +2,7 @@
  * Angular component for creating and editing rsas
  *
  * @package rsa
- * @author Noah Trimble
- * @modifiedBy Soumya Bagade
+ * @author Noah Trimble and Soumya Bagade
  */
 import { RsaService } from '../rsa.service';
 import { Rsa } from '../rsa';

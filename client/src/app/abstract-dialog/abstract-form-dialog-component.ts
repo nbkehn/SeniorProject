@@ -34,7 +34,7 @@ export abstract class AbstractFormDialogComponent implements OnInit {
       firstName: [this.firstName, [Validators.required]],
       lastName: [this.lastName, [Validators.required]],
       start: [this.start, [Validators.required]],
-      end: [this.end, [Validators.required]],
+      end: [this.end, []],
     })
   }
   
@@ -77,16 +77,36 @@ export abstract class AbstractFormDialogComponent implements OnInit {
     return this.formGroup;
   }
 
+  cancel() {
+    this.dialogRef.close(false);
+  }
+
   /* Returns the form data when the dialog is closed */
   close(eventDeleted: boolean = false) {
-    if (this.formGroup.value.end < this.formGroup.value.start) {
-      alert("Error: end date cannot be earlier than start date");
-    } else {
-      this.dialogRef.close({
-        id: this.id,
-        ...this.formGroup.value,
-        deleted: eventDeleted
-      });
+    const returnObject = {
+      id: this.id,
+      ...this.formGroup.value,
+      deleted: eventDeleted
+    };
+    if (!this.end) {
+      returnObject.end = returnObject.start;
+    }
+    try {
+      if (returnObject.end < returnObject.start) {
+        throw new Error("Error: end date cannot be earlier than start date");
+      }
+      if (!returnObject.start) {
+        throw new Error("Error: start date is required");
+      }
+      if (!returnObject.firstName || returnObject.firstName == "") {
+        throw new Error("Error: first name is required");
+      }
+      if (!returnObject.lastName || returnObject.lastName == "") {
+        throw new Error("Error: last name is required");
+      }
+      this.dialogRef.close(returnObject);
+    } catch (e) {
+      alert(e.message);
     }
   }
 

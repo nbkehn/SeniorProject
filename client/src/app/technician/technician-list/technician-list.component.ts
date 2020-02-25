@@ -2,8 +2,7 @@
  * Angular component for viewing technicians
  *
  * @package technician
- * @author Noah Trimble
- * @modifiedBy Soumya Bagade
+ * @author Noah Trimble and Soumya Bagade
  */
 import { Observable } from "rxjs";
 import { TechnicianService } from "../technician.service";
@@ -60,7 +59,7 @@ export class TechnicianListComponent implements OnInit {
           this.reloadData();
         },
         error => {
-          this.alertService.error('Technician could not be deleted.', false);
+          this.alertService.error('Technician could not be deleted. Are they currently used in an appointment?', false);
         });
   }
 

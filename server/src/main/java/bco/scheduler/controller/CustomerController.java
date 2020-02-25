@@ -23,18 +23,34 @@ import bco.scheduler.model.Customer;
 import bco.scheduler.repository.CustomerRepository;
 import bco.scheduler.model.CommunicationType;
 
+/**
+ * Controller for customers
+ * @author Connor J. Parke and Noah Trimble
+ *
+ */
 @RestController
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = "http://localhost:4200")
 public class CustomerController {
+    /** customer repository */
     @Autowired
     private CustomerRepository customerRepository;
 
+    /**
+     * returns all customers
+     * @return all customers
+     */
     @GetMapping("/customers")
     public ResponseEntity<List<Customer>> getAllCustomers() {
         return ResponseEntity.ok(customerRepository.findAll());
     }
 
+    /**
+     * returns a customer from given id
+     * @param customerId id to use
+     * @return customer with id
+     * @throws ResourceNotFoundException
+     */
     @GetMapping("/customers/{id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable(value = "id") Long customerId)
             throws ResourceNotFoundException {
@@ -43,11 +59,23 @@ public class CustomerController {
         return ResponseEntity.ok(customer);
     }
 
+    /**
+     * creates a customer
+     * @param customer to create
+     * @return the created customer
+     */
     @PostMapping("/customers")
     public ResponseEntity<Customer> createCustomer(@Valid @RequestBody Customer customer) {
         return ResponseEntity.ok(customerRepository.save(customer));
     }
 
+    /**
+     * updates a customer
+     * @param customerId customer to update
+     * @param customerDetails updated customer
+     * @return updated customer
+     * @throws ResourceNotFoundException
+     */
     @PutMapping("/customers/{id}")
     public ResponseEntity<Customer> updateCustomer(@PathVariable(value = "id") Long customerId,
                                                    @Valid @RequestBody Customer customerDetails) throws ResourceNotFoundException {
@@ -64,6 +92,12 @@ public class CustomerController {
         return ResponseEntity.ok(customerRepository.save(customer));
     }
 
+    /**
+     * deletes a customer
+     * @param customerId customer to be deleted
+     * @return the deleted customer
+     * @throws ResourceNotFoundException
+     */
     @DeleteMapping("/customers/{id}")
     public ResponseEntity<Customer> deleteCustomer(@PathVariable(value = "id") Long customerId)
             throws ResourceNotFoundException {

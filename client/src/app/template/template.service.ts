@@ -66,4 +66,12 @@ export class TemplateService {
   getTemplatesList(): Observable<any> {
     return this.http.get(`${this.baseUrl}`);
   }
+
+  /**
+   * Gets a list of all template variables
+   * @return list of template variables
+   */
+  getTemplateVariables(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/variables`);
+  }
 }

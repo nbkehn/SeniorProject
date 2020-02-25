@@ -6,9 +6,14 @@
  */
 import { ReminderService } from '../reminder.service';
 import { Reminder } from '../reminder';
+import { TimeToSend } from '../timetosend';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertService } from '../../alert/alert.service';
+import { TemplateService } from 'src/app/template/template.service';
+import { Template } from 'src/app/template/template';
+import { UserType } from 'src/app/reminder/usertype';
+
 
 @Component({
   selector: 'app-modify-reminder',
@@ -18,15 +23,15 @@ export class ModifyReminderComponent implements OnInit {
   // the reminder's ID in the database
   id: number;
   // the reminder object to create and store data into
-  reminder: Reminder = new Reminder();
+  reminder: Reminder;
   // the title for the page
   title: string;
-  // object keys
-  objectKeys;
+  // template options
+  templateOptions: Template[];
   // Times to send
-  timesToSend;
-  // Templates
-  templates;
+  timeToSendOptions: TimeToSend[];
+  // user types
+  userTypeOptions: UserType[];
 
   /**
    * Creates the instance of the component
@@ -37,6 +42,7 @@ export class ModifyReminderComponent implements OnInit {
    */
   constructor(private route: ActivatedRoute,
               private reminderService: ReminderService,
+              private templateService: TemplateService,
               private router: Router,
               private alertService: AlertService) { }
 
@@ -45,14 +51,22 @@ export class ModifyReminderComponent implements OnInit {
    */
   ngOnInit() {
     // initialize mapped options
-    this.timesToSend = [];
-    this.templates = [];
-    this.objectKeys = Object.keys;
-    this.setTimesToSend();
-    this.setTemplates();
+    this.templateOptions = [];
+    this.timeToSendOptions = [];
+    this.userTypeOptions = [];
 
-    // initializes a new reminder
+    // populate option data
+    this.setTemplates();
+    this.setTimesToSend();
+    this.setUserTypes();
+
+    // initializes a new reminder and aggregates
     this.reminder = new Reminder();
+    this.reminder.emailTemplate = new Template(); 
+    this.reminder.textTemplate = new Template();
+	this.reminder.timeToSend = new TimeToSend();
+	this.reminder.userType = new UserType();
+
 
     // gets the id from the routing
     this.id = this.route.snapshot.params['id'];
@@ -71,7 +85,7 @@ export class ModifyReminderComponent implements OnInit {
           this.alertService.error('Reminder could not be loaded.', false);
         });
     }
-  }
+  } 
 
   /**
    * Set times to send
@@ -80,7 +94,7 @@ export class ModifyReminderComponent implements OnInit {
     this.reminderService.getTimesToSend()
       .subscribe(
         data => {
-          this.timesToSend = data;
+          this.timeToSendOptions = data;
         },
         error => {
           this.alertService.error('Times to send could not be loaded.', false);
@@ -91,13 +105,27 @@ export class ModifyReminderComponent implements OnInit {
    * Set templates
    */
   setTemplates() {
-    this.reminderService.getTemplates()
+    this.templateService.getTemplatesList()
       .subscribe(
         data => {
-          this.templates = data;
+          this.templateOptions = data;
         },
         error => {
           this.alertService.error('Templates could not be loaded.', false);
+        });
+  }
+
+  /**
+   * Set user types
+   */
+  setUserTypes() {
+    this.reminderService.getUserTypes()
+      .subscribe(
+        data => {
+          this.userTypeOptions = data;
+        },
+        error => {
+          this.alertService.error('User types could not be loaded.', false);
         });
   }
 
@@ -118,8 +146,14 @@ export class ModifyReminderComponent implements OnInit {
       },
       error => {
         // Display error message on error and remain in form
-        this.alertService.error('The reminder could not be saved. Please note that time to send is unique per reminder.', false);
+        this.alertService.error('The reminder could not be saved. ' +
+          'Please note that each combination of time to send and user are unique per reminder.', false);
       });
+  }
+
+ 
+  timeToSendCompare(timeToSend1: String, timeToSend2: TimeToSend) {
+    return timeToSend1 == timeToSend2.toString(); 
   }
 
   /**

@@ -51,8 +51,7 @@ import { ComponentType } from '@angular/cdk/portal';
     /**
      * Constructor for the CalendarComponent; does nothing
      */
-    constructor(public dialog: MatDialog) {
-    }
+    constructor(public dialog: MatDialog) {}
 
     private getYesterday(date: Date) {
       const dayLength = new Date("2000-01-02").valueOf() - new Date("2000-01-01").valueOf();
@@ -73,7 +72,6 @@ import { ComponentType } from '@angular/cdk/portal';
           return null;
         } else {
           dialogProperties = {
-            ...dialogWidthProperties,
             data: {
               id: this.selectedEvent.id,
               title: this.selectedEvent.title,
@@ -82,8 +80,6 @@ import { ComponentType } from '@angular/cdk/portal';
             },
           }
         }
-      } else {
-        dialogProperties = dialogWidthProperties;
       }
       return this.dialog.open(dialogComponentClass, dialogProperties);
     }
@@ -91,15 +87,17 @@ import { ComponentType } from '@angular/cdk/portal';
     openAddDialog() {
       const dialogRef = this.openDialog(AddDialogComponent);
       dialogRef.afterClosed().subscribe(returnedValue => {
-        const appt = {
-          id: CalendarComponent.nextId,
-          title: `Customer: ${returnedValue.firstName} ${returnedValue.lastName}`,
-          start: returnedValue.start ? returnedValue.start.format("YYYY-MM-DD") : (new Date()).toDateString(),
-          end: returnedValue.end ? returnedValue.end.add(1, "days").format("YYYY-MM-DD") : "",
+        if (!(typeof returnedValue == typeof Boolean)) {
+          const appt = {
+            id: CalendarComponent.nextId,
+            title: `Customer: ${returnedValue.firstName} ${returnedValue.lastName}`,
+            start: returnedValue.start ? returnedValue.start.format("YYYY-MM-DD") : (new Date()).toDateString(),
+            end: returnedValue.end ? returnedValue.end.add(1, "days").format("YYYY-MM-DD") : "",
+          }
+          this.calendarObject.addEvent(appt);
+          CalendarComponent.nextId += 1;
+          console.log(this.calendarObject.getEvents());
         }
-        this.calendarObject.addEvent(appt);
-        CalendarComponent.nextId += 1;
-        console.log(this.calendarObject.getEvents());
       })
     }
 
@@ -107,16 +105,18 @@ import { ComponentType } from '@angular/cdk/portal';
       const dialogRef = this.openDialog(EditDialogComponent, true);
       if (dialogRef) {
         dialogRef.afterClosed().subscribe(returnedValue => {
-          const appt = {
-            id: returnedValue.id,
-            title: returnedValue.firstName + " " + returnedValue.lastName,
-            start: new Date(returnedValue.start) || new Date(),
-            end: this.getTomorrow(returnedValue.end) || "",
+          if (!(typeof returnedValue == typeof Boolean)) {
+            const appt = {
+              id: returnedValue.id,
+              title: returnedValue.firstName + " " + returnedValue.lastName,
+              start: new Date(returnedValue.start) || new Date(),
+              end: this.getTomorrow(returnedValue.end) || "",
+            }
+            console.log(this.calendarObject.getEvents());
+            const editedEvent = this.calendarObject.getEventById(appt.id);
+            editedEvent.setStart(appt.start);
+            editedEvent.setEnd(appt.end);
           }
-          console.log(this.calendarObject.getEvents());
-          const editedEvent = this.calendarObject.getEventById(appt.id);
-          editedEvent.setStart(appt.start);
-          editedEvent.setEnd(appt.end);
         });
       }
     }
@@ -125,16 +125,18 @@ import { ComponentType } from '@angular/cdk/portal';
       const dialogRef = this.openDialog(DeleteDialogComponent, true);
       if (dialogRef) {
         dialogRef.afterClosed().subscribe(returnedValue => {
-          if (returnedValue.deleted) {
-            const deleteEvent = this.calendarObject.getEvents().find((event) => {
-              return event.title == `Customer: ${returnedValue.firstName} ${returnedValue.lastName}`;
-            })
-            deleteEvent.remove();
-            this.selectedEvent = null;
-            console.log(returnedValue);
+          if (!(typeof returnedValue == typeof Boolean)) {
+            if (returnedValue.deleted) {
+              const deleteEvent = this.calendarObject.getEvents().find((event) => {
+                return event.title == `Customer: ${returnedValue.firstName} ${returnedValue.lastName}`;
+              })
+              deleteEvent.remove();
+              this.selectedEvent = null;
+              console.log(returnedValue);
+            }
           }
         });
-    }
+      }
     }
 
     updateSelectedEvent(newEvent: EventApi) {

@@ -4,15 +4,17 @@ import bco.scheduler.exception.ResourceNotFoundException;
 import bco.scheduler.model.Reminder;
 import bco.scheduler.model.Template;
 import bco.scheduler.model.TimeToSend;
+import bco.scheduler.model.UserType;
+import bco.scheduler.repository.AppointmentQueueRepository;
 import bco.scheduler.repository.ReminderRepository;
 import bco.scheduler.repository.TemplateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 @RestController
@@ -23,6 +25,8 @@ public class ReminderController {
     private ReminderRepository reminderRepository;
     @Autowired
     private TemplateRepository templateRepository;
+    @Autowired
+    private AppointmentQueueRepository appointmentQueueRepository;
 
     /**
      * Used for the GET call for all - returns the complete list of reminders from the DB
@@ -53,7 +57,9 @@ public class ReminderController {
      */
     @PostMapping("/reminders")
     public ResponseEntity<Reminder> createReminder(@Valid @RequestBody Reminder reminder) {
-        return ResponseEntity.ok(reminderRepository.save(reminder));
+        reminder = reminderRepository.save(reminder);
+        appointmentQueueRepository.addNewReminder(reminder.getId());
+        return ResponseEntity.ok(reminder);
     }
 
     /**
@@ -68,9 +74,10 @@ public class ReminderController {
         Reminder reminder = reminderRepository.findById(reminderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reminder not found for this id :: " + reminderId));
 
-        reminder.setEmailTemplateId(reminderDetails.getEmailTemplateId());
-        reminder.setTextTemplateId(reminderDetails.getTextTemplateId());
+        reminder.setEmailTemplate(reminderDetails.getEmailTemplate());
+        reminder.setTextTemplate(reminderDetails.getTextTemplate());
         reminder.setTimeToSend(reminderDetails.getTimeToSend());
+        reminder.setUserType(reminderDetails.getUserType());
         
         return ResponseEntity.ok(reminderRepository.save(reminder));
     }
@@ -96,24 +103,30 @@ public class ReminderController {
      * @return array of times to send
      */
     @GetMapping("/reminders/timeToSend")
-    public ResponseEntity<Map<Integer, String>> getTimesToSend() {
-        Map<Integer, String> map = new HashMap<Integer, String>();
-        for (TimeToSend timeToSend : TimeToSend.values()) {
-            map.put(timeToSend.getOffset(), timeToSend.getName());
+    public  List<Map<String, String>> getTimesToSend() {
+        List<Map<String, String>> timesToSend = new ArrayList<Map<String, String>>();  
+        for (TimeToSend timeToSendValue : TimeToSend.values()) {
+            HashMap<String, String> timeToSend = new HashMap<String, String>();
+            timeToSend.put("offset", Integer.toString(timeToSendValue.getOffset()));
+            timeToSend.put("name", timeToSendValue.getName());
+            timesToSend.add(timeToSend);
         }
-        return ResponseEntity.ok(map);
+        return timesToSend;
     }
 
     /**
-     * Get templates
-     * @return array of templates
+     * Get user types
+     * @return array of user types
      */
-    @GetMapping("/reminders/template")
-    public ResponseEntity<Map<Long, String>> getTemplates() {
-        Map<Long, String> map = new HashMap<Long, String>();
-        for (Template template : templateRepository.findAll()) {
-            map.put(template.getId(), template.getTitle());
+    @GetMapping("/reminders/userType")
+    public List<Map<String, String>> getUserTypes() {
+        List<Map<String, String>> userTypes = new ArrayList<Map<String, String>>();  
+        for (UserType userTypeValue : UserType.values()) {
+            HashMap<String, String> userType = new HashMap<String, String>();
+            userType.put("id", userTypeValue.name());
+            userType.put("name", userTypeValue.getName());
+            userTypes.add(userType);
         }
-        return ResponseEntity.ok(map);
+        return userTypes;
     }
 }

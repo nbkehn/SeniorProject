@@ -2,8 +2,7 @@
  * Angular component for creating and editing customers
  *
  * @package customer
- * @author Noah Trimble
- * @modifiedBy Soumya Bagade
+ * @author Noah Trimble and Soumya Bagade
  */
 import { CustomerService } from '../customer.service';
 import { Customer } from '../customer';

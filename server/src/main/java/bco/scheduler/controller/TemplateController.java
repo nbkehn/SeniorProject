@@ -1,9 +1,13 @@
 package bco.scheduler.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
+import bco.scheduler.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import bco.scheduler.exception.ResourceNotFoundException;
-import bco.scheduler.model.Template;
 import bco.scheduler.repository.TemplateRepository;
 
 /**
@@ -100,5 +103,23 @@ public class TemplateController {
 
         templateRepository.delete(template);
         return ResponseEntity.ok(template);
+    }
+
+    /**
+     * Get template variables
+     * @return array of template variables
+     */
+    @GetMapping("/templates/variables")
+    public ResponseEntity<Map<String, String>> getTemplateVariables() {
+        List<Map<String, String>> templateVariableList = new ArrayList<>();
+        templateVariableList.add(Person.getTemplateVariableDescriptions());
+        templateVariableList.add(Appointment.getTemplateVariableDescriptions());
+
+        Map<String, String> templateVariables = new HashMap<>();
+        for (Map<String, String> item : templateVariableList) {
+            templateVariables.putAll(item);
+        }
+
+        return ResponseEntity.ok(templateVariables);
     }
 }

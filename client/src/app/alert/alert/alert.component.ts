@@ -3,7 +3,7 @@
  *
  * @package alert
  * @source https://github.com/cornflourblue/angular2-alert-notifications
- * @modifiedBy Noah Trimble
+ * @author Noah Trimble
  */
 import { Component, OnInit, Input } from '@angular/core';
 

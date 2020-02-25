@@ -1,15 +1,11 @@
 package bco.scheduler.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
+ * The general object for the RSA user type
  * 
- * @author Connor J. Parke
+ * @author Connor J. Parke and Soumya Bagade
  *
  */
 @Entity

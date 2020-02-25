@@ -9,8 +9,11 @@ import { ReminderService } from "../reminder.service";
 import { Reminder } from "../reminder";
 import { Component, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
-import {AlertService} from "../../alert/alert.service";
-import {NgxSmartModalService} from "ngx-smart-modal";
+import { AlertService } from "../../alert/alert.service";
+import { NgxSmartModalService } from "ngx-smart-modal";
+import { TimeToSend } from '../timetosend';
+import { UserType } from '../usertype';
+
 
 @Component({
   selector: "app-reminder-list",
@@ -19,10 +22,14 @@ import {NgxSmartModalService} from "ngx-smart-modal";
 export class ReminderListComponent implements OnInit {
   // the list of reminders
   reminders: Observable<Reminder[]>;
-  // Times to send
-  timesToSend;
-  // Templates
-  templates;
+
+   // Times to send
+  timeToSendOptions: TimeToSend[];
+
+  // user type options
+  userTypeOptions: UserType[];
+
+
 
   /**
    * Constructor for the ReminderListComponent, doesn't really do anything right now
@@ -41,10 +48,10 @@ export class ReminderListComponent implements OnInit {
    */
   ngOnInit() {
     this.reloadData();
-    this.timesToSend = [];
-    this.templates = [];
+	this.timeToSendOptions = [];
+	this.userTypeOptions = [];
     this.setTimesToSend();
-    this.setTemplates();
+    this.setUserTypes();
   }
 
   /**
@@ -56,13 +63,39 @@ export class ReminderListComponent implements OnInit {
   }
 
   /**
+   * Translate time to send option id to value
+   * @param id Option id
+   * @return translated time to send
+   */
+  translateUserType(id: string) {
+	for (let option of this.userTypeOptions) {
+		if (option.id == id) {
+			return option;
+		}
+	}
+  }
+
+  /**
+   * Translate time to send option id to value
+   * @param id Option id
+   * @return translated time to send
+   */
+  translateTimeToSend(offset: number) {
+	for (let option of this.timeToSendOptions) {
+		if (option.offset == offset) {
+			return option;
+		}
+	}
+  }
+
+  /**
    * Set times to send
    */
   setTimesToSend() {
     this.reminderService.getTimesToSend()
       .subscribe(
         data => {
-          this.timesToSend = data;
+          this.timeToSendOptions = data;
         },
         error => {
           this.alertService.error('Times to send could not be loaded.', false);
@@ -70,16 +103,16 @@ export class ReminderListComponent implements OnInit {
   }
 
   /**
-   * Set templates
+   * Set user types
    */
-  setTemplates() {
-    this.reminderService.getTemplates()
+  setUserTypes() {
+    this.reminderService.getUserTypes()
       .subscribe(
         data => {
-          this.templates = data;
+          this.userTypeOptions = data;
         },
         error => {
-          this.alertService.error('Templates could not be loaded.', false);
+          this.alertService.error('User types could not be loaded.', false);
         });
   }
 
@@ -105,23 +138,5 @@ export class ReminderListComponent implements OnInit {
    */
   editReminder(id: number) {
     this.router.navigate(['/reminder/edit', id]);
-  }
-
-  /**
-   * Translate time to send option id to value
-   * @param id Option id
-   * @return translated time to send
-   */
-  translateTimeToSend(id: number) {
-    return this.timesToSend[id];
-  }
-
-  /**
-   * Translate template option id to value
-   * @param id Option id
-   * @return translated template
-   */
-  translateTemplate(id: number) {
-    return this.templates[id];
   }
 }

@@ -1,13 +1,15 @@
 /**
  * Time to send enum
- * @author Noah Trimble
+ * @author Noah Trimble, Connor J. Parke
  */
 package bco.scheduler.model;
 
 public enum TimeToSend {
     ONE_WEEK_PRIOR("One Week Prior", -7),
     ONE_DAY_PRIOR("One Day Prior", -1),
-    ONE_YEAR_AFTER("One Year After", 365);
+    ONE_YEAR_AFTER("Warranty Message (Carpet Only)", 365),
+    OTW("OTW Message (Only text template will be used)", -1000),
+    APPOINTMENT_CREATION("Appointment Creation Message", -1001);
 
     // Name of time to send
     private String name;
@@ -17,14 +19,14 @@ public enum TimeToSend {
 
     /**
      * CommunicationType Constructor with name
-     * @param String Name of time to send
-     * @param int Offset of when to send
+     * @param name Name of time to send
+     * @param offset Offset of when to send
      */
     TimeToSend(String name, int offset) {
         this.name = name;
         this.offset = offset;
     }
-
+    
     /**
      * Get name of communication type
      * @return name

@@ -2,8 +2,7 @@
  * Angular component for viewing customers
  *
  * @package customer
- * @author Noah Trimble
- * @modifiedBy Soumya Bagade
+ * @author Noah Trimble and Soumya Bagade
  */
 import { Observable } from "rxjs";
 import { CustomerService } from "../customer.service";
@@ -78,7 +77,7 @@ export class CustomerListComponent implements OnInit {
           this.reloadData();
         },
         error => {
-          this.alertService.error('Customer could not be deleted.', false);
+          this.alertService.error('Customer could not be deleted. Are they currently used in an appointment?', false);
         });
   }
 
