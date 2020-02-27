@@ -77,7 +77,7 @@ export class AddDialogComponent extends AbstractFormDialogComponent implements O
    * Creates a new appointment based on the form fields entered by the user
    */
   add() {
-    this.close();
-  }
+    this.dialogRef.close(this.formGroup.value);
+    }
 
 }

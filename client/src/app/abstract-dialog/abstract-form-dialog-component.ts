@@ -26,8 +26,7 @@ export abstract class AbstractFormDialogComponent implements OnInit {
   private id: number;
   appointment: Appointment;
 
-  @Input() private firstName: String = "";
-  @Input() private lastName: String = "";
+
   @Input() private start: Date;
   @Input() private end: Date;
   customer: Customer;
@@ -45,7 +44,7 @@ export abstract class AbstractFormDialogComponent implements OnInit {
 
 
   /* Variable for the container of each dialog's form data */
-  private formGroup: FormGroup
+  formGroup: FormGroup
 
   /* Initializes form group so it can be accessed when the dialog opens */
   constructor(private builder: FormBuilder, public dialogRef: MatDialogRef<AbstractFormDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
@@ -61,14 +60,12 @@ export abstract class AbstractFormDialogComponent implements OnInit {
       const titleNamePortion: string = data.title;
       const fullName = titleNamePortion.split(":")[1].trim();
       const firstAndLastName = fullName.split(" ");
-      this.setFirstName(firstAndLastName[0]);
-      this.setLastName(firstAndLastName[1]);
+      this.customer.firstName = (firstAndLastName[0]);
+      this.customer.lastName = (firstAndLastName[1]);
       this.setStart(data.start || new Date());
       this.setEnd(data.end || this.getStart());
     }
     this.formGroup = this.builder.group({
-      firstName: [this.firstName, [Validators.required]],
-      lastName: [this.lastName, [Validators.required]],
       start: [this.start, [Validators.required]],
       end: [this.end, []],
       customer: [this.customer, []],
@@ -85,21 +82,6 @@ export abstract class AbstractFormDialogComponent implements OnInit {
 
   }
 
-  getFirstName() {
-    return this.firstName;
-  }
-
-  setFirstName(name: string) {
-    this.firstName = name;
-  }
-
-  getLastName() {
-    return this.lastName;
-  }
-
-  setLastName(name: string) {
-    this.lastName = name;
-  }
 
   getStart() {
     return this.start;

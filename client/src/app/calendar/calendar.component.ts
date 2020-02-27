@@ -25,6 +25,8 @@ import { AppointmentService } from '../appointment/appointment.service';
 import { Appointment } from '../appointment/appointment';
 import { Observable } from 'rxjs';
 import { ResourceLoader } from '@angular/compiler';
+import { AlertService } from '../alert/alert.service';
+
 
 @Component({
   selector: "app-calendar-list",
@@ -39,6 +41,8 @@ export class CalendarComponent implements OnInit {
   private selectedEvent: { id: number, title: string, start: Date, end: Date }
 
   private static nextId: number = 3;
+
+  appointment: Appointment;
 
 
 
@@ -61,7 +65,7 @@ export class CalendarComponent implements OnInit {
   /**
    * Constructor for the CalendarComponent; does nothing
    */
-  constructor(public dialog: MatDialog, private appointmentService: AppointmentService) { }
+  constructor(public dialog: MatDialog, private appointmentService: AppointmentService, private alertService: AlertService) { }
 
   private getYesterday(date: Date) {
     const dayLength = new Date("2000-01-02").valueOf() - new Date("2000-01-01").valueOf();
@@ -100,7 +104,7 @@ export class CalendarComponent implements OnInit {
       if (!(typeof returnedValue == typeof Boolean)) {
         const appt = {
           id: CalendarComponent.nextId,
-          title: `Customer: ${returnedValue.firstName} ${returnedValue.lastName}`,
+          title: `Customer: ${returnedValue.customer.firstName} ${returnedValue.customer.lastName}`,
           start: returnedValue.start ? returnedValue.start.format("YYYY-MM-DD") : (new Date()).toDateString(),
           end: returnedValue.end ? returnedValue.end.add(1, "days").format("YYYY-MM-DD") : "",
         }
@@ -109,6 +113,8 @@ export class CalendarComponent implements OnInit {
         console.log(this.calendarObject.getEvents());
         this.updateSelectedEvent(this.calendarObject.getEventById(String(appt.id)));
       }
+      this.appointment = returnedValue;
+      this.save();
     })
   }
 
@@ -247,25 +253,6 @@ export class CalendarComponent implements OnInit {
         selectable: true, // allow the selection of multiple dates (for scheduling)
 
         //TODO: later delete this dummy data
-        events: [
-          {
-            id: 0,
-            title: "Customer: Renee Segda",
-            start: "2020-02-16"
-          },
-          {
-            id: 1,
-            title: "Customer: Nico Kehn",
-            start: "2020-02-16",
-            end: "2020-02-18"
-          },
-          {
-            id: 2,
-            title: "Customer: Koby Brown",
-            start: "2020-02-25",
-            end: "2020-02-28"
-          }
-        ],
         eventBackgroundColor: '#198E97',
         eventTextColor: '#FFFFFF',
         eventBorderColor: '#198E97',
@@ -275,6 +262,22 @@ export class CalendarComponent implements OnInit {
       calendar.render();
       inScopeSetCalendar(calendar);
     });
+  }
+  save() {
+    // saves the appointment object to the database -- if the appointment hasn't been created before, it saves as a new entry
+    // if the appointment has been created before, it updates the appointment
+    let response = this.appointmentService.createAppointment(this.appointment);
+    response.subscribe(
+      data => {
+        // Display success message and go back to list
+        this.alertService.success('Appointment saved successfully.', true);
+        console.log("Successfully saved appointment");
+      },
+      error => {
+        // Display error message on error and remain in form
+        this.alertService.error('The appointment could not be saved.', false);
+        console.log("Successfully saved appointment");
+      });
   }
 }
 

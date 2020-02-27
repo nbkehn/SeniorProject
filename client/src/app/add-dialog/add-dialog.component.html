@@ -1,19 +1,5 @@
 <h2 mat-dialog-title>Add Appointment</h2>
 <form [formGroup]="formGroup">
-    <span>
-        <mat-form-field appearance="outline">
-            <mat-label>Customer First Name</mat-label>
-            <input matInput formControlName="firstName" placeholder="Enter first name here">
-            <mat-error *ngIf="!firstName || firstName == ''">First name required</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline" [floatLabel]="never">
-            <mat-label>Customer Last Name</mat-label>
-            <input matInput formControlName="lastName" placeholder="Enter last name here">
-            <mat-error *ngIf="!lastName || lastName == ''">Last name required</mat-error>
-        </mat-form-field>
-    </span>
-    <br>
-    <br>
     <mat-form-field>
         <mat-label>Start Date</mat-label>
         <input matInput [min]="minDate" formControlName="start" [matDatepicker]="startPicker">
