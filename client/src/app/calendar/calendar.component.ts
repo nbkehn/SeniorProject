@@ -259,7 +259,7 @@ export class CalendarComponent implements OnInit {
         defaultDate: new Date(),
         navLinks: true, // can click day/week names to navigate views
         editable: true,
-        eventLimit: true, // allow "more" link when too many events
+        eventLimit: false, // allow "more" link when too many events
         selectable: true, // allow the selection of multiple dates (for scheduling)
 
         //TODO: later delete this dummy data
