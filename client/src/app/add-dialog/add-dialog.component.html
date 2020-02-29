@@ -17,9 +17,9 @@
     <br>
     <mat-form-field>
         <mat-label>Customer</mat-label>
-        <mat-select role="listbox">
-            <mat-option formControlName="customer" role="option"*ngFor="let customerOption of customerOptions" 
-            [value]="customerOption.id">
+        <mat-select role="listbox" formControlName="customer" name="customer">
+            <mat-option  *ngFor="let customerOption of customerOptions" 
+            [value]="customerOption">
                 {{customerOption.firstName}} {{customerOption.lastName}}
             </mat-option>
         </mat-select>
@@ -27,9 +27,9 @@
     </mat-form-field>
     <mat-form-field>
         <mat-label>Technician</mat-label>
-        <mat-select role="listbox">
-            <mat-option formControlName="technician" *ngFor="let technicianOption of technicianOptions"
-            [value]="technicianOption.id">
+        <mat-select role="listbox" formControlName="technician">
+            <mat-option  *ngFor="let technicianOption of technicianOptions"
+            [value]="technicianOption">
                 {{technicianOption.firstName}} {{technicianOption.lastName}}
             </mat-option>
         </mat-select>
@@ -38,18 +38,18 @@
     <br> 
     <mat-form-field>
         <mat-label>RSA</mat-label>
-        <mat-select role="listbox">
-            <mat-option formControlName="rsa" role="option"*ngFor="let rsaOption of rsaOptions"
-            [value]="rsaOption.id">
+        <mat-select role="listbox" formControlName="rsa">
+            <mat-option  role="option"*ngFor="let rsaOption of rsaOptions"
+            [value]="rsaOption">
                 {{rsaOption.firstName}} {{rsaOption.lastName}}
             </mat-option>
         </mat-select>
     </mat-form-field>
     <mat-form-field>
         <mat-label>Flooring</mat-label>
-        <mat-select role="listbox">
-            <mat-option formControlName="flooring" role="option"*ngFor="let flooringOption of flooringOptions"
-            [value]="flooringOption.id">
+        <mat-select role="listbox" formControlName="flooring">
+            <mat-option  role="option"*ngFor="let flooringOption of flooringOptions"
+            [value]="flooringOption">
                 {{flooringOption.name}}
             </mat-option>
         </mat-select>

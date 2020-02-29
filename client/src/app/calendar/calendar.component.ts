@@ -112,9 +112,19 @@ export class CalendarComponent implements OnInit {
         CalendarComponent.nextId += 1;
         console.log(this.calendarObject.getEvents());
         this.updateSelectedEvent(this.calendarObject.getEventById(String(appt.id)));
+        
+        console.log(returnedValue);
+        this.appointment = new Appointment();
+        this.appointment.id = appt.id;
+        this.appointment.startDate = returnedValue.start;
+        this.appointment.endDate = returnedValue.end;
+        this.appointment.customer = returnedValue.customer;
+        this.appointment.technicians =  returnedValue.technicians;
+        this.appointment.rsa = returnedValue.rsa;
+        this.appointment.flooring = returnedValue.flooring;
+        this.save();
       }
-      this.appointment = returnedValue;
-      this.save();
+      
     })
   }
 

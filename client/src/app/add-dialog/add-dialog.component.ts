@@ -31,6 +31,11 @@ import { MatSelectModule } from '@angular/material/select';
 export class AddDialogComponent extends AbstractFormDialogComponent implements OnInit {
 
   private minDate: Date;
+  selectedCustomer : Customer;
+  selectedTechnician : Technician;
+  selectedFlooring : Flooring;
+  selectedRSA : Rsa;
+
 
   constructor(builder: FormBuilder, public dialogRef: MatDialogRef<AbstractFormDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
    appointmentService: AppointmentService,
@@ -67,8 +72,6 @@ export class AddDialogComponent extends AbstractFormDialogComponent implements O
     this.appointment.rsa = new Rsa();
     this.appointment.flooring = new Flooring();
 
-    console.log(this.customerOptions.toString);
-
   }
 
 
@@ -78,6 +81,7 @@ export class AddDialogComponent extends AbstractFormDialogComponent implements O
    */
   add() {
     this.dialogRef.close(this.formGroup.value);
+    
     }
 
 }
