@@ -23,7 +23,7 @@ import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component'
 import { ComponentType } from '@angular/cdk/portal';
 import { AppointmentService } from '../appointment/appointment.service';
 import { Appointment } from '../appointment/appointment';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { ResourceLoader } from '@angular/compiler';
 import { AlertService } from '../alert/alert.service';
 
@@ -36,7 +36,9 @@ export class CalendarComponent implements OnInit {
 
   private calendarObject: Calendar;
 
-  appointments: Observable<Appointment[]>;
+  private appointments  = new BehaviorSubject<Appointment[]>([]);
+  private appStore : { apps : Appointment[]} = {apps : []};
+  readonly apps = this.appointments.asObservable();
 
   private selectedEvent: { id: number, title: string, start: Date, end: Date }
 
@@ -191,8 +193,26 @@ export class CalendarComponent implements OnInit {
  * calls from the appointment service so that it makes the DB call
  */
   reloadData() {
-    this.appointments = this.appointmentService.getAppointmentsList();
-    console.log(this.appointments);
+    this.appointmentService.getAppointmentsList()
+    .subscribe( data => {
+        this.alertService.success('Appointments loaded successfully.', true);
+        this.appStore.apps = data;
+        this.appointments.next(Object.assign({}, this.appStore).apps);
+      },
+      error => {
+        this.alertService.error('Appointments could not be loaded.', false);
+      });
+
+      this.apps.forEach(element => {
+        element.forEach(data => {
+          var event = {id: 0, title: "", start: new Date(), end: new Date()};
+          event.id = data.id;
+          event.title = data.customer.firstName + " " + data.customer.lastName;
+          event.start = data.startDate;
+          event.end = data.endDate;
+          this.calendarObject.addEvent(event);
+        })
+      });
   }
 
 
@@ -261,6 +281,7 @@ export class CalendarComponent implements OnInit {
         editable: true,
         eventLimit: false, // allow "more" link when too many events
         selectable: true, // allow the selection of multiple dates (for scheduling)
+        
 
         //TODO: later delete this dummy data
         eventBackgroundColor: '#198E97',
