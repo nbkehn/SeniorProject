@@ -175,10 +175,9 @@ export class CalendarComponent implements OnInit {
       dialogRef.afterClosed().subscribe(returnedValue => {
         if (!(typeof returnedValue == typeof Boolean)) {
           if (returnedValue.deleted) {
-            const deleteEvent = this.calendarObject.getEvents().find((event) => {
-              return event.title == `Customer: ${returnedValue.firstName} ${returnedValue.lastName}`;
-            })
+            const deleteEvent = this.calendarObject.getEventById(this.selectedEvent.id.toString());
             deleteEvent.remove();
+            this.delete(this.selectedEvent.id);
             this.selectedEvent = null;
             console.log(returnedValue);
           }
@@ -347,7 +346,21 @@ export class CalendarComponent implements OnInit {
         this.alertService.error('The appointment could not be updated.', false);
         console.log("Unsuccessfully updated appointment");
       });
+  }
 
+  delete(id : number) {
+    let response = this.appointmentService.deleteAppointment(id);
+    response.subscribe(
+      data => {
+        // Display success message and go back to list
+        this.alertService.success('Appointment deleted successfully.', true);
+        console.log("Successfully deleted appointment");
+      },
+      error => {
+        // Display error message on error and remain in form
+        this.alertService.error('The appointment could not be deleted.', false);
+        console.log("Unsuccessfully deleted appointment");
+      });
   }
 }
 

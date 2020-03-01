@@ -28,19 +28,19 @@ export abstract class AbstractFormDialogComponent implements OnInit {
 
   /* Variables for form data (to be shared with child classes) */
 
-   selectedAppointment  = new BehaviorSubject<Appointment>(new Appointment());
-   appStore : { app : Appointment} = {app : new Appointment()};
+  selectedAppointment = new BehaviorSubject<Appointment>(new Appointment());
+  appStore: { app: Appointment } = { app: new Appointment() };
   readonly app = this.selectedAppointment.asObservable();
 
   private id: number;
   appointment: Appointment;
   retrievedApp = new Appointment();
-  editApp : Appointment;
-  editing : boolean = false;
+  editApp: Appointment;
+  editing: boolean = false;
 
 
-  @Input()  start: Date;
-  @Input()  end: Date;
+  @Input() start: Date;
+  @Input() end: Date;
   customer: Customer;
   rsa: Rsa;
   technician: Technician;
@@ -67,30 +67,30 @@ export abstract class AbstractFormDialogComponent implements OnInit {
     private rsaService: RsaService,
     private flooringService: FlooringService,
     private alertService: AlertService) {
-      if (data) {
-        this.id = data.id;
-        //retrieve appointment from database based on event id
-        this.appointmentService.getAppointment(this.id).subscribe(
-          data => {
-            this.editApp = data;
-            this.update();
-          });
-          
-      }
-      this.formGroup = this.builder.group({
-        start: [this.start, [Validators.required]],
-        end: [this.end, []],
-        customer: [this.customer, []],
-        technician: [this.technician, []],
-        rsa: [this.rsa, []],
-        flooring: [this.flooring, []],
-  
-      });
-    
+    if (data) {
+      this.id = data.id;
+      //retrieve appointment from database based on event id
+      this.appointmentService.getAppointment(this.id).subscribe(
+        data => {
+          this.editApp = data;
+          this.update();
+        });
+
+    }
+    this.formGroup = this.builder.group({
+      start: [this.start, [Validators.required]],
+      end: [this.end, []],
+      customer: [this.customer, []],
+      technician: [this.technician, []],
+      rsa: [this.rsa, []],
+      flooring: [this.flooring, []],
+
+    });
+
   }
 
   ngOnInit() {
-    
+
   }
 
   getStart() {
@@ -196,7 +196,7 @@ export abstract class AbstractFormDialogComponent implements OnInit {
     this.setCustomer(this.editApp.customer);
     this.setRsa(this.editApp.rsa);
     this.setFlooring(this.editApp.flooring);
-    this.formGroup = this.builder.group({ 
+    this.formGroup = this.builder.group({
       start: [this.start, [Validators.required]],
       end: [this.end, []],
       customer: [this.customer, []],
@@ -217,23 +217,26 @@ export abstract class AbstractFormDialogComponent implements OnInit {
     if (!returnObject.end) {
       returnObject.end = returnObject.start;
     }
-    try {
-      if (returnObject.end < returnObject.start) {
-        throw new Error("Error: end date cannot be earlier than start date");
+    if (!eventDeleted) {
+      try {
+        if (returnObject.end < returnObject.start) {
+          throw new Error("Error: end date cannot be earlier than start date");
+        }
+        if (!returnObject.start) {
+          throw new Error("Error: start date is required");
+        }
+        if (!returnObject.firstName || returnObject.firstName == "") {
+          throw new Error("Error: first name is required");
+        }
+        if (!returnObject.lastName || returnObject.lastName == "") {
+          throw new Error("Error: last name is required");
+        }
+        this.dialogRef.close(returnObject);
+      } catch (e) {
+        alert(e.message);
       }
-      if (!returnObject.start) {
-        throw new Error("Error: start date is required");
-      }
-      if (!returnObject.firstName || returnObject.firstName == "") {
-        throw new Error("Error: first name is required");
-      }
-      if (!returnObject.lastName || returnObject.lastName == "") {
-        throw new Error("Error: last name is required");
-      }
-      this.dialogRef.close(returnObject);
-    } catch (e) {
-      alert(e.message);
-    }
+    } 
+    this.dialogRef.close(returnObject);
   }
 
 }

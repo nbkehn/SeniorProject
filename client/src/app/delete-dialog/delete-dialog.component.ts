@@ -27,7 +27,6 @@ export class DeleteDialogComponent extends AbstractFormDialogComponent implement
 
     super(builder, dialogRef, data, appointmentService, customerService, technicianService, rsaService,
       flooringService, alertService);
-    debugger;
   }
 
   ngOnInit(): void {
