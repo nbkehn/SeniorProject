@@ -9,6 +9,12 @@ import { TechnicianService } from 'src/app/technician/technician.service';
 import { RsaService } from 'src/app/rsa/rsa.service';
 import { FlooringService } from 'src/app/flooring/flooring.service';
 import { AppointmentService } from '../appointment/appointment.service';
+import { Appointment } from '../appointment/appointment';
+import { Data } from '@angular/router';
+import { Technician } from '../technician/technician';
+import { Customer } from '../customer/customer';
+import { Rsa } from '../rsa/rsa';
+import { Flooring } from '../flooring/flooring';
 
 @Component({
   selector: 'app-edit-dialog',
@@ -16,6 +22,11 @@ import { AppointmentService } from '../appointment/appointment.service';
   styleUrls: ['./edit-dialog.component.less']
 })
 export class EditDialogComponent extends AbstractFormDialogComponent implements OnInit {
+
+  originalCust : Customer;
+
+  private minDate: Date;
+  appoint = this.retrievedApp;
 
   constructor(builder: FormBuilder, public dialogRef: MatDialogRef<AbstractFormDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
    appointmentService: AppointmentService,
@@ -27,13 +38,37 @@ export class EditDialogComponent extends AbstractFormDialogComponent implements 
 
     super(builder, dialogRef, data, appointmentService, customerService, technicianService, rsaService,
       flooringService, alertService);
+
+      this.minDate = new Date();
+      this.originalCust = this.editApp?.customer;
     }
 
-  ngOnInit(): void {
+  ngOnInit() {
+      
+     // initialize mapped options
+     this.customerOptions = [];
+     this.technicianOptions = [];
+     this.rsaOptions = [];
+     this.flooringOptions = [];
+ 
+     // populate option data
+     this.setCustomers();
+     this.setTechnicians();
+     this.setRSAs();
+     this.setFloorings();
+ 
+     // initialize a new appointment and aggregates
+    
+ 
+  }
+
+  setOriginals() {
+    this.originalCust = this.editApp?.customer;
+    console.log(this.originalCust);
   }
 
   edit() {
-    this.close();
+    this.dialogRef.close(this.formGroup.value);
   }
 
 

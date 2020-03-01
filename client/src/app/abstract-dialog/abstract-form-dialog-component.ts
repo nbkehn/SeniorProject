@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject, Input } from '@angular/core';
+import { filter, map } from 'rxjs/operators';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Customer } from '../customer/customer';
@@ -14,6 +15,9 @@ import { TechnicianService } from 'src/app/technician/technician.service';
 import { RsaService } from 'src/app/rsa/rsa.service';
 import { FlooringService } from 'src/app/flooring/flooring.service';
 import { AppointmentService } from '../appointment/appointment.service';
+import { Observable, BehaviorSubject } from 'rxjs';
+import * as moment from 'moment';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 /**
@@ -23,12 +27,20 @@ import { AppointmentService } from '../appointment/appointment.service';
 export abstract class AbstractFormDialogComponent implements OnInit {
 
   /* Variables for form data (to be shared with child classes) */
+
+   selectedAppointment  = new BehaviorSubject<Appointment>(new Appointment());
+   appStore : { app : Appointment} = {app : new Appointment()};
+  readonly app = this.selectedAppointment.asObservable();
+
   private id: number;
   appointment: Appointment;
+  retrievedApp = new Appointment();
+  editApp : Appointment;
+  editing : boolean = false;
 
 
-  @Input() private start: Date;
-  @Input() private end: Date;
+  @Input()  start: Date;
+  @Input()  end: Date;
   customer: Customer;
   rsa: Rsa;
   technician: Technician;
@@ -46,6 +58,7 @@ export abstract class AbstractFormDialogComponent implements OnInit {
   /* Variable for the container of each dialog's form data */
   formGroup: FormGroup
 
+
   /* Initializes form group so it can be accessed when the dialog opens */
   constructor(private builder: FormBuilder, public dialogRef: MatDialogRef<AbstractFormDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     private appointmentService: AppointmentService,
@@ -54,34 +67,31 @@ export abstract class AbstractFormDialogComponent implements OnInit {
     private rsaService: RsaService,
     private flooringService: FlooringService,
     private alertService: AlertService) {
-
-    if (data) {
-      this.id = data.id;
-      const titleNamePortion: string = data.title;
-      const fullName = titleNamePortion.split(":")[1].trim();
-      const firstAndLastName = fullName.split(" ");
-      this.customer.firstName = (firstAndLastName[0]);
-      this.customer.lastName = (firstAndLastName[1]);
-      this.setStart(data.start || new Date());
-      this.setEnd(data.end || this.getStart());
-    }
-    this.formGroup = this.builder.group({
-      start: [this.start, [Validators.required]],
-      end: [this.end, []],
-      customer: [this.customer, []],
-      technician: [this.technician, []],
-      rsa: [this.rsa, []],
-      flooring: [this.flooring, []],
-
-    })
-    console.log("Constructor");
+      if (data) {
+        this.id = data.id;
+        //retrieve appointment from database based on event id
+        this.appointmentService.getAppointment(this.id).subscribe(
+          data => {
+            this.editApp = data;
+            this.update();
+          });
+          
+      }
+      this.formGroup = this.builder.group({
+        start: [this.start, [Validators.required]],
+        end: [this.end, []],
+        customer: [this.customer, []],
+        technician: [this.technician, []],
+        rsa: [this.rsa, []],
+        flooring: [this.flooring, []],
+  
+      });
+    
   }
 
   ngOnInit() {
-
-
+    
   }
-
 
   getStart() {
     return this.start;
@@ -97,6 +107,18 @@ export abstract class AbstractFormDialogComponent implements OnInit {
 
   setEnd(end: Date) {
     this.end = end;
+  }
+
+  setCustomer(customer: Customer) {
+    this.customer = customer;
+  }
+
+  setRsa(rsa: Rsa) {
+    this.rsa = rsa;
+  }
+
+  setFlooring(flooring: Flooring) {
+    this.flooring = flooring;
   }
 
   getFormGroup() {
@@ -161,6 +183,28 @@ export abstract class AbstractFormDialogComponent implements OnInit {
         error => {
           this.alertService.error('Floorings could not be loaded.', false);
         });
+  }
+
+  getCustomer() {
+    return this.customer;
+  }
+
+  update() {
+    console.log(this.editApp);
+    this.setStart(this.editApp.startDate);
+    this.setEnd(this.editApp.endDate);
+    this.setCustomer(this.editApp.customer);
+    this.setRsa(this.editApp.rsa);
+    this.setFlooring(this.editApp.flooring);
+    this.formGroup = this.builder.group({ 
+      start: [this.start, [Validators.required]],
+      end: [this.end, []],
+      customer: [this.customer, []],
+      technician: [this.technician, []],
+      rsa: [this.rsa, []],
+      flooring: [this.flooring, []],
+
+    })
   }
 
   /* Returns the form data when the dialog is closed */

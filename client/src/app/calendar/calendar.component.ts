@@ -103,12 +103,13 @@ export class CalendarComponent implements OnInit {
   openAddDialog() {
     const dialogRef = this.openDialog(AddDialogComponent);
     dialogRef.afterClosed().subscribe(returnedValue => {
+      let newEnd = returnedValue.end;
       if (!(typeof returnedValue == typeof Boolean)) {
         const appt = {
           id: CalendarComponent.nextId,
           title: `Customer: ${returnedValue.customer.firstName} ${returnedValue.customer.lastName}`,
           start: returnedValue.start ? returnedValue.start.format("YYYY-MM-DD") : (new Date()).toDateString(),
-          end: returnedValue.end ? returnedValue.end.add(1, "days").format("YYYY-MM-DD") : "",
+          end: returnedValue.end ? returnedValue.end.add(1, "days").format("YYYY-MM-DD") : returnedValue.start.format("YYYY-MM-DD"),
         }
         this.calendarObject.addEvent(appt);
         CalendarComponent.nextId += 1;
@@ -119,11 +120,13 @@ export class CalendarComponent implements OnInit {
         this.appointment = new Appointment();
         this.appointment.id = appt.id;
         this.appointment.startDate = returnedValue.start;
-        this.appointment.endDate = returnedValue.end;
+        this.appointment.endDate = this.getYesterday(returnedValue.end);
         this.appointment.customer = returnedValue.customer;
         this.appointment.technicians =  returnedValue.technicians;
         this.appointment.rsa = returnedValue.rsa;
         this.appointment.flooring = returnedValue.flooring;
+        console.log(this.appointment.endDate);
+        console.log(this.appointment);
         this.save();
       }
       
@@ -135,17 +138,32 @@ export class CalendarComponent implements OnInit {
     if (dialogRef) {
       dialogRef.afterClosed().subscribe(returnedValue => {
         if (!(typeof returnedValue == typeof Boolean)) {
+          console.log(returnedValue.start);
+          console.log(returnedValue.end);
           const appt = {
-            id: returnedValue.id,
-            title: returnedValue.firstName + " " + returnedValue.lastName,
-            start: new Date(returnedValue.start) || new Date(),
-            end: this.getTomorrow(returnedValue.end) || "",
+            id: this.selectedEvent.id,
+            title: `Customer: ${returnedValue.customer.firstName} ${returnedValue.customer.lastName}`,
+            start: returnedValue.start,
+            end: returnedValue.end.toDate(),
           }
-          console.log(this.calendarObject.getEvents());
-          const editedEvent = this.calendarObject.getEventById(appt.id);
-          editedEvent.setStart(appt.start);
-          editedEvent.setEnd(appt.end);
+  
+          //update event on the calendar
+          const editedEvent = this.calendarObject.getEventById(appt.id.toString());
+          let newEnd = this.getTomorrow(returnedValue.end);
+          editedEvent.setStart(returnedValue.start);
+          editedEvent.setEnd(newEnd);
           this.updateSelectedEvent(editedEvent);
+
+          //update appointment in the database
+          this.appointment = new Appointment();
+          this.appointment.id = this.selectedEvent.id;
+          this.appointment.startDate = appt.start;
+          this.appointment.endDate = appt.end;
+          this.appointment.customer = returnedValue.customer;
+          this.appointment.technicians =  returnedValue.technicians;
+          this.appointment.rsa = returnedValue.rsa;
+          this.appointment.flooring = returnedValue.flooring;
+          this.update(this.selectedEvent.id);
         }
       });
     }
@@ -196,8 +214,12 @@ export class CalendarComponent implements OnInit {
     this.appointmentService.getAppointmentsList()
     .subscribe( data => {
         this.alertService.success('Appointments loaded successfully.', true);
+        if (data.length == 0) {
+          console.log("There are no appointments");
+        }
         this.appStore.apps = data;
         this.appointments.next(Object.assign({}, this.appStore).apps);
+
       },
       error => {
         this.alertService.error('Appointments could not be loaded.', false);
@@ -205,12 +227,11 @@ export class CalendarComponent implements OnInit {
 
       this.apps.forEach(element => {
         element.forEach(data => {
-          var event = {id: 0, title: "", start: new Date(), end: new Date()};
-          event.id = data.id;
-          event.title = data.customer.firstName + " " + data.customer.lastName;
-          event.start = data.startDate;
-          event.end = data.endDate;
+          let newEnd = new Date(data.endDate);
+          newEnd = this.getTomorrow(newEnd);
+          var event = {id: data.id, title: "Customer: " + data.customer.firstName + " " + data.customer.lastName, start: data.startDate, end: newEnd};
           this.calendarObject.addEvent(event);
+          
         })
       });
   }
@@ -252,6 +273,7 @@ export class CalendarComponent implements OnInit {
 
         },
         eventResize: (resizeEvent) => {
+          console.log(resizeEvent.event)
           inScopeUpdateSelectedEvent(resizeEvent.event);
         },
         eventClick: (clickEvent) => {
@@ -309,6 +331,23 @@ export class CalendarComponent implements OnInit {
         this.alertService.error('The appointment could not be saved.', false);
         console.log("Successfully saved appointment");
       });
+  }
+
+  update(id: number) {
+    console.log(this.appointment);
+    let response = this.appointmentService.updateAppointment(id, this.appointment);
+    response.subscribe(
+      data => {
+        // Display success message and go back to list
+        this.alertService.success('Appointment updated successfully.', true);
+        console.log("Successfully updated appointment");
+      },
+      error => {
+        // Display error message on error and remain in form
+        this.alertService.error('The appointment could not be updated.', false);
+        console.log("Unsuccessfully updated appointment");
+      });
+
   }
 }
 
