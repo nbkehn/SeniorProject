@@ -14,3 +14,5 @@ export class AppComponent {
   // Landing page's title
   title = 'BCO Installation Scheduler';
 }
+
+

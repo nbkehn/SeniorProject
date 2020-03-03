@@ -1,16 +1,14 @@
 package bco.scheduler.model;
 
-import bco.scheduler.repository.CustomerRepository;
-import bco.scheduler.repository.RSARepository;
-import bco.scheduler.repository.TechnicianRepository;
-
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import java.util.*;
 import java.util.Set;
-import java.time.LocalDateTime;
-import java.util.stream.Collectors;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 /**
  * Appointment class, stitches together the person components and timeslots, and flooring type
@@ -19,6 +17,7 @@ import java.util.stream.Collectors;
  *
  */
 @Entity
+@JsonInclude(Include.NON_EMPTY)
 public class Appointment {
     public static final String CLASS_NAME = "appointment";
 
@@ -43,17 +42,21 @@ public class Appointment {
     private Customer customer;
     
     /** start date time */
-    @Column(name = "startDateTime")
-    private LocalDateTime startDateTime;
+    @Column(name = "startDate")
+    private LocalDate startDate;
     
     /** end date time */
-    @Column(name = "endDateTime")
-    private LocalDateTime endDateTime;
+    @Column(name = "endDate")
+    private LocalDate endDate;
     
     /** flooring category */
     @ManyToOne
     @JoinColumn(name = "flooring_id")   
     private FlooringType flooring;
+
+    /** Assignments set */     
+
+    private ArrayList<Assignment> assignments;
     
     /** default constructor */
     public Appointment() {}
@@ -63,13 +66,19 @@ public class Appointment {
      * 
      * @param startDateTime starting time of the 
      */
-    public Appointment(RSA rsa, Customer customer, Set<Technician> technicians, FlooringType flooringtype, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    public Appointment(final RSA rsa, final Customer customer, final Set<Technician> technicians, final FlooringType flooringtype, final Date startDate, final Date endDate) {
         this.rsa = rsa;
         this.customer = customer;
         this.technicians = technicians;
         this.flooring = flooring; 
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+        this.startDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        this.endDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        this.assignments = new ArrayList<Assignment>();
+        LocalDate temp = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        for(int i = 0; i <= getExtraDays(); i++ ) {
+            assignments.add(new Assignment(temp, technicians));
+            temp = temp.plusDays(1);
+        }
     }
 
     /**
@@ -84,7 +93,7 @@ public class Appointment {
      * sets id
      * @param id
      */
-    public void setId(long id) {
+    public void setId(final long id) {
         this.id = id;
     }
 
@@ -100,7 +109,7 @@ public class Appointment {
      * sets technicians
      * @param technicians technician list
      */
-    public void setTechnicians(Set<Technician> technicians) {
+    public void setTechnicians(final Set<Technician> technicians) {
         this.technicians = technicians;
     }
     
@@ -116,7 +125,7 @@ public class Appointment {
      * sets rsa
      * @param rsa rsa
      */
-    public void setRSA(RSA rsa) {
+    public void setRSA(final RSA rsa) {
         this.rsa = rsa;
     }
     
@@ -132,7 +141,7 @@ public class Appointment {
      * sets customer
      * @param customer customer
      */
-    public void setCustomer(Customer customer) {
+    public void setCustomer(final Customer customer) {
         this.customer = customer;
     }
     
@@ -140,32 +149,32 @@ public class Appointment {
      * gets start date time
      * @return start date time
      */
-    public LocalDateTime getStartDateTime() {
-        return startDateTime;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
     /**
      * sets start date time
-     * @param startDateTime 
+     * @param startDate 
      */
-    public void setStartDateTime(LocalDateTime startDateTime) {
-        this.startDateTime = startDateTime;
+    public void setStartDateTime(final LocalDate startDateTime) {
+        this.startDate = startDateTime;
     }
     
     /**
      * gets end date time
      * @return end date time
      */
-    public LocalDateTime getEndDateTime() {
-        return endDateTime;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
     /**
      * sets end date time
-     * @param endDateTime endDateTime 
+     * @param endDate endDate 
      */
-    public void setEndDateTime(LocalDateTime endDateTime) {
-        this.endDateTime = endDateTime;
+    public void setEndDateTime(final LocalDate endDateTime) {
+        this.endDate = endDateTime;
     }
 
     /**
@@ -180,7 +189,7 @@ public class Appointment {
      * sets flooring type
      * @param flooringType flooring type 
      */
-    public void setFlooring(FlooringType flooring) {
+    public void setFlooring(final FlooringType flooring) {
         this.flooring = flooring;
     }
 
@@ -189,10 +198,9 @@ public class Appointment {
      * @return template variable
      */
     public Map<String, String> getTemplateVariables() {
-        Map<String, String> map = new HashMap<>();
-        map.put(CLASS_NAME + ".start_date_time", this.getStartDateTime().format(DateTimeFormatter.ofPattern("EEEE MMMM dd K:mm a")));
-        map.put(CLASS_NAME + ".start_date", this.getStartDateTime().format(DateTimeFormatter.ofPattern("EEEE MMMM dd")));
-        map.put(CLASS_NAME + ".start_time", this.getStartDateTime().format(DateTimeFormatter.ofPattern("K:mm a")));
+        final Map<String, String> map = new HashMap<String, String>();
+        map.put(CLASS_NAME + ".start_date", this.getStartDate().toString());
+        map.put(CLASS_NAME + ".end_date", this.getEndDate().toString());
         map.put(CLASS_NAME + ".customer_name", this.getCustomer().getFirstName() + " " + this.getCustomer().getLastName());
         map.put(CLASS_NAME + ".rsa_name", this.getRSA().getFirstName() + " " + this.getRSA().getLastName());
         map.put(CLASS_NAME + ".tech_names", this.getTechnicianNames());
@@ -205,8 +213,8 @@ public class Appointment {
      * @return technician names
      */
     private String getTechnicianNames() {
-        List<String> technicianNames = new ArrayList<>();
-        for (Technician technician : this.getTechnicians()) {
+        final List<String> technicianNames = new ArrayList<>();
+        for (final Technician technician : this.getTechnicians()) {
             technicianNames.add(technician.getFirstName() + " " + technician.getLastName());
         }
 
@@ -218,14 +226,64 @@ public class Appointment {
      * @return template variable descriptions
      */
     public static Map<String, String> getTemplateVariableDescriptions() {
-        Map<String, String> map = new HashMap<>();
-        map.put("${" + CLASS_NAME + ".start_date_time" + "}", "Appointment Start Date and Time");
+        final Map<String, String> map = new HashMap<>();
         map.put("${" + CLASS_NAME + ".start_date" + "}", "Appointment Start Date");
-        map.put("${" + CLASS_NAME + ".start_time" + "}", "Appointment Start Time");
+        map.put("${" + CLASS_NAME + ".end_date" + "}", "Appointment End Date");
         map.put("${" + CLASS_NAME + ".customer_name" + "}", "Appointment Customer Name");
         map.put("${" + CLASS_NAME + ".rsa_name" + "}", "Appointment RSA Name");
         map.put("${" + CLASS_NAME + ".tech_names" + "}", "Appointment Technician Names");
         map.put("${" + CLASS_NAME + ".flooring" + "}", "Appointment Flooring Type");
         return map;
+    }
+
+    public void assignAll(Set<Technician> technicians) {
+        for(int i = 0; i < assignments.size(); i++ ) {
+            
+        }
+    }
+
+    public void assignDay(int day, Set<Technician> technicians) {
+        assignments.get(day).setTechnicians(technicians);
+    }
+
+    public void moveDate(LocalDate startDate, LocalDate endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        LocalDate temp = startDate;
+        for(int i = 0; i < assignments.size(); i++ ) {
+            assignments.get(i).setStartDate(temp);
+            temp = temp.plusDays(1);
+        }
+    }
+public int getExtraDays() {
+        int year1 = startDate.getYear();
+        int year2 = endDate.getYear();
+        int month1 = startDate.getMonthValue();
+        int month2 = endDate.getMonthValue();
+        int day1 = startDate.getDayOfMonth();
+        int day2 = endDate.getDayOfMonth();
+        if(year1 != year2){
+            day2 += 31;// add days in December
+            return day2 - day1;
+        } else if(month1 != month2) {
+            if(month1 == 2) {
+                if((year1 % 4 == 0 && year1 % 100 != 0) ||  year1 %400 == 0) {
+                    day2 += 29;//add days in Febuary on a leap year
+                    return day2 - day1;
+                } else {
+                    day2 += 28;//add days in Febuary non leap year
+                    return day2 - day1;
+                }
+
+            } else if(month1 == 4 || month1 == 6 || month1 == 9 || month1 == 11) {
+                day2 += 30;//add days in any of the 30 day months
+                return day2 - day1;
+            } else {
+                day2 += 31;//add days in any of the 31 day months that are not December
+                return day2 - day1;
+            }
+        } else {
+            return day2 - day1;
+        }
     }
 }

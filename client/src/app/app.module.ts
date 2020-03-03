@@ -12,6 +12,7 @@ import { ModifyTechnicianComponent } from './technician/modify-technician/modify
 import { TechnicianListComponent } from './technician/technician-list/technician-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -45,6 +46,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/reminder-error-list.component";
+//import { AppointmentCalendarComponent } from './appointment/appointment-calendar/appointment-calendar.component';
+import {AssignmentCalendarComponent} from "./assignment/assignment/assignment-calendar.component";
+import { MatOptionModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -68,6 +72,9 @@ import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/r
     ModifyTemplateComponent,
     ReminderListComponent,
     ModifyReminderComponent,
+    ReminderErrorListComponent,
+    //AppointmentCalendarComponent,
+    AssignmentCalendarComponent,
     CalendarComponent,
     AddDialogComponent,
     EditDialogComponent,
@@ -89,6 +96,8 @@ import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/r
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatOptionModule,
+    MatSelectModule,
     MatMomentDateModule,
   ],
   entryComponents: [
