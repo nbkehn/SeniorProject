@@ -1,8 +1,8 @@
 <h2 mat-dialog-title>Delete Appointment</h2>
 <mat-dialog-content>
-    <div><strong>{{data.title}}</strong></div><br>
-    <div><strong>Start Date:</strong> {{data.start.toDateString()}}</div><br>
-    <div><strong>End Date:</strong> {{data.end.toDateString()}}</div><br>
+    <div><strong>Customer: </strong>{{editApp?.customer.firstName}} {{editApp?.customer.lastName}}</div><br>
+    <div><strong>Start Date:</strong> {{editApp?.startDate}}</div><br>
+    <div><strong>End Date:</strong> {{editApp?.endDate}}</div><br>
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-button (click)="cancel()">Cancel</button>

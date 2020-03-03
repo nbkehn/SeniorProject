@@ -1,4 +1,5 @@
 package bco.scheduler.controller;
+
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.Mock;
 import org.junit.Test;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import bco.scheduler.model.CommunicationType;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import bco.scheduler.model.RSA;
@@ -39,10 +42,10 @@ public class AppointmentControllerTest {
     Set<Technician> technicians2 = new HashSet<Technician>(Arrays.asList(array2));
     FlooringType flooringtype = new FlooringType("hardwood");
     FlooringType flooringtype2 = new FlooringType("tile");
-    LocalDateTime startDateTime = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
-    LocalDateTime startDateTime2 = LocalDateTime.of(2015, Month.JUNE, 25, 12, 30, 40);
-    LocalDateTime endDateTime = LocalDateTime.of(2015, Month.SEPTEMBER, 29, 19, 30, 40);
-    LocalDateTime endDateTime2 = LocalDateTime.of(2015, Month.DECEMBER, 25, 12, 30, 40);
+    Date startDateTime = new Date(2015, 7, 29);
+    Date startDateTime2 = new Date(2015, 6, 25);
+    Date endDateTime = new Date(2015, 9, 29);
+    Date endDateTime2 = new Date(2015, 12, 25);
 
     // A mock of the appointment controller class.
     @Mock

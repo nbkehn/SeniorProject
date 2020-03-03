@@ -1,19 +1,5 @@
 <h2 mat-dialog-title>Add Appointment</h2>
 <form [formGroup]="formGroup">
-    <span>
-    <mat-form-field appearance="outline">
-        <mat-label>Customer First Name</mat-label>
-        <input matInput formControlName="firstName" placeholder="Enter first name here">
-        <mat-error *ngIf="!firstName || firstName == ''">First name required</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline" [floatLabel]="never">
-        <mat-label>Customer Last Name</mat-label>
-        <input matInput formControlName="lastName" placeholder="Enter last name here">
-        <mat-error *ngIf="!lastName || lastName == ''">Last name required</mat-error>
-    </mat-form-field>
-    </span>
-    <br>
-    <br>
     <mat-form-field>
         <mat-label>Start Date</mat-label>
         <input matInput [min]="minDate" formControlName="start" [matDatepicker]="startPicker">
@@ -27,6 +13,48 @@
         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
         <mat-datepicker #endPicker></mat-datepicker>
     </mat-form-field>
+    <br>
+    <br>
+    <mat-form-field>
+        <mat-label>Customer</mat-label>
+        <mat-select role="listbox" formControlName="customer" name="customer">
+            <mat-option  *ngFor="let customerOption of customerOptions" 
+            [value]="customerOption">
+                {{customerOption.firstName}} {{customerOption.lastName}}
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf="!customer">Customer required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Technician</mat-label>
+        <mat-select role="listbox" formControlName="technician">
+            <mat-option  *ngFor="let technicianOption of technicianOptions"
+            [value]="technicianOption">
+                {{technicianOption.firstName}} {{technicianOption.lastName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <br> 
+    <mat-form-field>
+        <mat-label>RSA</mat-label>
+        <mat-select role="listbox" formControlName="rsa">
+            <mat-option  role="option"*ngFor="let rsaOption of rsaOptions"
+            [value]="rsaOption">
+                {{rsaOption.firstName}} {{rsaOption.lastName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Flooring</mat-label>
+        <mat-select role="listbox" formControlName="flooring">
+            <mat-option  role="option"*ngFor="let flooringOption of flooringOptions"
+            [value]="flooringOption">
+                {{flooringOption.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
     <br>
     <br>
 </form>
