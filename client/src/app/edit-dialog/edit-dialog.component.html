@@ -21,7 +21,7 @@
         <mat-label>Customer</mat-label>
         <mat-select role="listbox" formControlName="customer" 
             [(value)]='originalCust'>
-            <mat-option *ngFor="let customerOption of customerOptions" [value]="customerOption"> 
+            <mat-option *ngFor="let customerOption of customerOptions" [value]="editApp.customer"> 
                 {{customerOption.firstName}} {{customerOption.lastName}}
             </mat-option>
         </mat-select>
@@ -42,7 +42,7 @@
         <mat-label>RSA</mat-label>
         <mat-select role="listbox" formControlName="rsa">
             <mat-option  role="option"*ngFor="let rsaOption of rsaOptions"
-            [value]="rsaOption">
+            [value]="editApp.rsa">
                 {{rsaOption.firstName}} {{rsaOption.lastName}}
             </mat-option>
         </mat-select>
@@ -51,7 +51,7 @@
         <mat-label>Flooring</mat-label>
         <mat-select role="listbox" formControlName="flooring">
             <mat-option  role="option"*ngFor="let flooringOption of flooringOptions"
-            [value]="flooringOption">
+            [value]="editApp.flooring">
                 {{flooringOption.name}}
             </mat-option>
         </mat-select>

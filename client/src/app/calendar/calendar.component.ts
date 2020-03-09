@@ -105,22 +105,22 @@ export class CalendarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(returnedValue => {
       let newEnd = returnedValue.end;
       if (!(typeof returnedValue == typeof Boolean)) {
-        const appt = {
-          id: CalendarComponent.nextId,
-          title: `Customer: ${returnedValue.customer.firstName} ${returnedValue.customer.lastName}`,
-          start: returnedValue.start ? returnedValue.start.format("YYYY-MM-DD") : (new Date()).toDateString(),
-          end: returnedValue.end ? returnedValue.end.add(1, "days").format("YYYY-MM-DD") : returnedValue.start.format("YYYY-MM-DD"),
-        }
-        this.calendarObject.addEvent(appt);
-        CalendarComponent.nextId += 1;
-        console.log(this.calendarObject.getEvents());
-        this.updateSelectedEvent(this.calendarObject.getEventById(String(appt.id)));
+        // const appt = {
+        //   id: CalendarComponent.nextId,
+        //   title: `Customer: ${returnedValue.customer.firstName} ${returnedValue.customer.lastName}`,
+        //   start: returnedValue.start ? returnedValue.start.format("YYYY-MM-DD") : (new Date()).toDateString(),
+        //   end: returnedValue.end ? returnedValue.end.add(1, "days").format("YYYY-MM-DD") : returnedValue.start.format("YYYY-MM-DD"),
+        // }
+        // this.calendarObject.addEvent(appt);
+        // CalendarComponent.nextId += 1;
+        // console.log(this.calendarObject.getEvents());
+        // this.updateSelectedEvent(this.calendarObject.getEventById(String(appt.id)));
         
         console.log(returnedValue);
         this.appointment = new Appointment();
-        this.appointment.id = appt.id;
-        this.appointment.startDate = returnedValue.start;
-        this.appointment.endDate = this.getYesterday(returnedValue.end);
+        this.appointment.id = CalendarComponent.nextId;
+        this.appointment.startDate = returnedValue.start.toDate();
+        this.appointment.endDate = returnedValue.end.toDate();
         this.appointment.customer = returnedValue.customer;
         this.appointment.technicians =  returnedValue.technicians;
         this.appointment.rsa = returnedValue.rsa;
@@ -128,6 +128,8 @@ export class CalendarComponent implements OnInit {
         console.log(this.appointment.endDate);
         console.log(this.appointment);
         this.save();
+        this.updateSelectedEvent(this.calendarObject.getEventById(String(this.appointment.id)));
+        CalendarComponent.nextId += 1;
       }
       
     })
@@ -226,9 +228,9 @@ export class CalendarComponent implements OnInit {
 
       this.apps.forEach(element => {
         element.forEach(data => {
-          let newEnd = new Date(data.endDate);
-          newEnd = this.getTomorrow(newEnd);
-          var event = {id: data.id, title: "Customer: " + data.customer.firstName + " " + data.customer.lastName, start: data.startDate, end: newEnd};
+          const newEnd = new Date(data.endDate);
+          const newEndString = this.getTomorrow(newEnd).toDateString();
+          var event = {id: data.id, title: "Customer: " + data.customer.firstName + " " + data.customer.lastName, start: data.startDate, end: newEndString};
           this.calendarObject.addEvent(event);
           
         })

@@ -68,7 +68,8 @@ export class EditDialogComponent extends AbstractFormDialogComponent implements 
   }
 
   edit() {
-    this.dialogRef.close(this.formGroup.value);
+    this.close();
+    // this.dialogRef.close(this.formGroup.value);
   }
 
 
