@@ -25,10 +25,42 @@ public class FlooringType {
 
     /**
      * The actual string representation of the flooring type.
+     * This is the name(category) of the type of flooring, not the style or color
      */
     @Column(name = "name", nullable = false)
     public String name;
 
+    /**
+     * Style name of the flooring type
+     *
+     */
+     @Column(style = "style", nullable = false)
+     public String style;
+
+     /**
+      * Color of the flooring type
+      *
+      */
+     @Column(color = "color", nullable = false)
+     public String color;
+
+     /**
+      * Company that makes the flooring type
+      */
+     @Column(company = "company", nullable = false)
+     public String company;
+
+     /**
+      * Whether or not the sample has been checked out
+      */
+     @Column(sampleChecked = "sampleChecked", nullable = false)
+     public Boolean sampleChecked;
+
+     /**
+      * To whom the sample as been checked out
+      */
+     @Column(checkedTo = "checkedTo")
+     public Customer checkedTo;
 
     /**
      * The blank, unused constructor for flooring type.
@@ -41,8 +73,19 @@ public class FlooringType {
      * The actual flooring type constructor with a passed floor type to set to. 
      * @param name the type to set the floor object to.
      */
-    public FlooringType(String name) {
-        this.name = name;
+    public FlooringType(String name, String style, String color) {
+        String temp = name.toLowerCase();
+        if(temp.equals("hardwood")){
+            this.name = name;
+            this.color = color;
+            this.style = style;
+        } else{
+            this.name = name;
+            this.style = style;
+        }
+        this.sampleChecked = false;
+        this.checkedTo = null;
+
     }
 
     /**
@@ -76,4 +119,22 @@ public class FlooringType {
     public void setName(String name) {
         this.name = name;
     }
+
+    /**
+     * Checks a sample in. Assigns the sampleChecked value to false
+     */
+     public void checkIn(){
+         this.sampleChecked = false;
+         this.checkedTo = null;
+     }
+
+     /**
+      * Checks out a flooring sample and assigns it to the customer
+      * who is checking it out
+      *@param checker the person who is checking out this flooring sample
+      */
+     public void checkOut(Customer checker){
+         this.sampleChecked = true;
+         this.checkedTo = checker;
+     }
 }
