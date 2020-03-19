@@ -70,7 +70,7 @@ public class FlooringType {
     }
 
     /**
-     * The actual flooring type contructor with a passed floor type to set to. 
+     * The actual flooring type constructor with a passed floor type to set to. 
      * @param name the type to set the floor object to.
      */
     public FlooringType(String name, String style, String color) {
