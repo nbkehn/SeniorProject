@@ -17,7 +17,6 @@ import { FlooringService } from 'src/app/flooring/flooring.service';
 import { AppointmentService } from '../appointment/appointment.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 /**
@@ -43,7 +42,7 @@ export abstract class AbstractFormDialogComponent implements OnInit {
   @Input() end: Date;
   customer: Customer;
   rsa: Rsa;
-  technician: Technician;
+  technicians: Technician[];
   flooring: Flooring;
 
   public customerOptions: Customer[];
@@ -81,7 +80,7 @@ export abstract class AbstractFormDialogComponent implements OnInit {
       start: [this.start, [Validators.required]],
       end: [this.end, []],
       customer: [this.customer, []],
-      technician: [this.technician, []],
+      technician: [this.technicians, []],
       rsa: [this.rsa, []],
       flooring: [this.flooring, []],
 
@@ -200,7 +199,7 @@ export abstract class AbstractFormDialogComponent implements OnInit {
       start: [this.start, [Validators.required]],
       end: [this.end, []],
       customer: [this.customer, []],
-      technician: [this.technician, []],
+      technician: [this.technicians, []],
       rsa: [this.rsa, []],
       flooring: [this.flooring, []],
 

@@ -19,8 +19,7 @@
     <br>
     <mat-form-field>
         <mat-label>Customer</mat-label>
-        <mat-select role="listbox" formControlName="customer" 
-            [(value)]='originalCust'>
+        <mat-select formControlName="customer" [(ngModel)] = 'oldCustomer'>
             <mat-option *ngFor="let customerOption of customerOptions" [value]="customerOption"> 
                 {{customerOption.firstName}} {{customerOption.lastName}}
             </mat-option>
@@ -29,7 +28,7 @@
     </mat-form-field>
     <mat-form-field>
         <mat-label>Technician</mat-label>
-        <mat-select role="listbox" formControlName="technician">
+        <mat-select role="listbox" formControlName="technician" multiple>
             <mat-option  *ngFor="let technicianOption of technicianOptions"
             [value]="technicianOption">
                 {{technicianOption.firstName}} {{technicianOption.lastName}}

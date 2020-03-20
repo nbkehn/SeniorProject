@@ -63,7 +63,7 @@ export class AddDialogComponent extends AbstractFormDialogComponent implements O
     // initialize a new appointment and aggregates
     this.appointment = new Appointment();
     this.appointment.customer = new Customer();
-    this.appointment.technicians = [];
+    this.appointment.technicians = [new Technician()];
     this.appointment.rsa = new Rsa();
     this.appointment.flooring = new Flooring();
 
@@ -75,6 +75,7 @@ export class AddDialogComponent extends AbstractFormDialogComponent implements O
    * Creates a new appointment based on the form fields entered by the user
    */
   add() {
+    console.log(this.formGroup.value);
     this.dialogRef.close(this.formGroup.value);
     
     }

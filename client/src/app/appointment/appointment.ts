@@ -18,4 +18,11 @@ export class Appointment {
   technicians: Technician[];
   rsa: Rsa;
   flooring: Flooring;
+
+  compareAppointments(appointment: Appointment) {
+    if (this.id > appointment.id)
+      return this;
+    return appointment;
+  }
 }
+
