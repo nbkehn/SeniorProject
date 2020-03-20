@@ -190,8 +190,8 @@ export abstract class AbstractFormDialogComponent implements OnInit {
 
   update() {
     console.log(this.editApp);
-    this.setStart(this.editApp.startDate);
-    this.setEnd(this.editApp.endDate);
+    this.setStart(moment(this.editApp.startDate).toDate());
+    this.setEnd(moment(this.editApp.endDate).toDate());
     this.setCustomer(this.editApp.customer);
     this.setRsa(this.editApp.rsa);
     this.setFlooring(this.editApp.flooring);
@@ -224,13 +224,15 @@ export abstract class AbstractFormDialogComponent implements OnInit {
         if (!returnObject.start) {
           throw new Error("Error: start date is required");
         }
-        if (!returnObject.firstName || returnObject.firstName == "") {
-          throw new Error("Error: first name is required");
+        if (!returnObject.customer) {
+          throw new Error("Error: customer is required");
         }
-        if (!returnObject.lastName || returnObject.lastName == "") {
-          throw new Error("Error: last name is required");
+        if (!returnObject.rsa) {
+          throw new Error("Error: RSA is required");
         }
-        this.dialogRef.close(returnObject);
+        if (!returnObject.flooring) {
+          throw new Error("Error: flooring is required");
+        }
       } catch (e) {
         alert(e.message);
       }

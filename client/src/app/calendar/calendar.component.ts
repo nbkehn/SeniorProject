@@ -129,9 +129,9 @@ export class CalendarComponent implements OnInit {
         
         console.log(returnedValue);
         this.appointment = new Appointment();
-        this.appointment.id = appt.id;
-        this.appointment.startDate = returnedValue.start;
-        this.appointment.endDate = this.getYesterday(returnedValue.end);
+        this.appointment.id = CalendarComponent.nextId;
+        this.appointment.startDate = returnedValue.start.toDate();
+        this.appointment.endDate = returnedValue.end.toDate();
         this.appointment.customer = returnedValue.customer;
         this.appointment.technicians =  returnedValue.technicians;
         this.appointment.rsa = returnedValue.rsa;
@@ -139,7 +139,6 @@ export class CalendarComponent implements OnInit {
         console.log(this.appointment.endDate);
         console.log(this.appointment);
         this.save();
-        location.reload();
       }
       
     })
@@ -255,9 +254,9 @@ export class CalendarComponent implements OnInit {
 
       this.apps.forEach(element => {
         element.forEach(data => {
-          let newEnd = new Date(data.endDate);
-          newEnd = this.getTomorrow(newEnd);
-          var event = {id: data.id, title: "Customer: " + data.customer.firstName + " " + data.customer.lastName, start: data.startDate, end: newEnd};
+          const newEnd = new Date(data.endDate);
+          const newEndString = this.getTomorrow(newEnd).toDateString();
+          var event = {id: data.id, title: "Customer: " + data.customer.firstName + " " + data.customer.lastName, start: data.startDate, end: newEndString};
           this.calendarObject.addEvent(event);
           
         })
