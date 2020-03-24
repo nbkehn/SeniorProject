@@ -34,32 +34,32 @@ public class FlooringType {
      * Style name of the flooring type
      *
      */
-     @Column(style = "style", nullable = false)
+     @Column(name = "style", nullable = false)
      public String style;
 
      /**
       * Color of the flooring type
       *
       */
-     @Column(color = "color", nullable = false)
+     @Column(name = "color", nullable = false)
      public String color;
 
      /**
       * Company that makes the flooring type
       */
-     @Column(company = "company", nullable = false)
+     @Column(name = "company", nullable = false)
      public String company;
 
      /**
       * Whether or not the sample has been checked out
       */
-     @Column(sampleChecked = "sampleChecked", nullable = false)
+     @Column(name = "sampleChecked", nullable = false)
      public Boolean sampleChecked;
 
      /**
       * To whom the sample as been checked out
       */
-     @Column(checkedTo = "checkedTo")
+     @Column(name = "checkedTo")
      public Customer checkedTo;
 
     /**
@@ -118,6 +118,36 @@ public class FlooringType {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Retrieves the style of the current flooring type
+     */
+    public String getStyle() {
+        return style;
+    }
+
+    /**
+     * Sets the flooring type's style to the given value "style"
+     * @param style string representation of the flooring type's style
+     */
+    public void setStyle(String style) {
+        this.style = style;
+    } 
+
+/**
+     * Retrieves the color of the current flooring type
+     */
+    public String getColor() {
+        return color;
+    }
+
+/**
+     * Sets the flooring type's color to the given value "color"
+     * @param color string representation of the flooring type's color
+     */
+    public void setColor(String color) {
+        this.color = color;
     }
 
     /**

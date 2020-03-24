@@ -33,8 +33,8 @@ public class AppointmentQueueTest {
     Technician array2[] = { tech2, tech3 };
     Set<Technician> technicians = new HashSet<Technician>(Arrays.asList(array));
     Set<Technician> technicians2 = new HashSet<Technician>(Arrays.asList(array2));
-    FlooringType flooringtype = new FlooringType("hardwood");
-    FlooringType flooringtype2 = new FlooringType("tile");
+    FlooringType flooringtype = new FlooringType("hardwood", null, null);
+    FlooringType flooringtype2 = new FlooringType("tile", null, null);
     LocalDateTime startDateTime = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
     LocalDateTime startDateTime2 = LocalDateTime.of(2015, Month.JUNE, 25, 12, 30, 40);
     LocalDateTime endDateTime = LocalDateTime.of(2015, Month.SEPTEMBER, 29, 19, 30, 40);
