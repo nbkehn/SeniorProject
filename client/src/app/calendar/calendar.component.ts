@@ -40,9 +40,12 @@ export class CalendarComponent implements OnInit {
   private appStore : { apps : Appointment[]} = {apps : []};
   readonly apps = this.appointments.asObservable();
 
+
+  savedAppointment: BehaviorSubject<Appointment> = new BehaviorSubject<Appointment>(new Appointment);
+
   private selectedEvent: { id: number, title: string, start: Date, end: Date }
 
-  private static nextId: number = 3;
+  private static nextId: number;
 
   appointment: Appointment;
 
@@ -107,40 +110,30 @@ export class CalendarComponent implements OnInit {
       let newEnd = returnedValue.end;
       this.appointment = new Appointment();
         this.appointment.startDate = returnedValue.start;
-        this.appointment.endDate = this.getYesterday(returnedValue.end);
+        this.appointment.endDate = returnedValue.end;
         this.appointment.customer = returnedValue.customer;
         this.appointment.technicians =  returnedValue.technicians;
         this.appointment.rsa = returnedValue.rsa;
         this.appointment.flooring = returnedValue.flooring;
         console.log(this.appointment.endDate);
-        console.log(this.appointment);
-        this.save();
-      if (!(typeof returnedValue == typeof Boolean)) {
-        const appt = {
-          id: CalendarComponent.nextId,
-          title: `Customer: ${returnedValue.customer.firstName} ${returnedValue.customer.lastName}`,
-          start: returnedValue.start ? returnedValue.start.format("YYYY-MM-DD") : (new Date()).toDateString(),
-          end: returnedValue.end ? returnedValue.end.add(1, "days").format("YYYY-MM-DD") : returnedValue.start.format("YYYY-MM-DD"),
-        }
-        this.calendarObject.addEvent(appt);
-        CalendarComponent.nextId += 1;
-        console.log(this.calendarObject.getEvents());
-        //this.updateSelectedEvent(this.calendarObject.getEventById(String(appt.id)));
-        
-        console.log(returnedValue);
-        this.appointment = new Appointment();
-        this.appointment.id = CalendarComponent.nextId;
-        this.appointment.startDate = returnedValue.start.toDate();
-        this.appointment.endDate = returnedValue.end.toDate();
-        this.appointment.customer = returnedValue.customer;
-        this.appointment.technicians =  returnedValue.technicians;
-        this.appointment.rsa = returnedValue.rsa;
-        this.appointment.flooring = returnedValue.flooring;
-        console.log(this.appointment.endDate);
-        console.log(this.appointment);
-        this.save();
-      }
       
+        this.save();
+        this.savedAppointment.asObservable().subscribe(data => {  
+          console.log(data);
+
+          if (!(typeof returnedValue == typeof Boolean)) {
+            const appt = {
+              id: data.id,
+              title: `Customer: ${data.customer.firstName} ${data.customer.lastName}`,
+              start: data.startDate ? data.startDate : (new Date()).toDateString(),
+              end: data.endDate ? data.endDate : data.startDate,
+            }
+            this.calendarObject.addEvent(appt);
+            CalendarComponent.nextId += 1;
+            console.log(this.calendarObject.getEvents());
+            //this.updateSelectedEvent(this.calendarObject.getEventById(String(appt.id)))
+          }
+        });
     })
   }
 
@@ -350,12 +343,12 @@ export class CalendarComponent implements OnInit {
     // if the appointment has been created before, it updates the appointment
     console.log(this.appointment);
     let response = this.appointmentService.createAppointment(this.appointment);
-    response.subscribe(
+    return response.subscribe(
       data => {
         // Display success message and go back to list
         this.alertService.success('Appointment saved successfully.', true);
         console.log("Successfully saved appointment");
-        this.appointment.id = data.id;
+        this.savedAppointment.next(data);
       },
       error => {
         // Display error message on error and remain in form

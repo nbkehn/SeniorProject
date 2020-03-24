@@ -22,6 +22,14 @@ export class ModifyFlooringComponent implements OnInit {
   // the title for the page
   title: string;
 
+  //holds flooring type for required fields
+  types = [
+    {value: 'carpet', viewValue: 'Carpet'},
+    {value: 'hardwood', viewValue: 'Hardwood'},
+  ];
+
+  selectedType: string;
+
   /**
    * Creates the instance of the component
    * @param route
@@ -86,6 +94,7 @@ export class ModifyFlooringComponent implements OnInit {
    * Calls on the save method to save the entry to the database.
    */
   onSubmit() {
+    console.log(this.flooring);
     this.save();
   }
 
@@ -94,5 +103,10 @@ export class ModifyFlooringComponent implements OnInit {
    */
   gotoList() {
     this.router.navigate(['/flooring/index']);
+  }
+
+  changeType() {
+    console.log(this.flooring.name);
+
   }
 }

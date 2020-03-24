@@ -20,12 +20,37 @@
     <form #flooringForm="ngForm" (ngSubmit)="flooringForm.valid && onSubmit()" id="flooring-form">
       <!-- form component for the flooring's name -->
       <div class="form-group">
-        <label for="name">Flooring Type</label>
-        <input type="text" class="form-control" id="name" required [(ngModel)]="flooring.name"
-               name="name" #name="ngModel">
-        <div *ngIf="name.invalid && (name.dirty || name.touched || flooringForm.submitted)"
-             class="alert alert-danger">
+        <mat-form-field>
+          <mat-label>Flooring Type</mat-label>
+          <mat-select [(ngModel)]="flooring.name" name="name" (ngModelChange)="changeType()">
+            <mat-option *ngFor="let type of types" [value]="type.value">
+              {{ type.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- <div *ngIf="name.invalid && (name.dirty || name.touched || flooringForm.submitted)" class="alert alert-danger">
           <div *ngIf="name.errors.required">
+            This field is required.
+          </div>
+        </div> -->
+        <br>
+
+        <label for="name">Flooring Style</label>
+        <input type="text" class="form-control" id="style" [(ngModel)]="flooring.style" name="style"
+          #style="ngModel" [required]="flooring.name==carpet">
+        <div *ngIf="style.invalid && (style.dirty || style.touched || flooringForm.submitted)"
+          class="alert alert-danger">
+          <div *ngIf="style.errors.required">
+            This field is required.
+          </div>
+        </div>
+        <br>
+        <label for="name">Flooring Color</label>
+        <input type="text" class="form-control" id="color" [required]="flooring.name==hardwood" [(ngModel)]="flooring.color" name="color"
+          #color="ngModel">
+          <div *ngIf="color.invalid && (color.dirty || color.touched || flooringForm.submitted)"
+          class="alert alert-danger">
+          <div *ngIf="color.errors.required">
             This field is required.
           </div>
         </div>
