@@ -22,10 +22,12 @@ export class ModifyFlooringComponent implements OnInit {
   // the title for the page
   title: string;
 
+  checkedOption: string;
+
   //holds flooring type for required fields
   types = [
-    {value: 'carpet', viewValue: 'Carpet'},
-    {value: 'hardwood', viewValue: 'Hardwood'},
+    { value: 'carpet', viewValue: 'Carpet' },
+    { value: 'hardwood', viewValue: 'Hardwood' },
   ];
 
   selectedType: string;
@@ -38,9 +40,9 @@ export class ModifyFlooringComponent implements OnInit {
    * @param alertService
    */
   constructor(private route: ActivatedRoute,
-              private flooringService: FlooringService,
-              private router: Router,
-              private alertService: AlertService) { }
+    private flooringService: FlooringService,
+    private router: Router,
+    private alertService: AlertService) { }
 
   /**
    * initializes the components and populates the form with flooring data if it is being edited (instead of created)
@@ -62,9 +64,9 @@ export class ModifyFlooringComponent implements OnInit {
         .subscribe(data => {
           this.flooring = data;
         },
-            error => {
-          this.alertService.error('Flooring could not be loaded.', false);
-        });
+          error => {
+            this.alertService.error('Flooring could not be loaded.', false);
+          });
     }
   }
 
@@ -94,6 +96,12 @@ export class ModifyFlooringComponent implements OnInit {
    * Calls on the save method to save the entry to the database.
    */
   onSubmit() {
+    console.log(this.checkedOption);
+    if (this.checkedOption == "no")
+      this.flooring.checkedOut = false;
+    else
+      this.flooring.checkedOut = true;
+
     console.log(this.flooring);
     this.save();
   }
@@ -106,7 +114,7 @@ export class ModifyFlooringComponent implements OnInit {
   }
 
   changeType() {
-    console.log(this.flooring.name);
+    console.log(this.flooring);
 
   }
 }

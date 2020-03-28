@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -26,41 +27,43 @@ public class FlooringType {
 
     /**
      * The actual string representation of the flooring type.
+     * This is the name(category) of the type of flooring, not the style or color
      */
     @Column(name = "name", nullable = false)
     public String name;
 
-     /**
+    /**
      * Style name of the flooring type
      *
      */
-    @Column(name = "style", nullable = false)
-    public String style;
+     @Column(name = "style", nullable = false)
+     public String style;
 
-    /**
-     * Color of the flooring type
-     *
-     */
-    @Column(name = "color", nullable = false)
-    public String color;
+     /**
+      * Color of the flooring type
+      *
+      */
+     @Column(name = "color", nullable = false)
+     public String color;
 
-    /**
-     * Company that makes the flooring type
-     */
-    @Column(name = "company")
-    public String company;
+     /**
+      * Company that makes the flooring type
+      */
+     @Column(name = "company", nullable = false)
+     public String company;
 
-    /**
-     * Whether or not the sample has been checked out
-     */
-    @Column(name = "sampleChecked")
-    public Boolean sampleChecked;
+     /**
+      * Whether or not the sample has been checked out
+      */
+     @Column(name = "sampleChecked", nullable = false)
+     public Boolean sampleChecked;
 
-    /**
-     * To whom the sample as been checked out
-     */
-    @JoinColumn(name = "customer_id")
-    public Customer checkedTo;
+     /**
+      * To whom the sample as been checked out
+      */
+     @ManyToOne
+     @JoinColumn(name = "customer_id")
+     public Customer checkedTo;
 
    /**
     * The blank, unused constructor for flooring type.
@@ -73,7 +76,7 @@ public class FlooringType {
     * The actual flooring type constructor with a passed floor type to set to. 
     * @param name the type to set the floor object to.
     */
-   public FlooringType(String name, String style, String color) {
+   public FlooringType(String name, String style, String color, String company) {
        String temp = name.toLowerCase();
        if(temp.equals("hardwood")){
            this.name = name;
@@ -83,7 +86,8 @@ public class FlooringType {
            this.name = name;
            this.style = style;
        }
-       this.sampleChecked = false;
+       this.company = company;
+       this.sampleChecked = true;
        this.checkedTo = null;
 
    }
@@ -148,6 +152,20 @@ public class FlooringType {
     */
    public void setColor(String color) {
        this.color = color;
+   }
+
+   /**
+    * @return the company
+    */
+   public String getCompany() {
+       return company;
+   }
+
+   /**
+    * @param company the company to set
+    */
+   public void setCompany(String company) {
+       this.company = company;
    }
 
    /**

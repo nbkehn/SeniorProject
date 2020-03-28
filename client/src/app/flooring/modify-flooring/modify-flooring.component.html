@@ -36,8 +36,8 @@
         <br>
 
         <label for="name">Flooring Style</label>
-        <input type="text" class="form-control" id="style" [(ngModel)]="flooring.style" name="style"
-          #style="ngModel" [required]="flooring.name==carpet">
+        <input type="text" class="form-control" id="style" [(ngModel)]="flooring.style" name="style" #style="ngModel"
+          [required]="flooring.name==carpet">
         <div *ngIf="style.invalid && (style.dirty || style.touched || flooringForm.submitted)"
           class="alert alert-danger">
           <div *ngIf="style.errors.required">
@@ -46,14 +46,23 @@
         </div>
         <br>
         <label for="name">Flooring Color</label>
-        <input type="text" class="form-control" id="color" [required]="flooring.name==hardwood" [(ngModel)]="flooring.color" name="color"
-          #color="ngModel">
-          <div *ngIf="color.invalid && (color.dirty || color.touched || flooringForm.submitted)"
+        <input type="text" class="form-control" id="color" [required]="flooring.name==hardwood"
+          [(ngModel)]="flooring.color" name="color" #color="ngModel">
+        <div *ngIf="color.invalid && (color.dirty || color.touched || flooringForm.submitted)"
           class="alert alert-danger">
           <div *ngIf="color.errors.required">
             This field is required.
           </div>
         </div>
+        <br>
+        <label for="name">Flooring Company</label>
+        <input type="text" class="form-control" id="company" [(ngModel)]="flooring.company" name="company"
+          #color="ngModel">
+        <br>
+        <label for="name">Checked Out</label>
+        <br>
+        <label class="radio-inline"><input type="radio" name="checkedTrue" [(ngModel)]="checkedOption" value="yes">Yes</label>
+        <label class="radio-inline" ><input type="radio" name="checkedFalse" [(ngModel)]="checkedOption" value="no">No</label>
       </div>
     </form>
   </div>
