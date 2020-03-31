@@ -9,8 +9,9 @@ import { FlooringService as FlooringService } from "../flooring.service";
 import { Flooring } from "../flooring";
 import { Component, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
-import {AlertService} from "../../alert/alert.service";
-import {NgxSmartModalService} from "ngx-smart-modal";
+import { AlertService } from "../../alert/alert.service";
+import { NgxSmartModalService } from "ngx-smart-modal";
+import { FuncFormatter } from '@fullcalendar/core/datelib/formatting-func';
 
 @Component({
   selector: "app-flooring-list",
@@ -20,6 +21,10 @@ export class FlooringListComponent implements OnInit {
   // the list of floorings
   floorings: Observable<Flooring[]>;
 
+  filterOption: string;
+  filteredFloors: Flooring[];
+  resetList : boolean = true;
+
   /**
    * Constructor for the FlooringListComponent, doesn't really do anything right now
    * @param flooringService the service for the flooring component
@@ -28,9 +33,9 @@ export class FlooringListComponent implements OnInit {
    * @param ngxSmartModalService service used to create modals
    */
   constructor(private flooringService: FlooringService,
-              private router: Router,
-              private alertService: AlertService,
-              private ngxSmartModalService: NgxSmartModalService) {}
+    private router: Router,
+    private alertService: AlertService,
+    private ngxSmartModalService: NgxSmartModalService, ) { }
 
   /**
    * reloads the data on initialize of the page to ensure that the page has the most updated details
@@ -45,6 +50,7 @@ export class FlooringListComponent implements OnInit {
    */
   reloadData() {
     this.floorings = this.flooringService.getFlooringsList();
+
   }
 
   /**
@@ -69,5 +75,32 @@ export class FlooringListComponent implements OnInit {
    */
   editFlooring(id: number) {
     this.router.navigate(['/flooring/edit', id]);
+  }
+
+  filterList(filterTerm) {
+    this.resetList = false;
+    if (filterTerm == "") {
+      this.reloadData();
+    }
+    this.floorings.subscribe(data => {
+      if (this.filterOption.toLowerCase() == "type") {
+        data = data.filter(function (floor) {
+          return (floor.name.toLowerCase() == filterTerm.toLowerCase());
+        })
+      } else if (this.filterOption.toLowerCase() == "style") {
+        data = data.filter(function (floor) {
+          return (floor.style.toLowerCase() == filterTerm.toLowerCase());
+        })
+      } else if (this.filterOption.toLowerCase() == "color") {
+        data = data.filter(function (floor) {
+          return (floor.color.toLowerCase() == filterTerm.toLowerCase());
+        })
+      }
+      this.filteredFloors = data;
+    })
+  }
+
+  reset() {
+    this.resetList = true;
   }
 }

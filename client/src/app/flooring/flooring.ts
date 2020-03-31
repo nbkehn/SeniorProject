@@ -1,3 +1,5 @@
+import { Customer } from '../customer/customer';
+
 /**
  * Defines a flooring class with it's necessary components
  *
@@ -7,4 +9,9 @@
 export class Flooring {
   id: number;
   name: string;
+  style: string;
+  color: string;
+  company: string;
+  checkedOut: boolean;
+  checkedTo: Customer;
 }

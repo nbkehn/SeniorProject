@@ -23,10 +23,12 @@ import { Flooring } from '../flooring/flooring';
 })
 export class EditDialogComponent extends AbstractFormDialogComponent implements OnInit {
 
-  originalCust : Customer;
-
+  oldCustomer : Customer;
+  oldRsa : Rsa;
+  oldFlooring : Flooring;
+  oldTechnicians : Technician[];
   private minDate: Date;
-  appoint = this.retrievedApp;
+
 
   constructor(builder: FormBuilder, public dialogRef: MatDialogRef<AbstractFormDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
    appointmentService: AppointmentService,
@@ -40,11 +42,16 @@ export class EditDialogComponent extends AbstractFormDialogComponent implements 
       flooringService, alertService);
 
       this.minDate = new Date();
-      this.originalCust = this.editApp?.customer;
+
     }
 
   ngOnInit() {
-      
+      this.selectedAppointment.subscribe(data => {
+        this.oldCustomer = data.customer;
+        this.oldRsa = data.rsa;
+        this.oldFlooring = data.flooring;
+        this.technicians = data.technicians;
+      })
      // initialize mapped options
      this.customerOptions = [];
      this.technicianOptions = [];
@@ -62,13 +69,9 @@ export class EditDialogComponent extends AbstractFormDialogComponent implements 
  
   }
 
-  setOriginals() {
-    this.originalCust = this.editApp?.customer;
-    console.log(this.originalCust);
-  }
-
   edit() {
-    this.dialogRef.close(this.formGroup.value);
+    this.close();
+    // this.dialogRef.close(this.formGroup.value);
   }
 
 

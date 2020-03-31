@@ -19,15 +19,36 @@ public class FlooringTest {
 	public void testNullConstructor() {
         FlooringType testFlooringType = new FlooringType();
         assertNull(testFlooringType.getName());
+        assertNull(testFlooringType.getStyle());
+        assertNull(testFlooringType.getColor());
+        assertNotNull(testFlooringType.getId());
     }
 
     /**
-     * Tests that the FlooringType object has been made through the constructor
+     * Tests that the full constructor processes hardwood and non-hardwood flooring types
+     * correctly (hardwood should have all three parameters recorded while others should only
+     * have name and style recorded).
      */
-	@Test
-	public void testConstructor() {
-        FlooringType testFlooringType = new FlooringType("Hardwood");
-        assertNotNull(testFlooringType);
+    @Test
+    public void testFullConstructor() {
+        // Test with all parameters w/ hardwood
+        FlooringType f1 = new FlooringType("Hardwood", "Oak", "Red", "BCO");
+        assertEquals(f1.getName(), "Hardwood");
+        assertEquals(f1.getStyle(), "Oak");
+        assertEquals(f1.getColor(), "Red");
+        assertEquals(f1.getCompany(), "BCO");
+        //Test with first two parameters
+        FlooringType f2 = new FlooringType("Carpet", "Fuzzy", null, "BCO");
+        assertEquals(f2.getName(), "Carpet");
+        assertEquals(f2.getStyle(), "Fuzzy");
+        assertNull(f2.getColor());
+        assertEquals(f2.getCompany(), "BCO");
+        //Test with all parameters, not hardwood
+        FlooringType f3 = new FlooringType("Carpet", "Fuzzy", "Cream", "BCO");
+        assertEquals(f3.getName(), "Carpet");
+        assertEquals(f3.getStyle(), "Fuzzy");
+        assertNull(f3.getColor());
+        assertEquals(f3.getCompany(), "BCO");
     }
 
     /**
@@ -35,7 +56,7 @@ public class FlooringTest {
      */
     @Test
     public void testID(){
-        FlooringType testFlooringType = new FlooringType("Vinyl");
+        FlooringType testFlooringType = new FlooringType();
         testFlooringType.setId(1);
         assertEquals(testFlooringType.getId(), 1);
     }
@@ -45,7 +66,8 @@ public class FlooringTest {
      */
     @Test
 	public void testGetName() {
-        FlooringType testFlooringType = new FlooringType("Bamboo");
+        FlooringType testFlooringType = new FlooringType();
+        testFlooringType.setName("Bamboo");
         assertEquals(testFlooringType.getName(), "Bamboo");
     }
     
@@ -53,10 +75,10 @@ public class FlooringTest {
      * tests the setName() method
      */
     @Test
-	public void testName() {
-        FlooringType testFlooringType = new FlooringType("Tile");
-        testFlooringType.setName("Not tile");
-        assertEquals(testFlooringType.getName(), "Not tile");
+	public void testGetStyle() {
+        FlooringType testFlooringType = new FlooringType();
+        testFlooringType.setStyle("Vinyl");
+        assertEquals(testFlooringType.getStyle(), "Vinyl");
        
     }
 }

@@ -2,8 +2,6 @@ package bco.scheduler.model;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import java.util.*;
 import java.util.Set;
@@ -17,7 +15,6 @@ import java.time.ZoneId;
  *
  */
 @Entity
-@JsonInclude(Include.NON_EMPTY)
 public class Appointment {
     public static final String CLASS_NAME = "appointment";
 
@@ -27,7 +24,7 @@ public class Appointment {
     private long id;
     
     /** technicians set */
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "appointment")
     private Set<Technician> technicians;
     
