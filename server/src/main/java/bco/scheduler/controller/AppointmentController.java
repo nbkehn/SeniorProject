@@ -79,6 +79,8 @@ public class AppointmentController {
     @PostMapping("/appointments")
     public Appointment createAppointment(@Valid @RequestBody Appointment appointment) {
         final Appointment newAppointment = appointmentRepository.saveAndFlush(appointment);
+        System.out.println(appointment.getStartDate());
+        System.out.println(appointment.getStartDate());
         appointmentRepository.refresh(newAppointment);
         appointmentQueueRepository.addNewAppointment(newAppointment.getId());
 

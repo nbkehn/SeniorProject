@@ -27,7 +27,7 @@
     </mat-form-field>
     <mat-form-field>
         <mat-label>Technician</mat-label>
-        <mat-select role="listbox" formControlName="technician">
+        <mat-select role="listbox" formControlName="technician" multiple>
             <mat-option  *ngFor="let technicianOption of technicianOptions"
             [value]="technicianOption">
                 {{technicianOption.firstName}} {{technicianOption.lastName}}
