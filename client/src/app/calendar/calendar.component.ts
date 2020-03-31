@@ -201,7 +201,7 @@ export class CalendarComponent implements OnInit {
     this.appointmentService.getAppointment(this.selectedEvent.id).subscribe(data => {
       this.appointment = data;
       this.appointment.startDate = this.selectedEvent.start;
-      this.appointment.endDate = this.selectedEvent.end;
+      this.appointment.endDate = this.getYesterday(this.selectedEvent.end);
       this.update(this.selectedEvent.id);
     });
 
@@ -252,7 +252,7 @@ export class CalendarComponent implements OnInit {
         element.forEach(data => {
           const newEnd = this.getTomorrow(new Date(data.endDate));
           const newEndString = this.dateObjectToString(newEnd);
-          var event = {id: data.id, title: "Customer: " + data.customer.firstName + " " + data.customer.lastName, start: data.startDate, end: newEndString};
+          var event = {id: data.id, title: "Customer: " + data.customer.firstName + " " + data.customer.lastName, start: data.startDate, end: newEndString, allDay: true};
           this.calendarObject.addEvent(event);
         });
       });
