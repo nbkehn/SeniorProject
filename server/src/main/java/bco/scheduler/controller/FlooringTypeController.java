@@ -1,7 +1,10 @@
 package bco.scheduler.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.validation.Valid;
 
@@ -23,8 +26,9 @@ import bco.scheduler.repository.FlooringTypeRepository;
 import bco.scheduler.model.CommunicationType;
 
 /**
- * The controller for the flooring type. Handles all actions surrounding the flooring type objects and any interaction
- * that can be had with them.
+ * The controller for the flooring type. Handles all actions surrounding the
+ * flooring type objects and any interaction that can be had with them.
+ * 
  * @author Noah Trimble, Will Duke
  */
 @RestController
@@ -43,13 +47,13 @@ public class FlooringTypeController {
     }
 
     /**
-     * Gets the flooring type by a specific id. 
+     * Gets the flooring type by a specific id.
      */
     @GetMapping("/flooringtype/{id}")
     public ResponseEntity<FlooringType> getFlooringTypeById(@PathVariable(value = "id") Long flooringTypeId)
             throws ResourceNotFoundException {
-        FlooringType flooring = flooringTypeRepository.findById(flooringTypeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Flooring type not found for this id :: " + flooringTypeId));
+        FlooringType flooring = flooringTypeRepository.findById(flooringTypeId).orElseThrow(
+                () -> new ResourceNotFoundException("Flooring type not found for this id :: " + flooringTypeId));
         return ResponseEntity.ok(flooring);
     }
 
@@ -58,6 +62,55 @@ public class FlooringTypeController {
      */
     @PostMapping("/flooringtype")
     public ResponseEntity<FlooringType> createFlooring(@Valid @RequestBody FlooringType flooring) {
+        return ResponseEntity.ok(flooringTypeRepository.save(flooring));
+    }
+
+    /**
+     * Uploads a file and attempts to parse it. If successful saves the data inside
+     * to the database.
+     */
+    @PostMapping("/flooringtype/upload")
+    public ResponseEntity<FlooringType> createFlooring(@Valid @RequestBody File file) {
+        String type = "";
+        try {
+            Scanner scanner = new Scanner(file);
+            FlooringType flooring = null;
+            if(scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] tokens = line.split(",");
+                type = tokens[0];
+            } else {
+                //failure state
+            }
+            while(scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] tokens = line.split(",");
+                if(type.equalsIgnoreCase("carpet")){
+                    flooring = new FlooringType(tokens[0], "", "", type);
+                
+                } else if(type.equalsIgnoreCase("carpet tile")) {
+                    flooring = new FlooringType(tokens[0], tokens[1], "", type);
+                
+                } else {
+                    flooring = new FlooringType(tokens[0], "", tokens[1], type);
+                }
+
+                if(scanner.hasNextLine()){
+                    flooringTypeRepository.save(flooring);
+                } else { 
+                    scanner.close();
+                    return ResponseEntity.ok(flooringTypeRepository.save(flooring)); 
+                }
+                
+            }
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            
+            e.printStackTrace();
+        }
+        
+        FlooringType flooring = new FlooringType();
+        
         return ResponseEntity.ok(flooringTypeRepository.save(flooring));
     }
 
