@@ -82,6 +82,13 @@ export class CalendarComponent implements OnInit {
     return new Date(date.valueOf() + dayLength);
   }
 
+  private dateObjectToString(date: Date) {
+    const dateString = date.toISOString();
+    const tIndex = dateString.indexOf("T");
+    return dateString.substr(0, tIndex);
+
+  }
+
   private openDialog(dialogComponentClass: ComponentType<AbstractFormDialogComponent>, eventSelectionRequired: boolean = false): MatDialogRef<unknown, any> {
     const dialogWidthProperties = { width: '30%' };
     let dialogProperties;
@@ -118,23 +125,22 @@ export class CalendarComponent implements OnInit {
         console.log(this.appointment.endDate);
       
         this.save();
-        this.savedAppointment.asObservable().subscribe(data => {  
-          console.log(data);
+        this.savedAppointment.asObservable().subscribe(data => {
 
-          if (!(typeof returnedValue == typeof Boolean)) {
+          if (data.id) {
             const appt = {
               id: data.id,
-              title: `Customer: ${data.customer.firstName} ${data.customer.lastName}`,
-              start: data.startDate ? data.startDate : (new Date()).toDateString(),
-              end: data.endDate ? data.endDate : data.startDate,
+              title: `Customer: ${this.appointment.customer.firstName} ${this.appointment.customer.lastName}`,
+              start: this.appointment.startDate ? this.dateObjectToString(this.appointment.startDate) : this.dateObjectToString(new Date()),
+              end: this.appointment.endDate ? this.dateObjectToString(this.getTomorrow(this.appointment.endDate)) : this.dateObjectToString(this.getTomorrow(this.appointment.startDate)),
             }
             this.calendarObject.addEvent(appt);
             CalendarComponent.nextId += 1;
             console.log(this.calendarObject.getEvents());
-            //this.updateSelectedEvent(this.calendarObject.getEventById(String(appt.id)))
-          }
+            this.updateSelectedEvent(this.calendarObject.getEventById(String(appt.id)))
+            }
         });
-    })
+          })
   }
 
   openEditDialog() {
@@ -189,24 +195,13 @@ export class CalendarComponent implements OnInit {
   }
 
   updateSelectedEvent(newEvent: EventApi) {
-    const newEventShaped = {
-      id: Number(newEvent.id),
-      title: newEvent.title,
-      start: newEvent.start,
-      end: newEvent.end
-    };
-    if (this.getSelectedEvent()) {
-      const currentEvent = this.getCalendar().getEventById(String(this.selectedEvent.id));
-      currentEvent.setProp("backgroundColor", "#198E97");
-      currentEvent.setProp("textColor", "#FFFFFF");
-      currentEvent.setProp("borderColor", "#198E97");
-    }
+    this.updateClickedEvent(newEvent);
     
     //update the event in the backend
     this.appointmentService.getAppointment(this.selectedEvent.id).subscribe(data => {
       this.appointment = data;
-      this.appointment.startDate = newEventShaped.start;
-      this.appointment.endDate = newEventShaped.end;
+      this.appointment.startDate = this.selectedEvent.start;
+      this.appointment.endDate = this.getYesterday(this.selectedEvent.end);
       this.update(this.selectedEvent.id);
     });
 
@@ -220,6 +215,14 @@ export class CalendarComponent implements OnInit {
       start: newEvent.start,
       end: newEvent.end
     };
+
+    if (this.getSelectedEvent()) {
+      const currentEvent = this.getCalendar().getEventById(String(this.selectedEvent.id));
+      currentEvent.setProp("backgroundColor", "#198E97");
+      currentEvent.setProp("textColor", "#FFFFFF");
+      currentEvent.setProp("borderColor", "#198E97");
+    }
+
     this.setSelectedEvent(newEventShaped);
     newEvent.setProp("backgroundColor", "#FFAA1D");
     newEvent.setProp("textColor", "");
@@ -247,12 +250,11 @@ export class CalendarComponent implements OnInit {
 
       this.apps.forEach(element => {
         element.forEach(data => {
-          const newEnd = new Date(data.endDate);
-          const newEndString = this.getTomorrow(newEnd).toDateString();
-          var event = {id: data.id, title: "Customer: " + data.customer.firstName + " " + data.customer.lastName, start: data.startDate, end: newEndString};
+          const newEnd = this.getTomorrow(new Date(data.endDate));
+          const newEndString = this.dateObjectToString(newEnd);
+          var event = {id: data.id, title: "Customer: " + data.customer.firstName + " " + data.customer.lastName, start: data.startDate, end: newEndString, allDay: true};
           this.calendarObject.addEvent(event);
-          
-        })
+        });
       });
   }
 
@@ -349,6 +351,7 @@ export class CalendarComponent implements OnInit {
         this.alertService.success('Appointment saved successfully.', true);
         console.log("Successfully saved appointment");
         this.savedAppointment.next(data);
+        return data;
       },
       error => {
         // Display error message on error and remain in form

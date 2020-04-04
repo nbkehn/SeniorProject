@@ -49,8 +49,8 @@ public class FlooringType {
      /**
       * Company that makes the flooring type
       */
-     @Column(name = "company", nullable = false)
-     public String company;
+     @Column(name = "type", nullable = false)
+     public String type;
 
      /**
       * Whether or not the sample has been checked out
@@ -76,7 +76,7 @@ public class FlooringType {
     * The actual flooring type constructor with a passed floor type to set to. 
     * @param name the type to set the floor object to.
     */
-   public FlooringType(String name, String style, String color, String company) {
+   public FlooringType(String name, String style, String color, String type) {
        String temp = name.toLowerCase();
        if(temp.equals("hardwood")){
            this.name = name;
@@ -86,7 +86,7 @@ public class FlooringType {
            this.name = name;
            this.style = style;
        }
-       this.company = company;
+       this.type = type;
        this.sampleChecked = true;
        this.checkedTo = null;
 
@@ -157,15 +157,15 @@ public class FlooringType {
    /**
     * @return the company
     */
-   public String getCompany() {
-       return company;
+   public String getType() {
+       return type;
    }
 
    /**
     * @param company the company to set
     */
-   public void setCompany(String company) {
-       this.company = company;
+   public void setType(String type) {
+       this.type = type;
    }
 
    /**
