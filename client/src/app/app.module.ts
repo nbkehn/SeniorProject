@@ -49,6 +49,7 @@ import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/r
 //import { AppointmentCalendarComponent } from './appointment/appointment-calendar/appointment-calendar.component';
 import {AssignmentCalendarComponent} from "./assignment/assignment/assignment-calendar.component";
 import { MatOptionModule } from '@angular/material/core';
+import {UploadSampleComponent} from './flooring/upload-sample/upload-sample.component';
 
 
 @NgModule({
@@ -79,7 +80,8 @@ import { MatOptionModule } from '@angular/material/core';
     AddDialogComponent,
     EditDialogComponent,
     DeleteDialogComponent,
-    ReminderErrorListComponent
+    ReminderErrorListComponent,
+    UploadSampleComponent,
   ],
   imports: [
     BrowserModule,

@@ -40,6 +40,13 @@ export class FlooringService {
   }
 
   /**
+   * Upload sample file
+   * @param id
+   * @param name 
+   */
+
+
+  /**
    * Updates a specific flooring
    * @param id  ID of the flooring to update
    * @param name Updated name for the flooring

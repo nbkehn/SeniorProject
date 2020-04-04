@@ -13,6 +13,7 @@
   </div>
   <div class="panel-actions">
     <button routerLink="/flooring/add" class="btn btn-primary panel-action">Add Flooring</button>
+    <button class="btn btn-primary panel-action">Print QR Codes</button>
     <label for="filter">Filter by: </label>
     <label class="radio-inline"><input type="radio" name="type" style="width:20px" [(ngModel)]="filterOption"
         value="type">Type</label>
@@ -20,7 +21,7 @@
         value="style">Style</label>
     <label class="radio-inline"><input type="radio" name="color" style="width:20px" [(ngModel)]="filterOption"
         value="color">Color</label>
-    <label><input type="text" name="filterTerm" width="20px" [(ngModel)]="filterTerm"
+    <label><input type="text" name="filterTerm" style="margin-left: 10px;" [(ngModel)]="filterTerm"
         placeholder="{{filterOption}}"></label>
     <button class="btn btn-primary panel-action" (click)="filterList(filterTerm)">Filter</button>
     <button class="btn btn-primary panel-action" (click)="reset()">Reset</button>
@@ -31,14 +32,14 @@
       <thead>
         <!--column headers for the table-->
         <tr>
-          <th> Name</th>
+          <th> Type</th>
           <th> Style</th>
           <th> Color</th>
           <th> Company</th>
           <th> Actions</th>
         </tr>
       </thead>
-      <tbody *ngIf="filteredTerm != ''">
+      <tbody *ngIf="filteredTerm != '' && !resetList">
         <tr *ngFor="let flooring of filteredFloors  ">
           <td>{{flooring.name}}</td>
           <td>{{flooring.style}}</td>
@@ -65,6 +66,7 @@
             <button (click)="editFlooring(flooring.id)" class="btn btn-primary">Edit</button>
             <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(flooring.id, true).open()"
               class="btn btn-danger btn-delete">Delete</button>
+              <button class="btn btn-primary panel-action">Print QR Code</button>
           </td>
         </tr>
       </tbody>
