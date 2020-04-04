@@ -98,7 +98,7 @@ public class FlooringType {
        } else {
           this.company = company;
        }
-       this.hash_code = hashCode(name, style, color, company).toString();
+       this.hash_code = Integer.toString(hashCode(name, style, color, company));
        this.sampleChecked = false;
        this.checkedTo = null;
 
@@ -124,7 +124,7 @@ public class FlooringType {
         } else {
             this.company = company;
         }
-        this.hash_code = hashCode(name, style, color, company).toString();
+        this.hash_code = Integer.toString(hashCode(name, style, color, company));
         this.sampleChecked = checked;
         this.checkedTo = checkedTo;
     }
