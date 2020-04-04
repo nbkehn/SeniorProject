@@ -26,6 +26,7 @@ import { Appointment } from '../appointment/appointment';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { ResourceLoader } from '@angular/compiler';
 import { AlertService } from '../alert/alert.service';
+import { OTWDialogComponent } from '../otw-dialog/otw-dialog.component';
 
 
 @Component({
@@ -194,6 +195,29 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  /**
+   * Since OTW messages don't require editing an appointment, this
+   * dialog is its own entity apart from the abstract dialog class
+   * AbstractFormDialogComponent. Therefore,
+   */
+  openOTWDialog() {
+    if (!this.selectedEvent) {
+      alert("Please select an appointment to process");
+      return null;
+    } else {
+      const dialogRef = this.dialog.open(OTWDialogComponent, {data: {
+        id: this.selectedEvent.id,
+        title: this.selectedEvent.title,
+        start: this.selectedEvent.start,
+        end: this.selectedEvent.end ? this.getYesterday(this.selectedEvent.end) : null
+      }});
+      if (dialogRef) {
+        dialogRef.afterClosed().subscribe(returnedValue => {
+          console.log(returnedValue)});
+      }
+    }
+  }
+
   updateSelectedEvent(newEvent: EventApi) {
     this.updateClickedEvent(newEvent);
     
@@ -275,6 +299,7 @@ export class CalendarComponent implements OnInit {
     const inScopeOpenAddDialog = this.openAddDialog.bind(this);
     const inScopeOpenEditDialog = this.openEditDialog.bind(this);
     const inScopeOpenDeleteDialog = this.openDeleteDialog.bind(this);
+    const inScopeOpenOTWDialog = this.openOTWDialog.bind(this);
     const inScopeSetCalendar = this.setCalendar.bind(this);
     const inScopeUpdateSelectedEvent = this.updateSelectedEvent.bind(this);
     const inScopeEventClicked = this.updateClickedEvent.bind(this);
@@ -315,11 +340,15 @@ export class CalendarComponent implements OnInit {
           deleteApptButton: {
             text: "Delete Appointment",
             click: inScopeOpenDeleteDialog,
+          },
+          sendOTWMessageButton: {
+            text: "Send OTW Message",
+            click: inScopeOpenOTWDialog,
           }
         },
         footer: {
           left: '',
-          center: 'addApptButton editApptButton deleteApptButton',
+          center: 'addApptButton editApptButton deleteApptButton sendOTWMessageButton',
           right: '',
         },
         defaultDate: new Date(),

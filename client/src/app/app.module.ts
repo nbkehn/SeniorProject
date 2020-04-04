@@ -49,6 +49,7 @@ import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/r
 //import { AppointmentCalendarComponent } from './appointment/appointment-calendar/appointment-calendar.component';
 import {AssignmentCalendarComponent} from "./assignment/assignment/assignment-calendar.component";
 import { MatOptionModule } from '@angular/material/core';
+import { OTWDialogComponent } from './otw-dialog/otw-dialog.component';
 
 
 @NgModule({
@@ -79,6 +80,7 @@ import { MatOptionModule } from '@angular/material/core';
     AddDialogComponent,
     EditDialogComponent,
     DeleteDialogComponent,
+    OTWDialogComponent,
     ReminderErrorListComponent
   ],
   imports: [
@@ -104,6 +106,7 @@ import { MatOptionModule } from '@angular/material/core';
     AddDialogComponent,
     EditDialogComponent,
     DeleteDialogComponent,
+    OTWDialogComponent,
   ],
   providers: [
     AlertService
