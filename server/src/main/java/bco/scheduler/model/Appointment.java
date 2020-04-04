@@ -7,7 +7,6 @@ import java.util.*;
 import java.util.Set;
 import java.time.LocalDate;
 import java.time.ZoneId;
-
 /**
  * Appointment class, stitches together the person components and timeslots, and flooring type
  * 
@@ -53,7 +52,7 @@ public class Appointment {
 
     /** Assignments set */     
 
-    private ArrayList<Assignment> assignments;
+    private Set<Assignment> assignments;
     
     /** default constructor */
     public Appointment() {}
@@ -67,10 +66,10 @@ public class Appointment {
         this.rsa = rsa;
         this.customer = customer;
         this.technicians = technicians;
-        this.flooring = flooring; 
+        this.flooring = flooringtype; 
         this.startDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         this.endDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        this.assignments = new ArrayList<Assignment>();
+        this.assignments = new HashSet<Assignment>();
         LocalDate temp = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         for(int i = 0; i <= getExtraDays(); i++ ) {
             assignments.add(new Assignment(temp, technicians));
@@ -234,21 +233,23 @@ public class Appointment {
     }
 
     public void assignAll(Set<Technician> technicians) {
+
         for(int i = 0; i < assignments.size(); i++ ) {
-            
+            ((Appointment) assignments.toArray()[i]).setTechnicians(technicians);
         }
     }
 
     public void assignDay(int day, Set<Technician> technicians) {
-        assignments.get(day).setTechnicians(technicians);
+        ((Appointment) assignments.toArray()[day]).setTechnicians(technicians);
     }
 
     public void moveDate(LocalDate startDate, LocalDate endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
         LocalDate temp = startDate;
-        for(int i = 0; i < assignments.size(); i++ ) {
-            assignments.get(i).setStartDate(temp);
+        assignments.clear();
+        for(int i = 0; i < getExtraDays(); i++ ) {
+            assignments.add(new Assignment(temp, technicians));
             temp = temp.plusDays(1);
         }
     }
