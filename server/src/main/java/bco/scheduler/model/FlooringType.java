@@ -65,6 +65,12 @@ public class FlooringType {
      @JoinColumn(name = "customer_id")
      public Customer checkedTo;
 
+     /**
+      * Hash String for QR code
+      */
+     @Column(name = "hash_code", nullable = false)
+     public String hash_code;
+
    /**
     * The blank, unused constructor for flooring type.
     */
@@ -92,6 +98,7 @@ public class FlooringType {
        } else {
           this.company = company;
        }
+       this.hash_code = hashCode(name, style, color, company).toString();
        this.sampleChecked = false;
        this.checkedTo = null;
 
@@ -117,7 +124,7 @@ public class FlooringType {
         } else {
             this.company = company;
         }
-        
+        this.hash_code = hashCode(name, style, color, company).toString();
         this.sampleChecked = checked;
         this.checkedTo = checkedTo;
     }
@@ -214,5 +221,15 @@ public class FlooringType {
     public void checkOut(Customer checker){
         this.sampleChecked = true;
         this.checkedTo = checker;
+    }
+
+    
+    public int hashCode(String name, String style, String color, String company){
+        int hash = 7;
+        hash = 31 * hash + name.hashCode();
+        hash = 31 * hash + style.hashCode();
+        hash = 31 * hash + color.hashCode();
+        hash = 31 * hash + company.hashCode();
+        return hash;    
     }
 }
