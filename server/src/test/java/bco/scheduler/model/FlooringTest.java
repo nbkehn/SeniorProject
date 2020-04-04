@@ -36,19 +36,19 @@ public class FlooringTest {
         assertEquals(f1.getName(), "Hardwood");
         assertEquals(f1.getStyle(), "Oak");
         assertEquals(f1.getColor(), "Red");
-        assertEquals(f1.getCompany(), "BCO");
+        assertEquals(f1.getType(), "BCO");
         //Test with first two parameters
         FlooringType f2 = new FlooringType("Carpet", "Fuzzy", null, "BCO");
         assertEquals(f2.getName(), "Carpet");
         assertEquals(f2.getStyle(), "Fuzzy");
         assertNull(f2.getColor());
-        assertEquals(f2.getCompany(), "BCO");
+        assertEquals(f2.getType(), "BCO");
         //Test with all parameters, not hardwood
         FlooringType f3 = new FlooringType("Carpet", "Fuzzy", "Cream", "BCO");
         assertEquals(f3.getName(), "Carpet");
         assertEquals(f3.getStyle(), "Fuzzy");
         assertNull(f3.getColor());
-        assertEquals(f3.getCompany(), "BCO");
+        assertEquals(f3.getType(), "BCO");
     }
 
     /**
