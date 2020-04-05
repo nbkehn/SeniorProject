@@ -71,6 +71,10 @@ export class OTWDialogComponent implements OnInit {
     this.dialogRef.close(this.formGroup.value);
   }
 
+  cancel() {
+    this.dialogRef.close();
+  }
+
   /**
    * Parses a Date object and returns a string with the format MM/DD/YYYY
    * @param date The date to be processed
