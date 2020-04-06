@@ -76,7 +76,7 @@ export class AddDialogComponent extends AbstractFormDialogComponent implements O
    */
   add() {
     console.log(this.formGroup.value);
-    this.dialogRef.close(this.formGroup.value);
+    this.close();
     
     }
 

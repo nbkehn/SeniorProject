@@ -50,9 +50,8 @@ public class Appointment {
     @JoinColumn(name = "flooring_id")
     private FlooringType flooring;
 
-   /** Assignments set */
-   @ManyToOne
-   @JoinColumn(name = "appointment")
+    /** Assignments set */     
+    @ElementCollection(targetClass = Assignment.class)
     private Set<Assignment> assignments;
     
     /** default constructor */
