@@ -51,7 +51,7 @@ public class Appointment {
     private FlooringType flooring;
 
     /** Assignments set */     
-
+    @ElementCollection(targetClass = Assignment.class)
     private Set<Assignment> assignments;
     
     /** default constructor */

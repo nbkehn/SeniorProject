@@ -23,8 +23,7 @@ import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component'
 import { ComponentType } from '@angular/cdk/portal';
 import { AppointmentService } from '../appointment/appointment.service';
 import { Appointment } from '../appointment/appointment';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { ResourceLoader } from '@angular/compiler';
+import {  BehaviorSubject } from 'rxjs';
 import { AlertService } from '../alert/alert.service';
 import { OTWDialogComponent } from '../otw-dialog/otw-dialog.component';
 import { ViewDialogComponent } from '../view-dialog/view-dialog.component';
@@ -142,21 +141,6 @@ export class CalendarComponent implements OnInit {
           console.log(this.appointment.endDate);
         
           this.save();
-          this.savedAppointment.asObservable().subscribe(data => {
-
-            if (data.id) {
-              const appt = {
-                id: data.id,
-                title: `Customer: ${this.appointment.customer.firstName} ${this.appointment.customer.lastName}`,
-                start: this.appointment.startDate ? this.dateObjectToString(this.appointment.startDate) : this.dateObjectToString(new Date()),
-                end: this.appointment.endDate ? this.dateObjectToString(this.getTomorrow(this.appointment.endDate)) : this.dateObjectToString(this.getTomorrow(this.appointment.startDate)),
-              }
-              this.calendarObject.addEvent(appt);
-              CalendarComponent.nextId += 1;
-              console.log(this.calendarObject.getEvents());
-              this.updateSelectedEvent(this.calendarObject.getEventById(String(appt.id)))
-              }
-          });
       }
           })
   }
@@ -411,13 +395,23 @@ export class CalendarComponent implements OnInit {
         // Display success message and go back to list
         this.alertService.success('Appointment saved successfully.', true);
         console.log("Successfully saved appointment");
-        this.savedAppointment.next(data);
+        if (data.id) {
+          const appt = {
+            id: data.id,
+            title: `Customer: ${this.appointment.customer.firstName} ${this.appointment.customer.lastName}`,
+            start: this.appointment.startDate ? this.dateObjectToString(this.appointment.startDate) : this.dateObjectToString(new Date()),
+            end: this.appointment.endDate ? this.dateObjectToString(this.getTomorrow(this.appointment.endDate)) : this.dateObjectToString(this.getTomorrow(this.appointment.startDate)),
+          }
+          this.calendarObject.addEvent(appt);
+          CalendarComponent.nextId += 1;
+          console.log(this.calendarObject.getEvents());
+          this.updateClickedEvent(this.calendarObject.getEventById(String(appt.id)));
+        }
         return data;
       },
       error => {
         // Display error message on error and remain in form
         this.alertService.error('The appointment could not be saved.', false);
-        console.log("Successfully saved appointment");
       });
   }
 
