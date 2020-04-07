@@ -202,22 +202,23 @@ export class CalendarComponent implements OnInit {
    * AbstractFormDialogComponent. Therefore,
    */
   openOTWDialog() {
-    if (!this.selectedEvent) {
-      alert("Please select an appointment to process");
-      return null;
-    } else {
-      const dialogRef = this.dialog.open(OTWDialogComponent, {data: {
-        id: this.selectedEvent.id,
-        title: this.selectedEvent.title,
-        start: this.selectedEvent.start,
-        end: this.selectedEvent.end ? this.getYesterday(this.selectedEvent.end) : null
-      }});
+    const dialogRef = this.openDialog(OTWDialogComponent, true);
       if (dialogRef) {
         dialogRef.afterClosed().subscribe(returnedValue => {
-          console.log(returnedValue)});
+          if (returnedValue) {
+            this.appointmentService.getAppointment(this.selectedEvent.id).subscribe((data) => {
+              const currentAppt: Appointment = data;
+              this.appointmentService.sendOTWMessage(currentAppt).subscribe((response)=> {
+                this.alertService.success("OTW message sent!", true)
+              }, (error) => {
+                console.log(error);
+                this.alertService.error("OTW message could not be sent", true);
+              });
+            });
+          }
+        });
       }
     }
-  }
 
   openViewDialog() {
     this.openDialog(ViewDialogComponent, true);

@@ -51,6 +51,7 @@ import {AssignmentCalendarComponent} from "./assignment/assignment/assignment-ca
 import { MatOptionModule } from '@angular/material/core';
 import {UploadSampleComponent} from './flooring/upload-sample/upload-sample.component';
 import { OTWDialogComponent } from './otw-dialog/otw-dialog.component';
+import {ViewDialogComponent} from './view-dialog/view-dialog.component';
 
 
 @NgModule({
@@ -84,7 +85,8 @@ import { OTWDialogComponent } from './otw-dialog/otw-dialog.component';
     ReminderErrorListComponent,
     UploadSampleComponent,
     OTWDialogComponent,
-    ReminderErrorListComponent
+    ReminderErrorListComponent,
+    ViewDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -110,6 +112,7 @@ import { OTWDialogComponent } from './otw-dialog/otw-dialog.component';
     EditDialogComponent,
     DeleteDialogComponent,
     OTWDialogComponent,
+    ViewDialogComponent,
   ],
   providers: [
     AlertService

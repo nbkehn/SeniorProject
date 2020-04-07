@@ -1,21 +1,11 @@
 <h2 mat-dialog-title>Send OTW Message?</h2>
 <form [formGroup]="formGroup">
 <mat-dialog-content>
-    <div><strong>Customer: </strong>{{currentAppointment?.customer.firstName}} {{currentAppointment?.customer.lastName}}</div>
-    <div><strong>Phone: </strong>{{formatPhoneString(currentAppointment?.customer.phone)}}</div>
-    <div><strong>Email: </strong>{{currentAppointment?.customer.email}}</div>
-    <div><strong>Address: </strong>{{currentAppointment?.customer.address}}</div>
-    <div><strong>Flooring: </strong>{{currentAppointment?.flooring.name}}</div><br>
-    <div>
-        <mat-label><strong>Available Dates:</strong></mat-label><br>
-        <mat-form-field>
-            <mat-select formControlName="dateForOTW" [placeholder]="dateForOTW || placeholderString">
-                <mat-option *ngFor="let dateOption of availableDates" [value]="dateOption">
-                    {{formatDateString(dateOption)}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
+    <div><strong>Customer: </strong>{{editApp.customer?.firstName}} {{editApp?.customer?.lastName}}</div>
+    <div><strong>Phone: </strong>{{formatPhoneString(editApp?.customer?.phone)}}</div>
+    <div><strong>Email: </strong>{{editApp?.customer?.email}}</div>
+    <div><strong>Address: </strong>{{editApp?.customer?.address}}</div>
+    <div><strong>Flooring: </strong>{{editApp?.flooring?.name}}</div><br>
 </mat-dialog-content>
 </form>
 <mat-dialog-actions>
