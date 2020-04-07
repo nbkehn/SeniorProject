@@ -23,9 +23,10 @@ import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component'
 import { ComponentType } from '@angular/cdk/portal';
 import { AppointmentService } from '../appointment/appointment.service';
 import { Appointment } from '../appointment/appointment';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { ResourceLoader } from '@angular/compiler';
+import {  BehaviorSubject } from 'rxjs';
 import { AlertService } from '../alert/alert.service';
+import { OTWDialogComponent } from '../otw-dialog/otw-dialog.component';
+import { ViewDialogComponent } from '../view-dialog/view-dialog.component';
 
 
 @Component({
@@ -47,6 +48,14 @@ export class CalendarComponent implements OnInit {
 
   private static nextId: number;
 
+  /**
+   * Used to detect when the user double clicks since the FullCalendar
+   * doesn't check for double clicks innately. According to Wikipedia
+   * (and some experiments I did on my own), the time between clicks for
+   * a double click is considered <= 500 ms.
+   */
+  private timeOfLastClick: number = 0;
+
   appointment: Appointment;
 
 
@@ -67,6 +76,14 @@ export class CalendarComponent implements OnInit {
     return this.selectedEvent;
   }
 
+  getTimeOfLastClick() {
+    return this.timeOfLastClick;
+  }
+
+  setTimeOfLastClick(time: number) {
+    this.timeOfLastClick = time;
+  }
+
   /**
    * Constructor for the CalendarComponent; does nothing
    */
@@ -82,8 +99,14 @@ export class CalendarComponent implements OnInit {
     return new Date(date.valueOf() + dayLength);
   }
 
+  private dateObjectToString(date: Date) {
+    const dateString = date.toISOString();
+    const tIndex = dateString.indexOf("T");
+    return dateString.substr(0, tIndex);
+
+  }
+
   private openDialog(dialogComponentClass: ComponentType<AbstractFormDialogComponent>, eventSelectionRequired: boolean = false): MatDialogRef<unknown, any> {
-    const dialogWidthProperties = { width: '30%' };
     let dialogProperties;
     if (eventSelectionRequired) {
       if (!this.selectedEvent) {
@@ -106,42 +129,27 @@ export class CalendarComponent implements OnInit {
   openAddDialog() {
     const dialogRef = this.openDialog(AddDialogComponent);
     dialogRef.afterClosed().subscribe(returnedValue => {
-      console.log(returnedValue);
-      let newEnd = returnedValue.end;
-      this.appointment = new Appointment();
-        this.appointment.startDate = returnedValue.start;
-        this.appointment.endDate = returnedValue.end;
-        this.appointment.customer = returnedValue.customer;
-        this.appointment.technicians =  returnedValue.technicians;
-        this.appointment.rsa = returnedValue.rsa;
-        this.appointment.flooring = returnedValue.flooring;
-        console.log(this.appointment.endDate);
-      
-        this.save();
-        this.savedAppointment.asObservable().subscribe(data => {  
-          console.log(data);
-
-          if (!(typeof returnedValue == typeof Boolean)) {
-            const appt = {
-              id: data.id,
-              title: `Customer: ${data.customer.firstName} ${data.customer.lastName}`,
-              start: data.startDate ? data.startDate : (new Date()).toDateString(),
-              end: data.endDate ? data.endDate : data.startDate,
-            }
-            this.calendarObject.addEvent(appt);
-            CalendarComponent.nextId += 1;
-            console.log(this.calendarObject.getEvents());
-            //this.updateSelectedEvent(this.calendarObject.getEventById(String(appt.id)))
-          }
-        });
-    })
+      if (typeof returnedValue != "boolean") {
+        let newEnd = returnedValue.end;
+        this.appointment = new Appointment();
+          this.appointment.startDate = returnedValue.start;
+          this.appointment.endDate = returnedValue.end;
+          this.appointment.customer = returnedValue.customer;
+          this.appointment.technicians =  returnedValue.technicians;
+          this.appointment.rsa = returnedValue.rsa;
+          this.appointment.flooring = returnedValue.flooring;
+          console.log(this.appointment.endDate);
+        
+          this.save();
+      }
+          })
   }
 
   openEditDialog() {
     const dialogRef = this.openDialog(EditDialogComponent, true);
     if (dialogRef) {
       dialogRef.afterClosed().subscribe(returnedValue => {
-        if (!(typeof returnedValue == typeof Boolean)) {
+        if (typeof returnedValue != "boolean") {
           const appt = {
             id: this.selectedEvent.id,
             title: `Customer: ${returnedValue.customer.firstName} ${returnedValue.customer.lastName}`,
@@ -175,7 +183,7 @@ export class CalendarComponent implements OnInit {
     const dialogRef = this.openDialog(DeleteDialogComponent, true);
     if (dialogRef) {
       dialogRef.afterClosed().subscribe(returnedValue => {
-        if (!(typeof returnedValue == typeof Boolean)) {
+        if (typeof returnedValue != "boolean") {
           if (returnedValue.deleted) {
             const deleteEvent = this.calendarObject.getEventById(this.selectedEvent.id.toString());
             deleteEvent.remove();
@@ -188,25 +196,42 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  updateSelectedEvent(newEvent: EventApi) {
-    const newEventShaped = {
-      id: Number(newEvent.id),
-      title: newEvent.title,
-      start: newEvent.start,
-      end: newEvent.end
-    };
-    if (this.getSelectedEvent()) {
-      const currentEvent = this.getCalendar().getEventById(String(this.selectedEvent.id));
-      currentEvent.setProp("backgroundColor", "#198E97");
-      currentEvent.setProp("textColor", "#FFFFFF");
-      currentEvent.setProp("borderColor", "#198E97");
+  /**
+   * Since OTW messages don't require editing an appointment, this
+   * dialog is its own entity apart from the abstract dialog class
+   * AbstractFormDialogComponent. Therefore,
+   */
+  openOTWDialog() {
+    const dialogRef = this.openDialog(OTWDialogComponent, true);
+      if (dialogRef) {
+        dialogRef.afterClosed().subscribe(returnedValue => {
+          if (returnedValue) {
+            this.appointmentService.getAppointment(this.selectedEvent.id).subscribe((data) => {
+              const currentAppt: Appointment = data;
+              this.appointmentService.sendOTWMessage(currentAppt).subscribe((response)=> {
+                this.alertService.success("OTW message sent!", true)
+              }, (error) => {
+                console.log(error);
+                this.alertService.error("OTW message could not be sent", true);
+              });
+            });
+          }
+        });
+      }
     }
+
+  openViewDialog() {
+    this.openDialog(ViewDialogComponent, true);
+  }
+
+  updateSelectedEvent(newEvent: EventApi) {
+    this.updateClickedEvent(newEvent);
     
     //update the event in the backend
     this.appointmentService.getAppointment(this.selectedEvent.id).subscribe(data => {
       this.appointment = data;
-      this.appointment.startDate = newEventShaped.start;
-      this.appointment.endDate = newEventShaped.end;
+      this.appointment.startDate = this.selectedEvent.start;
+      this.appointment.endDate = this.getYesterday(this.selectedEvent.end);
       this.update(this.selectedEvent.id);
     });
 
@@ -220,6 +245,14 @@ export class CalendarComponent implements OnInit {
       start: newEvent.start,
       end: newEvent.end
     };
+
+    if (this.getSelectedEvent()) {
+      const currentEvent = this.getCalendar().getEventById(String(this.selectedEvent.id));
+      currentEvent.setProp("backgroundColor", "#198E97");
+      currentEvent.setProp("textColor", "#FFFFFF");
+      currentEvent.setProp("borderColor", "#198E97");
+    }
+
     this.setSelectedEvent(newEventShaped);
     newEvent.setProp("backgroundColor", "#FFAA1D");
     newEvent.setProp("textColor", "");
@@ -247,12 +280,11 @@ export class CalendarComponent implements OnInit {
 
       this.apps.forEach(element => {
         element.forEach(data => {
-          const newEnd = new Date(data.endDate);
-          const newEndString = this.getTomorrow(newEnd).toDateString();
-          var event = {id: data.id, title: "Customer: " + data.customer.firstName + " " + data.customer.lastName, start: data.startDate, end: newEndString};
+          const newEnd = this.getTomorrow(new Date(data.endDate));
+          const newEndString = this.dateObjectToString(newEnd);
+          var event = {id: data.id, title: "Customer: " + data.customer.firstName + " " + data.customer.lastName, start: data.startDate, end: newEndString, allDay: true};
           this.calendarObject.addEvent(event);
-          
-        })
+        });
       });
   }
 
@@ -273,9 +305,14 @@ export class CalendarComponent implements OnInit {
     const inScopeOpenAddDialog = this.openAddDialog.bind(this);
     const inScopeOpenEditDialog = this.openEditDialog.bind(this);
     const inScopeOpenDeleteDialog = this.openDeleteDialog.bind(this);
+    const inScopeOpenOTWDialog = this.openOTWDialog.bind(this);
+    const inScopeOpenViewDialog = this.openViewDialog.bind(this);
     const inScopeSetCalendar = this.setCalendar.bind(this);
     const inScopeUpdateSelectedEvent = this.updateSelectedEvent.bind(this);
     const inScopeEventClicked = this.updateClickedEvent.bind(this);
+    const inScopeGetTimeOfLastClick = this.getTimeOfLastClick.bind(this);
+    const inScopeSetTimeOfLastClick = this.setTimeOfLastClick.bind(this);
+    const inScopeGetSelectedEvent = this.getSelectedEvent.bind(this);
     document.addEventListener('DOMContentLoaded', function (event: Event) {
       // initialize the calendar element on page
       let calendarEl: HTMLElement = document.getElementById('calendar')!;
@@ -298,7 +335,14 @@ export class CalendarComponent implements OnInit {
           inScopeUpdateSelectedEvent(resizeEvent.event);
         },
         eventClick: (clickEvent) => {
+          const currentTime = Date.now();
+          const selectedEvent = inScopeGetSelectedEvent();
+          const isSameEvent = selectedEvent && selectedEvent.id == clickEvent.event.id;
           inScopeEventClicked(clickEvent.event);
+          if (isSameEvent && currentTime - inScopeGetTimeOfLastClick() < 500) {
+            inScopeOpenViewDialog();
+          }
+          inScopeSetTimeOfLastClick(currentTime);
         },
         aspectRatio: 3,
         customButtons: {
@@ -313,11 +357,15 @@ export class CalendarComponent implements OnInit {
           deleteApptButton: {
             text: "Delete Appointment",
             click: inScopeOpenDeleteDialog,
+          },
+          sendOTWMessageButton: {
+            text: "Send OTW Message",
+            click: inScopeOpenOTWDialog,
           }
         },
         footer: {
           left: '',
-          center: 'addApptButton editApptButton deleteApptButton',
+          center: 'addApptButton editApptButton deleteApptButton sendOTWMessageButton',
           right: '',
         },
         defaultDate: new Date(),
@@ -348,12 +396,23 @@ export class CalendarComponent implements OnInit {
         // Display success message and go back to list
         this.alertService.success('Appointment saved successfully.', true);
         console.log("Successfully saved appointment");
-        this.savedAppointment.next(data);
+        if (data.id) {
+          const appt = {
+            id: data.id,
+            title: `Customer: ${this.appointment.customer.firstName} ${this.appointment.customer.lastName}`,
+            start: this.appointment.startDate ? this.dateObjectToString(this.appointment.startDate) : this.dateObjectToString(new Date()),
+            end: this.appointment.endDate ? this.dateObjectToString(this.getTomorrow(this.appointment.endDate)) : this.dateObjectToString(this.getTomorrow(this.appointment.startDate)),
+          }
+          this.calendarObject.addEvent(appt);
+          CalendarComponent.nextId += 1;
+          console.log(this.calendarObject.getEvents());
+          this.updateClickedEvent(this.calendarObject.getEventById(String(appt.id)));
+        }
+        return data;
       },
       error => {
         // Display error message on error and remain in form
         this.alertService.error('The appointment could not be saved.', false);
-        console.log("Successfully saved appointment");
       });
   }
 

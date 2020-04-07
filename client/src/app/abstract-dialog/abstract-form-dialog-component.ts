@@ -59,7 +59,7 @@ export abstract class AbstractFormDialogComponent implements OnInit {
 
 
   /* Initializes form group so it can be accessed when the dialog opens */
-  constructor(private builder: FormBuilder, public dialogRef: MatDialogRef<AbstractFormDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
+  constructor(public builder: FormBuilder, public dialogRef: MatDialogRef<AbstractFormDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     private appointmentService: AppointmentService,
     private customerService: CustomerService,
     private technicianService: TechnicianService,
