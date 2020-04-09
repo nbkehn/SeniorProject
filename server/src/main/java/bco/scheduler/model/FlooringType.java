@@ -49,8 +49,8 @@ public class FlooringType {
      /**
       * Company that makes the flooring type
       */
-     @Column(name = "type", nullable = false)
-     public String type;
+     @Column(name = "company", nullable = false)
+     public String company;
 
      /**
       * Whether or not the sample has been checked out
@@ -65,6 +65,12 @@ public class FlooringType {
      @JoinColumn(name = "customer_id")
      public Customer checkedTo;
 
+     /**
+      * Hash String for QR code
+      */
+     @Column(name = "hash_code", nullable = false)
+     public String hash_code;
+
    /**
     * The blank, unused constructor for flooring type.
     */
@@ -76,21 +82,52 @@ public class FlooringType {
     * The actual flooring type constructor with a passed floor type to set to. 
     * @param name the type to set the floor object to.
     */
-   public FlooringType(String name, String style, String color, String type) {
+   public FlooringType(String name, String style, String color, String company) {
        String temp = name.toLowerCase();
-       if(temp.equals("hardwood")){
+       if(temp.equals("carpet")){
+           this.name = name;
+           this.style = style;
+           this.color = "";
+       } else {
            this.name = name;
            this.color = color;
            this.style = style;
-       } else{
-           this.name = name;
-           this.style = style;
        }
-       this.type = type;
-       this.sampleChecked = true;
+       if(company == null) {
+          this.company = "";
+       } else {
+          this.company = company;
+       }
+       this.hash_code = Integer.toString(hashCode(name, style, color, company));
+       this.sampleChecked = false;
        this.checkedTo = null;
 
    }
+
+     /**
+    * The actual flooring type constructor with a passed floor type to set to. 
+    * @param name the type to set the floor object to.
+    */
+    public FlooringType(String name, String style, String color, String company, boolean checked, Customer checkedTo) {
+        String temp = name.toLowerCase();
+        if(temp.equals("carpet")){
+            this.name = name;
+            this.style = style;
+            this.color = "";
+        } else {
+            this.name = name;
+            this.color = color;
+            this.style = style;
+        }
+        if(company == null) {
+            this.company = "";
+        } else {
+            this.company = company;
+        }
+        this.hash_code = Integer.toString(hashCode(name, style, color, company));
+        this.sampleChecked = checked;
+        this.checkedTo = checkedTo;
+    }
 
    /**
     * Gets the id of the flooring type as a long 
@@ -157,15 +194,15 @@ public class FlooringType {
    /**
     * @return the company
     */
-   public String getType() {
-       return type;
+   public String getCompany() {
+       return company;
    }
 
    /**
     * @param company the company to set
     */
-   public void setType(String type) {
-       this.type = type;
+   public void setCompany(String company) {
+       this.company = company;
    }
 
    /**
@@ -184,5 +221,15 @@ public class FlooringType {
     public void checkOut(Customer checker){
         this.sampleChecked = true;
         this.checkedTo = checker;
+    }
+
+    
+    public int hashCode(String name, String style, String color, String company){
+        int hash = 7;
+        hash = 31 * hash + name.hashCode();
+        hash = 31 * hash + style.hashCode();
+        hash = 31 * hash + color.hashCode();
+        hash = 31 * hash + company.hashCode();
+        return hash;    
     }
 }
