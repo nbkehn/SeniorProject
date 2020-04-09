@@ -1,18 +1,8 @@
-/**
- * Angular component for the calendar
- *
- * @package calendar
- * @author Soumya Bagade
- * @author Renee Segda
- */
-
 import { Calendar, EventApi } from '@fullcalendar/core';
-import interactionPlugin, { Draggable } from '@fullcalendar/interaction';
+import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-
-
 
 import { Component, OnInit } from "@angular/core";
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -28,25 +18,50 @@ import { AlertService } from '../alert/alert.service';
 import { OTWDialogComponent } from '../otw-dialog/otw-dialog.component';
 import { ViewDialogComponent } from '../view-dialog/view-dialog.component';
 
-
+/**
+ * Component which contains the data necessary to make the FullCalendar
+ * calendar appear in the user interface and to populate it with appointments
+ * from the database.
+ * 
+ * @author Soumya Bagade
+ * @author Renee Segda
+ */
 @Component({
   selector: "app-calendar-list",
   templateUrl: "./calendar.html"
 })
 export class CalendarComponent implements OnInit {
 
+  /**
+   * A reference to the FullCalendar calendar object related to the calendar
+   * currently visible in the user interface.
+   */
   private calendarObject: Calendar;
 
+  /**
+   * A list of appointments in the calendar which is updated based on database
+   * changes.
+   */
   private appointments  = new BehaviorSubject<Appointment[]>([]);
+  
+  /**
+   * An object containing a list of all appointments in the calendar.
+   */
   private appStore : { apps : Appointment[]} = {apps : []};
+  
+  /**
+   * An Observable object which is notified when the "appointments"
+   * Behavior Subject detects changes.
+   */
   readonly apps = this.appointments.asObservable();
-
 
   savedAppointment: BehaviorSubject<Appointment> = new BehaviorSubject<Appointment>(new Appointment);
 
+  /**
+   * An object containing information for the currently selected appointment. 
+   * The shape is based on the shape of the FullCalendar library's event object.
+   */
   private selectedEvent: { id: number, title: string, start: Date, end: Date }
-
-  private static nextId: number;
 
   /**
    * Used to detect when the user double clicks since the FullCalendar
@@ -58,30 +73,51 @@ export class CalendarComponent implements OnInit {
 
   appointment: Appointment;
 
-
-
+  /**
+   * Stores the given Calendar object in the calendarObject field for later
+   * referencing.
+   * @param cal The Calendar object
+   */
   setCalendar(cal: Calendar) {
     this.calendarObject = cal;
   }
 
+  /**
+   * Returns the Calendar object stored in the calendarObject field.
+   */
   getCalendar() {
     return this.calendarObject;
   }
 
+  /**
+   * Stores the given object in order to represent the appointment in the calendar
+   * which the user has selected.
+   * @param event The FullCalendar event shape of the selected appointment.
+   */
   setSelectedEvent(event: { id: number, title: string, start: Date, end: Date }) {
     this.selectedEvent = event;
   }
 
+  /**
+   * Returns the currently selected appointment in the FullCalendar event shape.
+   */
   getSelectedEvent(): { title: string, start: Date, end: Date } {
     return this.selectedEvent;
   }
-
-  getTimeOfLastClick() {
-    return this.timeOfLastClick;
-  }
-
+  
+  /**
+   * Records the time at which the last click event occurred
+   * @param time The time of the last click event
+   */
   setTimeOfLastClick(time: number) {
     this.timeOfLastClick = time;
+  }
+
+  /**
+   * Returns the time of the last click event.
+   */
+  getTimeOfLastClick() {
+    return this.timeOfLastClick;
   }
 
   /**
@@ -89,16 +125,29 @@ export class CalendarComponent implements OnInit {
    */
   constructor(public dialog: MatDialog, private appointmentService: AppointmentService, private alertService: AlertService) { }
 
+  /**
+   * Returns the Date object representing the day before the given Date.
+   * @param date The Date object whose prior day will be returned.
+   */
   private getYesterday(date: Date) {
     const dayLength = new Date("2000-01-02").valueOf() - new Date("2000-01-01").valueOf();
     return new Date(date.valueOf() - dayLength);
   }
 
+  /**
+   * Returns the Date object representing the day after the given Date.
+   * @param date The Date object whose next day will be returned.
+   */
   private getTomorrow(date: Date) {
     const dayLength = new Date("2000-01-02").valueOf() - new Date("2000-01-01").valueOf();
     return new Date(date.valueOf() + dayLength);
   }
 
+  /**
+   * Returns a string expressing the value of the given Date object
+   * as MM/DD/YYYY.
+   * @param date The Date to be represented as a string.
+   */
   private dateObjectToString(date: Date) {
     const dateString = date.toISOString();
     const tIndex = dateString.indexOf("T");
@@ -106,6 +155,14 @@ export class CalendarComponent implements OnInit {
 
   }
 
+  /**
+   * Opens the dialog box associated with the given component class "dialogComponentClass".
+   * If an appointment needs to be selected for the type of dialog box to be opened, the
+   * eventSelectionRequired parameter will be passed as "true".
+   * @param dialogComponentClass A component class which is a child of the AbstractFormDialogComponent class.
+   * @param eventSelectionRequired The boolean value of whether or not an appointment must be selected before
+   *        opening the dialog box.
+   */
   private openDialog(dialogComponentClass: ComponentType<AbstractFormDialogComponent>, eventSelectionRequired: boolean = false): MatDialogRef<unknown, any> {
     let dialogProperties;
     if (eventSelectionRequired) {
@@ -126,11 +183,14 @@ export class CalendarComponent implements OnInit {
     return this.dialog.open(dialogComponentClass, dialogProperties);
   }
 
+  /**
+   * Opens the dialog box for the AddDialogComponent, then utilizes the returned
+   * data to add the appointment via the save() method.
+   */
   openAddDialog() {
     const dialogRef = this.openDialog(AddDialogComponent);
     dialogRef.afterClosed().subscribe(returnedValue => {
       if (typeof returnedValue != "boolean") {
-        let newEnd = returnedValue.end;
         this.appointment = new Appointment();
           this.appointment.startDate = returnedValue.start;
           this.appointment.endDate = returnedValue.end;
@@ -145,6 +205,10 @@ export class CalendarComponent implements OnInit {
           })
   }
 
+  /**
+   * Opens the dialog box for the EditDialogComponent, then utilizes the returned
+   * data to edit the appointment via the update() method.
+   */
   openEditDialog() {
     const dialogRef = this.openDialog(EditDialogComponent, true);
     if (dialogRef) {
@@ -179,6 +243,11 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  /**
+   * Opens the dialog box for the DeleteDialogComponent, then utilizes the returned
+   * boolean value to decide whether or not to delete the appointment via the delete()
+   * method.
+   */
   openDeleteDialog() {
     const dialogRef = this.openDialog(DeleteDialogComponent, true);
     if (dialogRef) {
@@ -197,9 +266,8 @@ export class CalendarComponent implements OnInit {
   }
 
   /**
-   * Since OTW messages don't require editing an appointment, this
-   * dialog is its own entity apart from the abstract dialog class
-   * AbstractFormDialogComponent. Therefore,
+   * Opens the dialog box for the OTWDialogComponent, then utilizes the returned
+   * boolean value to decide whether or not to send the message via the appointmentService.
    */
   openOTWDialog() {
     const dialogRef = this.openDialog(OTWDialogComponent, true);
@@ -208,7 +276,7 @@ export class CalendarComponent implements OnInit {
           if (returnedValue) {
             this.appointmentService.getAppointment(this.selectedEvent.id).subscribe((data) => {
               const currentAppt: Appointment = data;
-              this.appointmentService.sendOTWMessage(currentAppt).subscribe((response)=> {
+              this.appointmentService.sendOTWMessage(currentAppt).subscribe(()=> {
                 this.alertService.success("OTW message sent!", true)
               }, (error) => {
                 console.log(error);
@@ -220,10 +288,22 @@ export class CalendarComponent implements OnInit {
       }
     }
 
+    /**
+     * Opens the dialog box for the ViewDialogComponent.
+     */
   openViewDialog() {
     this.openDialog(ViewDialogComponent, true);
   }
 
+  /**
+   * Utilizes the updateClickedEvent method to set the selectedEvent
+   * field to the newEvent parameter, then uses the update() method to
+   * update the start and end date of the appointment. This method is
+   * primarily used when the user drags and drops an appointment to
+   * reschedule it.
+   * @param newEvent A FullCalendar event representing the updated placement
+   *        of the appointment.
+   */
   updateSelectedEvent(newEvent: EventApi) {
     this.updateClickedEvent(newEvent);
     
@@ -238,6 +318,12 @@ export class CalendarComponent implements OnInit {
     
   }
 
+  /**
+   * Updates the selectedEvent object to contain the info from the newEvent
+   * parameter and swaps the highlighted coloring from the previously selected
+   * appointment to the newly selected appointment.
+   * @param newEvent The FullCalendar event representation of the newly selected appointment.
+   */
   updateClickedEvent(newEvent: EventApi) {
     const newEventShaped = {
       id: Number(newEvent.id),
@@ -274,7 +360,7 @@ export class CalendarComponent implements OnInit {
         this.appointments.next(Object.assign({}, this.appStore).apps);
 
       },
-      error => {
+      () => {
         this.alertService.error('Appointments could not be loaded.', false);
       });
 
@@ -287,11 +373,6 @@ export class CalendarComponent implements OnInit {
         });
       });
   }
-
-
-  /* Trying to get the added event to show up in the calendar but the event object returned isn't being parsed correctly.
-  */
-
 
   /**
    * reloads the data on initialize of the page show the table
@@ -313,7 +394,7 @@ export class CalendarComponent implements OnInit {
     const inScopeGetTimeOfLastClick = this.getTimeOfLastClick.bind(this);
     const inScopeSetTimeOfLastClick = this.setTimeOfLastClick.bind(this);
     const inScopeGetSelectedEvent = this.getSelectedEvent.bind(this);
-    document.addEventListener('DOMContentLoaded', function (event: Event) {
+    document.addEventListener('DOMContentLoaded', function () {
       // initialize the calendar element on page
       let calendarEl: HTMLElement = document.getElementById('calendar')!;
       // initialize the details for the calendar
@@ -404,13 +485,12 @@ export class CalendarComponent implements OnInit {
             end: this.appointment.endDate ? this.dateObjectToString(this.getTomorrow(this.appointment.endDate)) : this.dateObjectToString(this.getTomorrow(this.appointment.startDate)),
           }
           this.calendarObject.addEvent(appt);
-          CalendarComponent.nextId += 1;
           console.log(this.calendarObject.getEvents());
           this.updateClickedEvent(this.calendarObject.getEventById(String(appt.id)));
         }
         return data;
       },
-      error => {
+      () => {
         // Display error message on error and remain in form
         this.alertService.error('The appointment could not be saved.', false);
       });
@@ -424,7 +504,7 @@ export class CalendarComponent implements OnInit {
         this.alertService.success('Appointment updated successfully.', true);
         console.log(data);
       },
-      error => {
+      () => {
         // Display error message on error and remain in form
         //this.alertService.error('The appointment could not be updated.', false);
         console.log("Unsuccessfully updated appointment");
@@ -434,12 +514,12 @@ export class CalendarComponent implements OnInit {
   delete(id : number) {
     let response = this.appointmentService.deleteAppointment(id);
     response.subscribe(
-      data => {
+      () => {
         // Display success message and go back to list
         this.alertService.success('Appointment deleted successfully.', true);
         console.log("Successfully deleted appointment");
       },
-      error => {
+      () => {
         // Display error message on error and remain in form
         this.alertService.error('The appointment could not be deleted.', false);
         console.log("Unsuccessfully deleted appointment");
