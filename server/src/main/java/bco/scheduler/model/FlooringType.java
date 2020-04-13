@@ -29,33 +29,33 @@ public class FlooringType {
      * The actual string representation of the flooring type.
      * This is the name(category) of the type of flooring, not the style or color
      */
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     public String name;
 
     /**
      * Style name of the flooring type
      *
      */
-     @Column(name = "style", nullable = false)
+     @Column(name = "style", columnDefinition = "varchar(255) default ''")
      public String style;
 
      /**
       * Color of the flooring type
       *
       */
-     @Column(name = "color", nullable = false)
+     @Column(name = "color", columnDefinition = "varchar(255) default ''", nullable = true)
      public String color;
 
      /**
       * Company that makes the flooring type
       */
-     @Column(name = "type", nullable = false)
-     public String type;
+     @Column(name = "company", columnDefinition = "varchar(255) default ''")
+     public String company;
 
      /**
       * Whether or not the sample has been checked out
       */
-     @Column(name = "sampleChecked", nullable = false)
+     @Column(name = "sampleChecked", columnDefinition = "boolean default 'false'")
      public Boolean sampleChecked;
 
      /**
@@ -76,7 +76,7 @@ public class FlooringType {
     * The actual flooring type constructor with a passed floor type to set to. 
     * @param name the type to set the floor object to.
     */
-   public FlooringType(String name, String style, String color, String type) {
+   public FlooringType(String name, String style, String color, String company) {
        String temp = name.toLowerCase();
        if(temp.equals("hardwood")){
            this.name = name;
@@ -86,7 +86,7 @@ public class FlooringType {
            this.name = name;
            this.style = style;
        }
-       this.type = type;
+       this.company = company;
        this.sampleChecked = true;
        this.checkedTo = null;
 
@@ -158,14 +158,14 @@ public class FlooringType {
     * @return the company
     */
    public String getType() {
-       return type;
+       return company;
    }
 
    /**
     * @param company the company to set
     */
-   public void setType(String type) {
-       this.type = type;
+   public void setType(String company) {
+       this.company = company;
    }
 
    /**
