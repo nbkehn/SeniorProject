@@ -24,6 +24,8 @@ import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminde
 import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/reminder-error-list.component";
 import {AssignmentCalendarComponent} from "./assignment/assignment/assignment-calendar.component";
 import { CalendarComponent } from './calendar/calendar.component';
+import {UploadSampleComponent} from './flooring/upload-sample/upload-sample.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'appointment/index', pathMatch: 'full' },
@@ -55,6 +57,7 @@ const routes: Routes = [
   { path: 'reminderError/index', component: ReminderErrorListComponent },
   { path: 'appointment/calendar', component: CalendarComponent},
   { path: 'install/calendar', component: AssignmentCalendarComponent},
+  { path: 'flooring/upload', component: UploadSampleComponent},
 ];
 
 @NgModule({

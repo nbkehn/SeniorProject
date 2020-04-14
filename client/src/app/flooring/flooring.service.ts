@@ -40,6 +40,16 @@ export class FlooringService {
   }
 
   /**
+   * Upload sample file
+   * @param id
+   * @param name 
+   */
+  uploadSampleFile(formData : FormData): Observable<Object> {
+    
+    return this.http.post(`${this.baseUrl}/upload`, formData);
+  }
+
+  /**
    * Updates a specific flooring
    * @param id  ID of the flooring to update
    * @param name Updated name for the flooring

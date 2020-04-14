@@ -29,33 +29,33 @@ public class FlooringType {
      * The actual string representation of the flooring type.
      * This is the name(category) of the type of flooring, not the style or color
      */
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     public String name;
 
     /**
      * Style name of the flooring type
      *
      */
-     @Column(name = "style", nullable = false)
+     @Column(name = "style", columnDefinition = "varchar(255) default ''")
      public String style;
 
      /**
       * Color of the flooring type
       *
       */
-     @Column(name = "color", nullable = false)
+     @Column(name = "color", columnDefinition = "varchar(255) default ''", nullable = true)
      public String color;
 
      /**
       * Company that makes the flooring type
       */
-     @Column(name = "company", nullable = false)
+     @Column(name = "company", columnDefinition = "varchar(255) default ''")
      public String company;
 
      /**
       * Whether or not the sample has been checked out
       */
-     @Column(name = "sampleChecked", nullable = false)
+     @Column(name = "sampleChecked", columnDefinition = "boolean default 'false'")
      public Boolean sampleChecked;
 
      /**
@@ -93,6 +93,7 @@ public class FlooringType {
            this.color = color;
            this.style = style;
        }
+
        if(company == null) {
           this.company = "";
        } else {

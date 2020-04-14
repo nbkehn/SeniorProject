@@ -26,8 +26,11 @@ export class ModifyFlooringComponent implements OnInit {
 
   //holds flooring type for required fields
   types = [
-    { value: 'carpet', viewValue: 'Carpet' },
-    { value: 'hardwood', viewValue: 'Hardwood' },
+    { value: 'Carpet', viewValue: 'Carpet' },
+    { value: 'Hardwood', viewValue: 'Hardwood' },
+    { value: 'Vinyl Tile', viewValue: 'Vinyl Tile' },
+    { value: 'Carpet Tile', viewValue: 'Carpet Tile' },
+    { value: 'Laminate', viewValue: 'Laminate' },
   ];
 
   selectedType: string;

@@ -1,0 +1,16 @@
+<div class="panel-heading">
+    <h2>Upload Sample Spreadsheet</h2>
+</div>
+<div class="panel-body">
+    <div class="dropzone">
+        <input type="file" accept=".csv" (change)="fileSelect($event)" />
+        <img src="" alt="">
+        <h3>Drag or Drop files here</h3>
+        <h3>or</h3>
+        <label>Browse for file</label>
+        
+    </div>
+    <button class="btn btn-primary panel-action" (click)="onSubmit()">Upload</button>
+    
+    
+</div>
