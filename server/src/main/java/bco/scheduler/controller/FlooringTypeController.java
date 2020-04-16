@@ -1,18 +1,13 @@
 package bco.scheduler.controller;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +24,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import bco.scheduler.exception.ResourceNotFoundException;
 import bco.scheduler.model.FlooringType;
 import bco.scheduler.repository.FlooringTypeRepository;
-import bco.scheduler.model.CommunicationType;
 
 /**
  * The controller for the flooring type. Handles all actions surrounding the
