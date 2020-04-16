@@ -216,6 +216,7 @@ export abstract class AbstractFormDialogComponent implements OnInit {
     if (!returnObject.end) {
       returnObject.end = returnObject.start;
     }
+    var invalidResult = false;
     if (!eventDeleted) {
       try {
         if (returnObject.end < returnObject.start) {
@@ -235,9 +236,12 @@ export abstract class AbstractFormDialogComponent implements OnInit {
         }
       } catch (e) {
         alert(e.message);
+        invalidResult = true;
       }
-    } 
-    this.dialogRef.close(returnObject);
+    }
+    if (!invalidResult) {
+      this.dialogRef.close(returnObject);
+    }
   }
 
 }
