@@ -64,7 +64,7 @@ public class AppointmentControllerTest {
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment testAppointment = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+        Appointment testAppointment = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
         
         // An appointment object list to use.
         List<Appointment> allAppointments = Arrays.asList(testAppointment);
@@ -89,7 +89,7 @@ public class AppointmentControllerTest {
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment testAppointment = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+        Appointment testAppointment = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
 
         // Ensure there are no appointments when they aren't in there.
         assertNull(appointmentController.getAppointmentById((long) testAppointment.getId()));
@@ -115,7 +115,7 @@ public class AppointmentControllerTest {
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment testAppointment = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+        Appointment testAppointment = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
 
         // Telling Mockiato how to handle the methods.
         when(appointmentController.createAppointment(testAppointment)).thenReturn(testAppointment);
@@ -138,10 +138,10 @@ public class AppointmentControllerTest {
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment testAppointment = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+        Appointment testAppointment = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
 
         // A appointment object to update to. 
-        Appointment testAppointmentUpdated = new Appointment(rsa, customer2, technicians2, flooringtype2, startDateTime2, endDateTime2);
+        Appointment testAppointmentUpdated = new Appointment(rsa, customer2, flooringtype2, startDateTime2, endDateTime2);
 
         // Telling Mockiato how to handle the methods.
         when(appointmentController.createAppointment(testAppointment)).thenReturn(testAppointment);
@@ -169,10 +169,10 @@ public class AppointmentControllerTest {
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment testAppointment = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+        Appointment testAppointment = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
 
         // A appointment object to update to. 
-        Appointment testAppointmentUpdated = new Appointment(rsa, customer2, technicians2, flooringtype2, startDateTime2, endDateTime2);
+        Appointment testAppointmentUpdated = new Appointment(rsa, customer2, flooringtype2, startDateTime2, endDateTime2);
 
         // Telling Mockiato how to handle the methods.
         when(appointmentController.deleteAppointment(testAppointment.getId())).thenReturn(testAppointment.getId());
