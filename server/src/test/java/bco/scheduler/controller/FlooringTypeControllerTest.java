@@ -32,7 +32,7 @@ public class FlooringTypeControllerTest {
     public void getAllFlooringTypesTest() throws Exception {
      
         // An flooringType object to use.
-        FlooringType testFlooringType = new FlooringType("hardwood", null, null, "BCO");
+        FlooringType testFlooringType = new FlooringType("hardwood", "", "", "BCO");
 
         // An flooringType object list to use.
         List<FlooringType> allFlooringTypes = Arrays.asList(testFlooringType);
@@ -58,7 +58,7 @@ public class FlooringTypeControllerTest {
     public void getFlooringTypeByIdTest() throws Exception {
 
         // A flooringType object to use.
-        FlooringType testFlooringType = new FlooringType("hardwood", null, null, "BCO" );
+        FlooringType testFlooringType = new FlooringType("hardwood", "", "", "BCO" );
 
         // A flooringType object list to use.
         List<FlooringType> allFlooringTypes = Arrays.asList(testFlooringType);
@@ -85,7 +85,7 @@ public class FlooringTypeControllerTest {
     public void createFlooringTest() throws Exception {
         
         // A flooringType object to use.
-        FlooringType testFlooringType = new FlooringType("hardwood", null, null, "BCO");
+        FlooringType testFlooringType = new FlooringType("hardwood", "", "", "BCO");
 
         // Response Entity representation of the desired output
         ResponseEntity<FlooringType> re = ResponseEntity.ok(testFlooringType);
@@ -106,10 +106,10 @@ public class FlooringTypeControllerTest {
     public void updateFlooringTest() throws Exception {
      
         // A flooringType object to use.
-        FlooringType testFlooringType = new FlooringType("hardwood", null, null, "BCO");
+        FlooringType testFlooringType = new FlooringType("hardwood", "", "", "BCO");
 
         // A flooringType object to update to. 
-        FlooringType testFlooringTypeUpdated = new FlooringType("hardwood", null, null, "BCO");
+        FlooringType testFlooringTypeUpdated = new FlooringType("hardwood", "", "", "BCO");
 
         // Response Entity representation of the desired output
         ResponseEntity<FlooringType> re = ResponseEntity.ok(testFlooringType);
@@ -138,10 +138,10 @@ public class FlooringTypeControllerTest {
     public void deleteFlooringTest() throws Exception {
 
         // A flooringType object to use.
-        FlooringType testFlooringType = new FlooringType("hardwood", null, null, "BCO");
+        FlooringType testFlooringType = new FlooringType("hardwood", "", "", "BCO");
 
         // A flooringType object to update to. 
-        FlooringType testFlooringTypeUpdated = new FlooringType("hardwood", null, null, "BCO");
+        FlooringType testFlooringTypeUpdated = new FlooringType("hardwood", "", "", "BCO");
 
         // Response Entity representation of the desired output
         ResponseEntity<FlooringType> re = ResponseEntity.ok(testFlooringType);

@@ -39,8 +39,8 @@ public class AppointmentTest {
     Technician array2[] = { tech2, tech3 };
     Set<Technician> technicians = new HashSet<Technician>(Arrays.asList(array));
     Set<Technician> technicians2 = new HashSet<Technician>(Arrays.asList(array2));
-    FlooringType flooringtype = new FlooringType("hardwood", null, null, "BCO");
-    FlooringType flooringtype2 = new FlooringType("tile", null, null, "BCO");
+    FlooringType flooringtype = new FlooringType("hardwood", "", "", "BCO");
+    FlooringType flooringtype2 = new FlooringType("tile", "", "", "BCO");
     Date startDateTime = new Date(2015, 7, 29);
     Date startDateTime2 = new Date(2015, 6, 25);
     Date endDateTime = new Date(2015, 9, 29);

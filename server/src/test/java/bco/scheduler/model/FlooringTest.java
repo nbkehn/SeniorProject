@@ -38,17 +38,39 @@ public class FlooringTest {
         assertEquals(f1.getColor(), "Red");
         assertEquals(f1.getCompany(), "BCO");
         //Test with first two parameters
-        FlooringType f2 = new FlooringType("Carpet", "Fuzzy", null, "BCO");
+        FlooringType f2 = new FlooringType("Carpet", "Fuzzy", "", "BCO");
         assertEquals(f2.getName(), "Carpet");
         assertEquals(f2.getStyle(), "Fuzzy");
-        assertNull(f2.getColor());
+        assertEquals("",f2.getColor());
         assertEquals(f2.getCompany(), "BCO");
-        //Test with all parameters, not hardwood
+        //Test with all parameters, carpet
         FlooringType f3 = new FlooringType("Carpet", "Fuzzy", "Cream", "BCO");
         assertEquals(f3.getName(), "Carpet");
         assertEquals(f3.getStyle(), "Fuzzy");
-        assertNull(f3.getColor());
+        assertEquals(f3.getColor(), "");
         assertEquals(f3.getCompany(), "BCO");
+        //test invalid name
+        try {
+            FlooringType f4 = new FlooringType(null, "Oak", "Red", "BCO");
+            fail();
+        } catch(IllegalArgumentException e) {
+            assertEquals(e.getMessage(), "Name can't be null.");
+        }
+        //Test invalid style carpet
+        try {
+            FlooringType f5 = new FlooringType("Carpet", null, "Red", "BCO");
+            fail();
+        } catch(IllegalArgumentException e) {
+            assertEquals(e.getMessage(), "Style can't be null.");
+        }
+        //Test invalid style non-carpet
+        try {
+            FlooringType f5 = new FlooringType("Carpet Tile", null, "Red", "BCO");
+            fail();
+        } catch(IllegalArgumentException e) {
+            assertEquals(e.getMessage(), "Style can't be null.");
+        }
+
     }
 
     /**
