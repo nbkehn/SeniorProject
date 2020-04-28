@@ -124,15 +124,30 @@ public class FlooringType {
     * @param name the type to set the floor object to.
     */
     public FlooringType(String name, String style, String color, String company, boolean checked, Customer checkedTo) {
+        if(name == null) {
+            throw new IllegalArgumentException("Name can't be null.");
+        }
         String temp = name.toLowerCase();
         if(temp.equals("carpet")){
-            this.name = name;
+           this.name = name;
+           if(style != null) {
             this.style = style;
-            this.color = "";
+           } else {
+            throw new IllegalArgumentException("Style can't be null.");
+           }
+          this.color = "";
         } else {
             this.name = name;
-            this.color = color;
-            this.style = style;
+            if(color != null) {
+                this.color = color;
+            } else {
+                this.color = "";
+            }
+            if(style != null) {
+                this.style = style;
+            } else {
+                throw new IllegalArgumentException("Style can't be null.");
+            }
         }
         if(company == null) {
             this.company = "";
@@ -140,8 +155,11 @@ public class FlooringType {
             this.company = company;
         }
         this.hash_code = Integer.toString(hashCode(name, style, color, company));
-        this.sampleChecked = checked;
-        this.checkedTo = checkedTo;
+        if(checked){
+            this.checkOut(checkedTo);
+        } else {
+            this.checkIn();
+        }
     }
 
    /**
