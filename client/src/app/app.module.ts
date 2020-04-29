@@ -53,6 +53,7 @@ import {UploadSampleComponent} from './flooring/upload-sample/upload-sample.comp
 import { OTWDialogComponent } from './otw-dialog/otw-dialog.component';
 import {ViewDialogComponent} from './view-dialog/view-dialog.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { ViewInstallerDialogComponent } from './view-installer-dialog/view-installer-dialog.component';
 
 
 @NgModule({
@@ -88,6 +89,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     OTWDialogComponent,
     ReminderErrorListComponent,
     ViewDialogComponent,
+    ViewInstallerDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -115,6 +117,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     DeleteDialogComponent,
     OTWDialogComponent,
     ViewDialogComponent,
+    ViewInstallerDialogComponent,
   ],
   providers: [
     AlertService

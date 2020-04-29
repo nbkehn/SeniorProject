@@ -6,6 +6,8 @@ import { TechnicianService } from 'src/app/technician/technician.service';
 import { AlertService } from 'src/app/alert/alert.service';
 import { AppointmentService } from 'src/app/appointment/appointment.service';
 import { Appointment } from 'src/app/appointment/appointment';
+import { MatDialog } from '@angular/material/dialog';
+import { ViewInstallerDialogComponent } from 'src/app/view-installer-dialog/view-installer-dialog.component';
 
 @Component({
   selector: 'app-assignment',
@@ -23,7 +25,7 @@ export class AssignmentCalendarComponent implements OnInit {
   private dayLength =  Date.parse("01-02-2020") - Date.parse("01-01-2020");
   private weekLength = 7;
 
-  constructor(private technicianService: TechnicianService, private appointmentService: AppointmentService, private alertService: AlertService) {}
+  constructor(public dialog: MatDialog, private technicianService: TechnicianService, private appointmentService: AppointmentService, private alertService: AlertService) {}
 
   ngOnInit() {
     const currentDate = new Date();
@@ -44,7 +46,7 @@ export class AssignmentCalendarComponent implements OnInit {
     });
   }
 
-  drop(event: CdkDragDrop<string[]>, dayIndex: number, slotIndex: number = 0) {
+  assign(event: CdkDragDrop<string[]>, dayIndex: number, slotIndex: number = 0) {
     const data = event.previousContainer.data[event.previousIndex];
     const currentApptObject = this.calendarData[dayIndex][slotIndex];
     if (!event.container.data.includes(data) && currentApptObject.appointment) {
@@ -69,6 +71,14 @@ export class AssignmentCalendarComponent implements OnInit {
       }
     }
     console.log(this.calendarData);
+  }
+
+  markAsAway(event: CdkDragDrop<string[]>) {
+    if (event.container.id != "listOfTeams" && event.previousContainer.id != "listOfTeams") {
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+    }
   }
 
   toss(event: CdkDragDrop<string[]>) {
@@ -106,6 +116,7 @@ export class AssignmentCalendarComponent implements OnInit {
   }
 
   getAppointmentsForCurrentRange() {
+    // Get the appointments which fall in the current week
     this.appointmentService.getAppointmentsList().subscribe((response: Appointment []) => {
       const appointmentsInRange = response.filter((appt: Appointment) => {
         const startDate = new Date(Date.parse(appt.startDate.toString()) + this.dayLength);
@@ -125,22 +136,44 @@ export class AssignmentCalendarComponent implements OnInit {
       for (var i=0; i<this.weekLength; i++) {
         appointmentsPerDay.push([]);
       }
+
+      // Calculate length of each appointment and store that information
+      var apptToApptLength = [];
       for (var i=0; i<appointmentsInRange.length; i++) {
         const tempAppt = appointmentsInRange[i];
         const startDate = new Date(Date.parse(tempAppt.startDate.toString()) + this.dayLength);
         const endDate = new Date(Date.parse(tempAppt.endDate.toString()) + this.dayLength);
-        var tempDate = startDate >= this.startOfWeek ? startDate : this.startOfWeek;
         const lengthOfAppointment = Math.ceil((endDate.valueOf() - startDate.valueOf()) / this.dayLength) + 1;
+        apptToApptLength.push({appt: tempAppt, length: lengthOfAppointment});
+      }
+
+      //Order the appointments from longest to shortest
+      apptToApptLength = apptToApptLength.sort((a: {appt: Appointment, length: number}, b: {appt: Appointment, length: number}) => {
+        if (a.length < b.length) {
+          return 1;
+        }
+        if (a.length > b.length) {
+          return -1;
+        }
+        return 0;
+      });
+
+      // Add information regarding the appointments to each of the 7 days of the week
+      for (var i=0; i < apptToApptLength.length; i++) {
+        const tempAppt = apptToApptLength[i].appt;
+        const startDate = new Date(Date.parse(tempAppt.startDate.toString()) + this.dayLength);
+        const endDate = new Date(Date.parse(tempAppt.endDate.toString()) + this.dayLength);
+        var tempDate = startDate >= this.startOfWeek ? startDate : this.startOfWeek;
         while (tempDate <= endDate && tempDate <= this.endOfWeek) {
-          const dayIndex = Math.floor((tempDate.valueOf() - this.startOfWeek.valueOf()) / this.dayLength);
-          const appointmentDayNumber = Math.ceil((tempDate.valueOf() - startDate.valueOf()) / this.dayLength) + 1;
-          appointmentsPerDay[dayIndex].push({
-            appointment: tempAppt,
-            dayNumber: appointmentDayNumber,
-            numOfDays: lengthOfAppointment,
-            teams: [],
-          });
-          tempDate = new Date(tempDate.valueOf() + this.dayLength);
+              const dayIndex = Math.floor((tempDate.valueOf() - this.startOfWeek.valueOf()) / this.dayLength);
+              const appointmentDayNumber = Math.ceil((tempDate.valueOf() - startDate.valueOf()) / this.dayLength) + 1;
+              appointmentsPerDay[dayIndex].push({
+                appointment: tempAppt,
+                dayNumber: appointmentDayNumber,
+                numOfDays: apptToApptLength[i].length,
+                teams: [],
+              });
+              tempDate = new Date(tempDate.valueOf() + this.dayLength);
         }
       }
 
@@ -153,6 +186,7 @@ export class AssignmentCalendarComponent implements OnInit {
         }
       }
 
+      //Populate the calendar with the maximum number of rows necessary to hold all appointments
       for (var i=0; i< this.weekLength; i++) {
         for (var j=0; j < maxNum; j++) {
           this.calendarData[i].push({
@@ -164,6 +198,7 @@ export class AssignmentCalendarComponent implements OnInit {
         }
       }
 
+      // Populate the calendar with the data
       for (var i=0; i< appointmentsPerDay.length; i++) {
         for (var j=0; j< appointmentsPerDay[i].length; j++) {
           this.calendarData[i][j] = appointmentsPerDay[i][j];
@@ -184,4 +219,17 @@ export class AssignmentCalendarComponent implements OnInit {
     }
   }
 
+  openInfoDialog(appointmentObject: {appointment: Appointment, dayNumber: number, numOfDays: number, teams: Technician []}) {
+    let dialogProperties = {
+          data: {
+            id: appointmentObject.appointment.id,
+            title: `Customer: ${appointmentObject.appointment.customer.firstName} ${appointmentObject.appointment.customer.lastName}`,
+            start: appointmentObject.appointment.startDate,
+            end: appointmentObject.appointment.endDate,
+            dayNumber: appointmentObject.dayNumber,
+            numOfDays: appointmentObject.numOfDays
+          },
+        }
+    return this.dialog.open(ViewInstallerDialogComponent, dialogProperties);
+  }
 }
