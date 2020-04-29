@@ -15,7 +15,6 @@ import { Appointment } from 'src/app/appointment/appointment';
 export class AssignmentCalendarComponent implements OnInit {
 
   private technicians: Technician [];
-  private numTechnicians: number;
   private listForDeletedItems: any [];
   private calendarData: any [];
   private awayList: any [];
@@ -38,7 +37,6 @@ export class AssignmentCalendarComponent implements OnInit {
     this.listForDeletedItems = [];
     this.technicianService.getTechniciansList().subscribe((response) => {
       this.technicians = response;
-      this.numTechnicians = this.technicians.length;
       this.refreshCalendar();
       this.getAppointmentsForCurrentRange();
     }, () => {
@@ -145,6 +143,27 @@ export class AssignmentCalendarComponent implements OnInit {
           tempDate = new Date(tempDate.valueOf() + this.dayLength);
         }
       }
+
+      //Finding maximum # of appointments during a day of the week
+      var maxNum = 1;
+      for (var i=0; i < appointmentsPerDay.length; i++) {
+        const currentListLength = appointmentsPerDay[i].length;
+        if (currentListLength > maxNum) {
+          maxNum = currentListLength;
+        }
+      }
+
+      for (var i=0; i< this.weekLength; i++) {
+        for (var j=0; j < maxNum; j++) {
+          this.calendarData[i].push({
+            appointment: null,
+            dayNumber: null,
+            numOfDays: null,
+            teams: [],
+          });
+        }
+      }
+
       for (var i=0; i< appointmentsPerDay.length; i++) {
         for (var j=0; j< appointmentsPerDay[i].length; j++) {
           this.calendarData[i][j] = appointmentsPerDay[i][j];
@@ -162,16 +181,6 @@ export class AssignmentCalendarComponent implements OnInit {
     for (var i=0; i< this.weekLength; i++) {
       this.calendarData.push([]);
       this.awayList.push([]);
-    }
-    for (var i=0; i< this.weekLength; i++) {
-      for (var j=0; j < this.numTechnicians; j++) {
-        this.calendarData[i].push({
-          appointment: null,
-          dayNumber: null,
-          numOfDays: null,
-          teams: [],
-        });
-      }
     }
   }
 
