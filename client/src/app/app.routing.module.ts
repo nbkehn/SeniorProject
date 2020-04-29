@@ -22,7 +22,7 @@ import {ModifyTemplateComponent} from "./template/modify-template/modify-templat
 import {ReminderListComponent} from "./reminder/reminder-list/reminder-list.component";
 import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminder.component";
 import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/reminder-error-list.component";
-import {AssignmentCalendarComponent} from "./assignment/assignment/assignment-calendar.component";
+import {AssignmentCalendarComponent} from "./assignment/assignment-calendar/assignment-calendar.component";
 import { CalendarComponent } from './calendar/calendar.component';
 import {UploadSampleComponent} from './flooring/upload-sample/upload-sample.component';
 
@@ -58,6 +58,7 @@ const routes: Routes = [
   { path: 'appointment/calendar', component: CalendarComponent},
   { path: 'install/calendar', component: AssignmentCalendarComponent},
   { path: 'flooring/upload', component: UploadSampleComponent},
+  { path: 'install/calendar', component: AssignmentCalendarComponent}
 ];
 
 @NgModule({

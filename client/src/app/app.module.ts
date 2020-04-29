@@ -47,11 +47,12 @@ import {MatInputModule} from '@angular/material/input';
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/reminder-error-list.component";
 //import { AppointmentCalendarComponent } from './appointment/appointment-calendar/appointment-calendar.component';
-import {AssignmentCalendarComponent} from "./assignment/assignment/assignment-calendar.component";
+import {AssignmentCalendarComponent} from "./assignment/assignment-calendar/assignment-calendar.component";
 import { MatOptionModule } from '@angular/material/core';
 import {UploadSampleComponent} from './flooring/upload-sample/upload-sample.component';
 import { OTWDialogComponent } from './otw-dialog/otw-dialog.component';
 import {ViewDialogComponent} from './view-dialog/view-dialog.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -106,6 +107,7 @@ import {ViewDialogComponent} from './view-dialog/view-dialog.component';
     MatOptionModule,
     MatSelectModule,
     MatMomentDateModule,
+    DragDropModule,
   ],
   entryComponents: [
     AddDialogComponent,
