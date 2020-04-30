@@ -254,6 +254,9 @@ public class FlooringType {
         return hash;
     }
 
+    /**
+     * Generates a qr code for flooring type
+     */
     // https://www.geeksforgeeks.org/how-to-generate-and-read-qr-code-with-java-using-zxing-library/
     public BufferedImage createQRImg(String hashData)
             throws UnsupportedEncodingException, WriterException
@@ -262,5 +265,6 @@ public class FlooringType {
             .encode(new String(hashData.getBytes(charset), charset), 
             BarcodeFormat.QR_CODE, width, height);
         return MatrixToImageWriter.toBufferedImage(matrix);
+        
     }
 }
