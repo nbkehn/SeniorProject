@@ -1,6 +1,8 @@
 package bco.scheduler.model;
 
 import javax.persistence.*;
+
+import java.time.LocalDate;
 import java.util.*;
 import java.util.Set;
 

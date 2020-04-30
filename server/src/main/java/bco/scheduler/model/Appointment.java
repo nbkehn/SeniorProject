@@ -72,11 +72,9 @@ public class Appointment {
         this.startDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         this.endDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         this.assignments = new HashSet<Assignment>();
-        // LocalDate temp = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        // for(int i = 0; i <= getExtraDays(); i++ ) {
-        //     assignments.add(new Assignment(temp));
-        //     temp = temp.plusDays(1);
-        // }
+        for(int i = 0; i <= getExtraDays(); i++ ) {
+            assignments.add(new Assignment(i + 1));
+         }
     }
 
     /**
@@ -255,12 +253,12 @@ public class Appointment {
     public void assignAll(Set<Technician> technicians) {
 
         for(int i = 0; i < assignments.size(); i++ ) {
-            ((Appointment) assignments.toArray()[i]).setTechnicians(technicians);
+            ((Assignment) assignments.toArray()[i]).setTechnicians(technicians);
         }
     }
 
     public void assignDay(int day, Set<Technician> technicians) {
-        ((Appointment) assignments.toArray()[day]).setTechnicians(technicians);
+        ((Assignment) assignments.toArray()[day - 1]).setTechnicians(technicians);
     }
 
     public void moveDate(LocalDate startDate, LocalDate endDate) {
