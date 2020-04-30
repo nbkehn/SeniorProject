@@ -62,7 +62,8 @@ public class FlooringTypeController {
      */
     @PostMapping("/flooringtype")
     public ResponseEntity<FlooringType> createFlooring(@Valid @RequestBody FlooringType flooring) {
-        return ResponseEntity.ok(flooringTypeRepository.save(flooring));
+        FlooringType tempfloor = new FlooringType(flooring.getName(), flooring.getStyle(), flooring.getColor(), flooring.getCompany());
+        return ResponseEntity.ok(flooringTypeRepository.save(tempfloor));
     }
 
     /**
