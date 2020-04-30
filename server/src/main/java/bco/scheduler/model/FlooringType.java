@@ -61,7 +61,8 @@ public class FlooringType {
      /**
       * To whom the sample as been checked out
       */
-     @Column(name = "customer_id", nullable = true)
+     @ManyToOne
+     @JoinColumn(name = "customer_id")
      public Customer checkedTo;
 
      /**
@@ -82,6 +83,7 @@ public class FlooringType {
     * @param name the type to set the floor object to.
     */
    public FlooringType(String name, String style, String color, String company) {
+       Customer invalidCustomer = new Customer("Not checked out representation", "", "", "", CommunicationType.EMAIL, "");
        String temp = name.toLowerCase();
        if(temp.equals("carpet")){
            this.name = name;
@@ -100,7 +102,7 @@ public class FlooringType {
        }
        this.hash_code = Integer.toString(hashCode(name, style, color, company));
        this.sampleChecked = false;
-       this.checkedTo = null;
+       this.checkedTo = invalidCustomer;
 
    }
 
@@ -209,8 +211,9 @@ public class FlooringType {
     * Checks a sample in. Assigns the sampleChecked value to false
     */
     public void checkIn(){
+        Customer invalidCustomer = new Customer("Not checked out representation", "", "", "", CommunicationType.EMAIL, "");
         this.sampleChecked = false;
-        this.checkedTo = null;
+        this.checkedTo = invalidCustomer;
     }
 
     /**
