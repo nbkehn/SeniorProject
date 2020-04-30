@@ -61,8 +61,7 @@ public class FlooringType {
      /**
       * To whom the sample as been checked out
       */
-     @ManyToOne
-     @JoinColumn(name = "customer_id")
+     @Column(name = "customer_id", nullable = true)
      public Customer checkedTo;
 
      /**
