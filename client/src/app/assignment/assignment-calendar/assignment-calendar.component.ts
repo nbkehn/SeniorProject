@@ -8,6 +8,9 @@ import { AppointmentService } from 'src/app/appointment/appointment.service';
 import { Appointment } from 'src/app/appointment/appointment';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewInstallerDialogComponent } from 'src/app/view-installer-dialog/view-installer-dialog.component';
+import { getRelevantEvents } from '@fullcalendar/core';
+import { AssignmentService } from '../assignment.service';
+import { Assignment } from '../assignment';
 
 @Component({
   selector: 'app-assignment',
@@ -25,7 +28,7 @@ export class AssignmentCalendarComponent implements OnInit {
   private dayLength =  Date.parse("01-02-2020") - Date.parse("01-01-2020");
   private weekLength = 7;
 
-  constructor(public dialog: MatDialog, private technicianService: TechnicianService, private appointmentService: AppointmentService, private alertService: AlertService) {}
+  constructor(public dialog: MatDialog, private technicianService: TechnicianService, private appointmentService: AppointmentService, private assignmentService: AssignmentService, private alertService: AlertService) {}
 
   ngOnInit() {
     const currentDate = new Date();
@@ -48,6 +51,12 @@ export class AssignmentCalendarComponent implements OnInit {
 
   assign(event: CdkDragDrop<string[]>, dayIndex: number, slotIndex: number = 0) {
     const data = event.previousContainer.data[event.previousIndex];
+    var technician: Technician;
+    if (typeof(data) == "string") {
+      technician = JSON.parse(data);
+    } else {
+      technician = data;
+    }
     const currentApptObject = this.calendarData[dayIndex][slotIndex];
     if (!event.container.data.includes(data) && currentApptObject.appointment) {
       if (event.container.id != "listOfTeams" && event.previousContainer.id != "listOfTeams") {
@@ -55,6 +64,7 @@ export class AssignmentCalendarComponent implements OnInit {
       } else {
         if (event.previousContainer.id == "listOfTeams") {
           copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+          this.createAssignment(currentApptObject.appointment, 1, technician);
           if (currentApptObject.numOfDays > 1 && currentApptObject.dayNumber == 1 && dayIndex != 6) {
             var tempIndex = dayIndex + 1;
             while (tempIndex <= 6) {
@@ -86,6 +96,47 @@ export class AssignmentCalendarComponent implements OnInit {
     event.container.removeItem(event.item);
     this.listForDeletedItems = [];
   }
+
+
+  createAssignment(appt: Appointment, dayNumber: number, technician: Technician) {
+    if (appt.assignments) {
+      const relevantAssignment = appt.assignments.filter((assignment) => {
+        assignment.dayNumber == dayNumber;
+      });
+      if (relevantAssignment.length >= 1) {
+        relevantAssignment[0].technicians.push(technician);
+        this.assignmentService.updateAssignment(relevantAssignment[0].id, relevantAssignment[0]).subscribe(() => {
+          this.alertService.success("Assignment updated successfully", false);
+          this.appointmentService.updateAppointment(appt.id, appt).subscribe(() => {
+            this.alertService.success("Appointment updated successfully", false);
+          }, () => {
+            this.alertService.error("Appointment could not be updated", false);
+          });
+        }, () => {
+          this.alertService.error("Assignment could not be updated", false);
+        });
+      }
+    } else {
+      appt.assignments = [];
+      const assignment = new Assignment(dayNumber);
+      assignment.technicians.push(technician);
+      this.assignmentService.createAssignment(assignment).subscribe((response) => {
+        this.alertService.success("Assignment created successfully", false);
+        assignment.id = response.id;
+        appt.assignments.push(response);
+        this.appointmentService.updateAppointment(appt.id, appt).subscribe(() => {
+          this.alertService.success("Appointment updated successfully", false);
+        }, (error) => {
+          this.alertService.error("Appointment could not be updated", false);
+          console.log(error);
+        });
+      }, () => {
+        this.alertService.error("Assignment could not be created", false);
+      });
+    }
+  }
+
+
 
   changeWeek(moveAhead: boolean) {
     const dayLength = Date.parse("01-02-2020") - Date.parse("01-01-2020");

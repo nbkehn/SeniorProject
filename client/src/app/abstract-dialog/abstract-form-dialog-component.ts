@@ -42,12 +42,9 @@ export abstract class AbstractFormDialogComponent implements OnInit {
   @Input() end: Date;
   customer: Customer;
   rsa: Rsa;
-  technicians: Technician[];
   flooring: Flooring;
 
   public customerOptions: Customer[];
-  // the list of technicians
-  public technicianOptions: Technician[];
   // the list of rsas
   public rsaOptions: Rsa[];
   // this list of flooring options
@@ -80,7 +77,6 @@ export abstract class AbstractFormDialogComponent implements OnInit {
       start: [this.start, [Validators.required]],
       end: [this.end, []],
       customer: [this.customer, []],
-      technician: [this.technicians, []],
       rsa: [this.rsa, []],
       flooring: [this.flooring, []],
 
@@ -126,20 +122,6 @@ export abstract class AbstractFormDialogComponent implements OnInit {
 
   cancel() {
     this.dialogRef.close(false);
-  }
-
-  /**
-  * populate technicians options
-  */
-  setTechnicians() {
-    this.technicianService.getTechniciansList()
-      .subscribe(
-        data => {
-          this.technicianOptions = data;
-        },
-        error => {
-          this.alertService.error('Technicians could not be loaded.', false);
-        });
   }
 
   /**
@@ -199,7 +181,6 @@ export abstract class AbstractFormDialogComponent implements OnInit {
       start: [this.start, [Validators.required]],
       end: [this.end, []],
       customer: [this.customer, []],
-      technician: [this.technicians, []],
       rsa: [this.rsa, []],
       flooring: [this.flooring, []],
 

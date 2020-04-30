@@ -28,17 +28,6 @@
         <mat-error *ngIf="!customer">Customer required</mat-error>
     </mat-form-field>
     <mat-form-field>
-        <mat-label>Technician</mat-label>
-        <mat-select role="listbox" formControlName="technician" multiple>
-            <mat-option  *ngFor="let technicianOption of technicianOptions"
-            [value]="editApp.technician">
-                {{technicianOption.firstName}} {{technicianOption.lastName}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    <br>
-    <br> 
-    <mat-form-field>
         <mat-label>RSA</mat-label>
         <mat-select role="listbox" formControlName="rsa">
             <mat-option  role="option"*ngFor="let rsaOption of rsaOptions"
@@ -47,6 +36,8 @@
             </mat-option>
         </mat-select>
     </mat-form-field>
+    <br>
+    <br>
     <mat-form-field>
         <mat-label>Flooring</mat-label>
         <mat-select role="listbox" formControlName="flooring">

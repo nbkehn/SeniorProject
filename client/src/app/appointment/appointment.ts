@@ -2,6 +2,7 @@ import { Customer } from '../customer/customer';
 import { Technician } from '../technician/technician';
 import { Rsa } from '../rsa/rsa';
 import { Flooring } from '../flooring/flooring';
+import { Assignment } from '../assignment/assignment';
 
 
 /**
@@ -16,8 +17,14 @@ export class Appointment {
   endDate: Date;
   customer: Customer;
   technicians: Technician[];
+  assignments: Assignment [];
   rsa: Rsa;
   flooring: Flooring;
+
+  constructor() {
+    this.technicians = [];
+    this.assignments = [];
+  }
 
   compareAppointments(appointment: Appointment) {
     if (this.id > appointment.id)

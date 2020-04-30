@@ -87,17 +87,14 @@ export class EditDialogComponent extends AbstractFormDialogComponent implements 
         this.oldCustomer = data.customer;
         this.oldRsa = data.rsa;
         this.oldFlooring = data.flooring;
-        this.technicians = data.technicians;
       })
      // initialize mapped options
      this.customerOptions = [];
-     this.technicianOptions = [];
      this.rsaOptions = [];
      this.flooringOptions = [];
  
      // populate option data
      this.setCustomers();
-     this.setTechnicians();
      this.setRSAs();
      this.setFloorings();
   }

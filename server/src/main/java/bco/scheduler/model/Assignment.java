@@ -1,15 +1,8 @@
 package bco.scheduler.model;
 
-import bco.scheduler.repository.TechnicianRepository;
-
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Set;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.stream.Collectors;
 
 /**
  * An assignment is used to show what installer user is connected to an appointment.
@@ -30,38 +23,40 @@ public class Assignment {
     @JoinColumn(name = "assignment")
     private Set<Technician> technicians;
 
-    /** start date time */
-    @Column(name = "startDateTime")
-    private LocalDate startDate;
+    /* Day of appointment (i.e. 1 to represent 1/2) */
+    @Column(name = "dayNumber")
+    private int dayNumber;
 
     public Assignment(){
     }
 
-    public Assignment(LocalDate date){
-        setStartDate(date);
+    public Assignment(int dayNumber){
+        this(dayNumber, null);
     } 
 
-    public Assignment(LocalDate date, Set<Technician> technicians ){
-        setStartDate(date);
+    public Assignment(int dayNumber, Set<Technician> technicians ){
+        setDayNumber(dayNumber);
         setTechnicians(technicians);
     }
 
-
-
-    /**
-     * gets start date time
-     * @return start date time
-     */
-    public LocalDate getStartDate() {
-        return startDate;
+    public long getId() {
+        return this.id;
     }
 
     /**
-     * sets start date time
-     * @param startDateTime 
+     * gets the day of the appointment this assignment is associated with
+     * @return number of the day of the appointment
      */
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public int getDayNumber() {
+        return this.dayNumber;
+    }
+
+    /**
+     * sets the day of the appointment this assignment is associated with
+     * @param dayNumber 
+     */
+    public void setDayNumber(int dayNumber) {
+        this.dayNumber = dayNumber;
     }
 
     /**
@@ -77,9 +72,15 @@ public class Assignment {
     * @param technicians technician list
     */
     public void setTechnicians(Set<Technician> technicians) {
-        
         this.technicians = technicians;
     
+    }
+
+    public void addTechnician(Technician t) {
+        if (getTechnicians() == null) {
+            setTechnicians(new HashSet<Technician>());
+        }
+        getTechnicians().add(t);
     }
 
     
