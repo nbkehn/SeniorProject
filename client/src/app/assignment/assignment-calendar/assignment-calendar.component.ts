@@ -8,9 +8,9 @@ import { AppointmentService } from 'src/app/appointment/appointment.service';
 import { Appointment } from 'src/app/appointment/appointment';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewInstallerDialogComponent } from 'src/app/view-installer-dialog/view-installer-dialog.component';
-import { getRelevantEvents } from '@fullcalendar/core';
 import { AssignmentService } from '../assignment.service';
 import { Assignment } from '../assignment';
+import { isNumber } from 'util';
 
 @Component({
   selector: 'app-assignment',
@@ -58,6 +58,12 @@ export class AssignmentCalendarComponent implements OnInit {
       technician = data;
     }
     const currentApptObject = this.calendarData[dayIndex][slotIndex];
+    for (var i=0; i < currentApptObject.assignment.unavailableTechnicians.length; i++) {
+      if (currentApptObject.assignment.unavailableTechnicians[i].id == technician.id) {
+        alert("Error: This technician has already been marked as away for this day");
+        return;
+      }
+    }
     if (!event.container.data.includes(data) && currentApptObject.appointment) {
       const updatedAssignments = [];
       if (event.container.id != "listOfTeams" && event.previousContainer.id != "listOfTeams") {
@@ -99,26 +105,80 @@ export class AssignmentCalendarComponent implements OnInit {
     }
 
   markAsAway(event: CdkDragDrop<string[]>) {
-    if (event.container.id != "listOfTeams" && event.previousContainer.id != "listOfTeams") {
-      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+    const dayIndex = parseInt(event.container.id);
+    var technicianAssigned = false;
+    var technician: Technician;
+      const data = event.previousContainer.data[event.previousIndex];
+      if (typeof(data) == "string") {
+        technician = JSON.parse(data);
+      } else {
+        technician = data;
+      }
+    for (var i=0; i < this.calendarData[dayIndex].length; i++) {
+      const appointmentObject = this.calendarData[dayIndex][i];
+      const matchingAppointments = appointmentObject.assignment.technicians.filter((t) => {
+        return t.id == technician.id;
+      })
+      if (matchingAppointments.length != 0) {
+        technicianAssigned = true;
+        break;
+      }
+    } if (technicianAssigned) {
+      alert("Error: This team has already been assigned on this day");
     } else {
-      copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      if (event.container.id != "listOfTeams" && event.previousContainer.id != "listOfTeams") {
+        transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      } else {
+        copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      }
+      const updatedAssignments = [];
+      for (var i=0; i < this.calendarData[dayIndex].length; i++) {
+        const appointmentObject = this.calendarData[dayIndex][i];
+        appointmentObject.assignment.unavailableTechnicians = this.awayList[dayIndex];
+        updatedAssignments.push(appointmentObject.assignment);
+      }
+      this.updateAssignments(updatedAssignments).then(() => {
+        this.alertService.success("Assignments updated successfully", false);
+      }, () => {
+        this.alertService.error("Could not update assignments", false);
+      });
     }
   }
 
   toss(event: CdkDragDrop<string[]>) {
+    const updatedAssignments = [];
+    var technician: Technician;
+      const data = event.previousContainer.data[event.previousIndex];
+      if (typeof(data) == "string") {
+        technician = JSON.parse(data);
+      } else {
+        technician = data;
+      }
     transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-    const indices = this.parseId(event.previousContainer.id);
+    if (event.previousContainer.id.includes(",")) { //Checking if it's a member of the main assignment calendar
+      const indices = this.parseId(event.previousContainer.id);
     const dayIndex = indices[0];
     const assignmentIndex = indices[1];
-    this.updateAssignments([this.calendarData[dayIndex][assignmentIndex].assignment]).then(
-      () => {
-          this.alertService.success("Assignments updated successfully", false);
-          event.container.removeItem(event.item);
-          this.listForDeletedItems = [];
-      }, () => {
-        this.alertService.error("Could not update assignments", false);
-      });
+    updatedAssignments.push(this.calendarData[dayIndex][assignmentIndex].assignment);
+    } else {
+      const dayIndex = parseInt(event.previousContainer.id);
+      if (!Number.isNaN(dayIndex)) {
+        for (var i=0; i < this.calendarData[dayIndex].length; i++) {
+          const apptObject: {appointment: Appointment, assignment: Assignment, numOfDays: number} = this.calendarData[dayIndex][i];
+          const removeIndex = apptObject.assignment.unavailableTechnicians.indexOf(technician);
+          apptObject.assignment.unavailableTechnicians.splice(removeIndex, 1);
+          updatedAssignments.push(apptObject.assignment);
+        }
+      }
+    }
+        this.updateAssignments(updatedAssignments).then(
+          () => {
+              this.alertService.success("Assignments updated successfully", false);
+              event.container.removeItem(event.item);
+              this.listForDeletedItems = [];
+          }, () => {
+            this.alertService.error("Could not update assignments", false);
+          });
       }
 
   changeWeek(moveAhead: boolean) {
@@ -216,12 +276,20 @@ export class AssignmentCalendarComponent implements OnInit {
               });
             }
           }
-    
+
           // Populate the calendar with the data
           for (var i=0; i< appointmentsPerDay.length; i++) {
+            const awayListSet = new Set();
             for (var j=0; j< appointmentsPerDay[i].length; j++) {
               this.calendarData[i][j] = appointmentsPerDay[i][j];
+              const unavailables = appointmentsPerDay[i][j].assignment.unavailableTechnicians;
+              for (var k=0; k<unavailables.length; k++) {
+                awayListSet.add(unavailables[k]);
+              }
             }
+            awayListSet.forEach((technician) => {
+              this.awayList[i].push(technician);
+            });
           }
           console.log(this.calendarData);
         });
@@ -312,6 +380,9 @@ export class AssignmentCalendarComponent implements OnInit {
   getAssignmentsForAppointments(appointments: Appointment []) {
     return new Promise<{appointment: Appointment, assignments: Assignment []}[]>((resolve, reject) => {
       const returnList = [];
+      if (appointments.length == 0) {
+        resolve(returnList);
+      }
       var resolved = false;
       for (var i = 0; i < appointments.length; i++) {
         const appointment = appointments[i];

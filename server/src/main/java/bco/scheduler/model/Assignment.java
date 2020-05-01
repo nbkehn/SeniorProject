@@ -25,6 +25,11 @@ public class Assignment {
     @JoinColumn(name = "assignment")
     private Set<Technician> technicians;
 
+    /** set of unavailable technicians*/
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "assignment")
+    private Set<Technician> unavailableTechnicians;
+
     /* Day of appointment (i.e. 1 to represent 1/2) */
     @Column(name = "dayNumber")
     private int dayNumber;
@@ -33,12 +38,17 @@ public class Assignment {
     }
 
     public Assignment(int dayNumber){
-        this(dayNumber, new HashSet<Technician>());
+        this(dayNumber, new HashSet<Technician>(), new HashSet<Technician>());
     } 
 
-    public Assignment(int dayNumber, Set<Technician> technicians ){
+    public Assignment(int dayNumber, Set<Technician> technicians) {
+        this(dayNumber, technicians, new HashSet<Technician>());
+    }
+
+    public Assignment(int dayNumber, Set<Technician> technicians, Set<Technician> awayTechnicians){
         setDayNumber(dayNumber);
         setTechnicians(technicians);
+        setUnavailableTechnicians(awayTechnicians);
     }
 
     public long getId() {
@@ -82,7 +92,28 @@ public class Assignment {
         if (getTechnicians() == null) {
             setTechnicians(new HashSet<Technician>());
         }
+        if (getUnavailableTechnicians().contains(t)) {
+            throw new IllegalArgumentException("This technician has been marked as away");
+        }
         getTechnicians().add(t);
+    }
+
+    public Set<Technician> getUnavailableTechnicians() {
+        return unavailableTechnicians;
+    }
+
+    public void setUnavailableTechnicians(Set<Technician> technicians) {
+        this.unavailableTechnicians = technicians;
+    }
+
+    public void markTechnicianAsAway(Technician t) {
+        if (getUnavailableTechnicians() == null) {
+            setTechnicians(new HashSet<Technician>());
+        }
+        if (getTechnicians().contains(t)) {
+            throw new IllegalArgumentException("This technician has already been assigned");
+        }
+        getUnavailableTechnicians().add(t);
     }
 
     

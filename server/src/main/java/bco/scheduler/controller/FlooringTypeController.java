@@ -90,7 +90,7 @@ public class FlooringTypeController {
             while(scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] tokens = line.split(",");
-                if(type.equalsIgnoreCase("carpet")){
+                if(type.strip().equalsIgnoreCase("carpet")){
                     flooring = new FlooringType(type, tokens[0], "", "BCO");
                 
                 } else if(type.equalsIgnoreCase("carpet tile")) {

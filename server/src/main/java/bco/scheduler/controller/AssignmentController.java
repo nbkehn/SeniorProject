@@ -80,6 +80,7 @@ public class AssignmentController{
                 () -> new ResourceNotFoundException("Assignment not found for this id :: " + assignmentId));
         assignment.setTechnicians(assignmentDetails.getTechnicians());
         assignment.setDayNumber(assignmentDetails.getDayNumber());
+        assignment.setUnavailableTechnicians(assignmentDetails.getUnavailableTechnicians());
         return assignmentRepository.save(assignment);
     }
 
