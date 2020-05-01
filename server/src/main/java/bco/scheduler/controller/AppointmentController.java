@@ -143,6 +143,44 @@ public class AppointmentController {
         appointment.setStartDateTime(appointmentDetails.getStartDate());
         appointment.setEndDateTime(appointmentDetails.getEndDate());
         appointment.setFlooring(appointmentDetails.getFlooring());
+        Set<Assignment> assignments = appointment.getAssignments();
+        ArrayList<Assignment> assignmentsList = new ArrayList<Assignment>();
+        assignmentsList.addAll(assignments);
+        assignmentsList.sort((a,b) -> {
+            if (a.getDayNumber() < b.getDayNumber()) {
+                return -1;
+            }
+            if (a.getDayNumber() > b.getDayNumber()) {
+                return 1;
+            }
+            return 0;
+        });
+        int numDays = Appointment.getExtraDays(appointmentDetails.getStartDate(), appointmentDetails.getEndDate()) + 1;
+        int numMissingAppointments = numDays - assignments.size();
+        if (numMissingAppointments > 0) {
+            int nextDayNumber = assignmentsList.get(assignmentsList.size() - 1).getDayNumber() + 1;
+            for (int i = 0; i < numMissingAppointments; i++) {
+                Assignment a = new Assignment(nextDayNumber);
+                Assignment newAssignment = assignmentController.createAssignment(a);
+                appointment.addEmptyAssignment(newAssignment);
+                nextDayNumber++;
+            }
+        } else if (numMissingAppointments < 0) {
+            long lastId = assignmentsList.get(assignmentsList.size() - 1).getId();
+            int index = assignmentsList.size() - 1;
+            for (int i = 0; i > numMissingAppointments; i--) {
+                appointment.getAssignments().remove(assignmentsList.get(index));
+                assignmentController.deleteAssignment(lastId);
+                assignmentsList.remove(index);
+                index--;
+            }
+        }
+        appointment.setTechnicians(appointmentDetails.getTechnicians());
+        appointment.setRSA(appointmentDetails.getRSA());
+        appointment.setCustomer(appointmentDetails.getCustomer());
+        appointment.setStartDateTime(appointmentDetails.getStartDate());
+        appointment.setEndDateTime(appointmentDetails.getEndDate());
+        appointment.setFlooring(appointmentDetails.getFlooring());
 
         return appointmentRepository.save(appointment);
     }
