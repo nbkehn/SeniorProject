@@ -33,7 +33,7 @@ public class Assignment {
     }
 
     public Assignment(int dayNumber){
-        this(dayNumber, null);
+        this(dayNumber, new HashSet<Technician>());
     } 
 
     public Assignment(int dayNumber, Set<Technician> technicians ){

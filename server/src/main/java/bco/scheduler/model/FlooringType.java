@@ -53,7 +53,7 @@ public class FlooringType {
      /**
       * Whether or not the sample has been checked out
       */
-     @Column(name = "sampleChecked", columnDefinition = "boolean default 'false'")
+     @Column(name = "sampleChecked", columnDefinition = "boolean default false")
      public Boolean sampleChecked;
 
      /**

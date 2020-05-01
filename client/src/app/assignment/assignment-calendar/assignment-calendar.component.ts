@@ -59,29 +59,44 @@ export class AssignmentCalendarComponent implements OnInit {
     }
     const currentApptObject = this.calendarData[dayIndex][slotIndex];
     if (!event.container.data.includes(data) && currentApptObject.appointment) {
+      const updatedAssignments = [];
       if (event.container.id != "listOfTeams" && event.previousContainer.id != "listOfTeams") {
         transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+        const previousIndices = this.parseId(event.previousContainer.id);
+        updatedAssignments.push(this.calendarData[previousIndices[0]][previousIndices[1]].assignment);
       } else {
         if (event.previousContainer.id == "listOfTeams") {
           copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-          this.createAssignment(currentApptObject.appointment, 1, technician);
-          if (currentApptObject.numOfDays > 1 && currentApptObject.dayNumber == 1 && dayIndex != 6) {
-            var tempIndex = dayIndex + 1;
-            while (tempIndex <= 6) {
-              for (var i=0; i<this.calendarData[tempIndex].length; i++) {
-                const tempObject = this.calendarData[tempIndex][i];
-                if (tempObject.appointment.id == currentApptObject.appointment.id) {
-                  tempObject.teams.push(data);
+        }
+      }
+      updatedAssignments.push(currentApptObject.assignment);
+      if (currentApptObject.numOfDays > 1 && currentApptObject.assignment.dayNumber == 1 && dayIndex != 6) {
+        var tempIndex = dayIndex + 1;
+        var appointmentDayIndex = 2; // Indicates the current day of the appointment being processed (i.e. 2/numOfDays)
+        while (tempIndex <= 6 && appointmentDayIndex <= currentApptObject.numOfDays) {
+          for (var i=0; i<this.calendarData[tempIndex].length; i++) {
+            const tempObject = this.calendarData[tempIndex][i];
+            if (tempObject.appointment.id == currentApptObject.appointment.id) {
+              tempObject.assignment.technicians.push(data);
+              updatedAssignments.push(tempObject.assignment);
                 }
               }
               tempIndex = tempIndex + 1;
-            }
-          }
+              appointmentDayIndex = appointmentDayIndex + 1;
         }
       }
+      this.updateAssignments(updatedAssignments).then(() => {
+          this.alertService.success("Assignments updated successfully", false);
+        }, () => {
+          this.alertService.error("Could not update assignments", false);
+      });
     }
-    console.log(this.calendarData);
-  }
+    }
+
+    parseId(id: string) {
+      const indices = id.split(',');
+      return [parseInt(indices[0]), parseInt(indices[1])];
+    }
 
   markAsAway(event: CdkDragDrop<string[]>) {
     if (event.container.id != "listOfTeams" && event.previousContainer.id != "listOfTeams") {
@@ -93,50 +108,18 @@ export class AssignmentCalendarComponent implements OnInit {
 
   toss(event: CdkDragDrop<string[]>) {
     transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-    event.container.removeItem(event.item);
-    this.listForDeletedItems = [];
-  }
-
-
-  createAssignment(appt: Appointment, dayNumber: number, technician: Technician) {
-    if (appt.assignments) {
-      const relevantAssignment = appt.assignments.filter((assignment) => {
-        assignment.dayNumber == dayNumber;
-      });
-      if (relevantAssignment.length >= 1) {
-        relevantAssignment[0].technicians.push(technician);
-        this.assignmentService.updateAssignment(relevantAssignment[0].id, relevantAssignment[0]).subscribe(() => {
-          this.alertService.success("Assignment updated successfully", false);
-          this.appointmentService.updateAppointment(appt.id, appt).subscribe(() => {
-            this.alertService.success("Appointment updated successfully", false);
-          }, () => {
-            this.alertService.error("Appointment could not be updated", false);
-          });
-        }, () => {
-          this.alertService.error("Assignment could not be updated", false);
-        });
-      }
-    } else {
-      appt.assignments = [];
-      const assignment = new Assignment(dayNumber);
-      assignment.technicians.push(technician);
-      this.assignmentService.createAssignment(assignment).subscribe((response) => {
-        this.alertService.success("Assignment created successfully", false);
-        assignment.id = response.id;
-        appt.assignments.push(response);
-        this.appointmentService.updateAppointment(appt.id, appt).subscribe(() => {
-          this.alertService.success("Appointment updated successfully", false);
-        }, (error) => {
-          this.alertService.error("Appointment could not be updated", false);
-          console.log(error);
-        });
+    const indices = this.parseId(event.previousContainer.id);
+    const dayIndex = indices[0];
+    const assignmentIndex = indices[1];
+    this.updateAssignments([this.calendarData[dayIndex][assignmentIndex].assignment]).then(
+      () => {
+          this.alertService.success("Assignments updated successfully", false);
+          event.container.removeItem(event.item);
+          this.listForDeletedItems = [];
       }, () => {
-        this.alertService.error("Assignment could not be created", false);
+        this.alertService.error("Could not update assignments", false);
       });
-    }
-  }
-
-
+      }
 
   changeWeek(moveAhead: boolean) {
     const dayLength = Date.parse("01-02-2020") - Date.parse("01-01-2020");
@@ -183,82 +166,138 @@ export class AssignmentCalendarComponent implements OnInit {
         }
         return false;
       });
-      const appointmentsPerDay = [];
-      for (var i=0; i<this.weekLength; i++) {
-        appointmentsPerDay.push([]);
-      }
 
-      // Calculate length of each appointment and store that information
-      var apptToApptLength = [];
-      for (var i=0; i<appointmentsInRange.length; i++) {
-        const tempAppt = appointmentsInRange[i];
-        const startDate = new Date(Date.parse(tempAppt.startDate.toString()) + this.dayLength);
-        const endDate = new Date(Date.parse(tempAppt.endDate.toString()) + this.dayLength);
-        const lengthOfAppointment = Math.ceil((endDate.valueOf() - startDate.valueOf()) / this.dayLength) + 1;
-        apptToApptLength.push({appt: tempAppt, length: lengthOfAppointment});
-      }
-
-      //Order the appointments from longest to shortest
-      apptToApptLength = apptToApptLength.sort((a: {appt: Appointment, length: number}, b: {appt: Appointment, length: number}) => {
-        if (a.length < b.length) {
-          return 1;
-        }
-        if (a.length > b.length) {
-          return -1;
-        }
-        return 0;
-      });
-
-      // Add information regarding the appointments to each of the 7 days of the week
-      for (var i=0; i < apptToApptLength.length; i++) {
-        const tempAppt = apptToApptLength[i].appt;
-        const startDate = new Date(Date.parse(tempAppt.startDate.toString()) + this.dayLength);
-        const endDate = new Date(Date.parse(tempAppt.endDate.toString()) + this.dayLength);
-        var tempDate = startDate >= this.startOfWeek ? startDate : this.startOfWeek;
-        while (tempDate <= endDate && tempDate <= this.endOfWeek) {
+      var apptsProcessed = 0;
+      var currentlyProcessing = false;
+      var noErrors = true;
+      // var apptsAndAssignments = [];
+      this.getAssignmentsForAppointments(appointmentsInRange)
+      .then((apptsAndAssignments) => {
+          const appointmentsPerDay = [];
+          for (var i=0; i<this.weekLength; i++) {
+            appointmentsPerDay.push([]);
+          }
+    
+          // Add information regarding the appointments to each of the 7 days of the week
+          for (var i=0; i < apptsAndAssignments.length; i++) {
+            const tempAppt = apptsAndAssignments[i].appointment;
+            const startDate = new Date(Date.parse(tempAppt.startDate.toString()) + this.dayLength);
+            const endDate = new Date(Date.parse(tempAppt.endDate.toString()) + this.dayLength);
+            var tempDate = startDate >= this.startOfWeek ? startDate : this.startOfWeek;
+            const lengthOfAppointment = Math.ceil((endDate.valueOf() - startDate.valueOf()) / this.dayLength) + 1;
+            while (tempDate <= endDate && tempDate <= this.endOfWeek) {
               const dayIndex = Math.floor((tempDate.valueOf() - this.startOfWeek.valueOf()) / this.dayLength);
-              const appointmentDayNumber = Math.ceil((tempDate.valueOf() - startDate.valueOf()) / this.dayLength) + 1;
+              const appointmentDayIndex = Math.ceil((tempDate.valueOf() - startDate.valueOf()) / this.dayLength);
               appointmentsPerDay[dayIndex].push({
                 appointment: tempAppt,
-                dayNumber: appointmentDayNumber,
-                numOfDays: apptToApptLength[i].length,
-                teams: [],
+                assignment: apptsAndAssignments[i].assignments[appointmentDayIndex],
+                numOfDays: lengthOfAppointment,
               });
               tempDate = new Date(tempDate.valueOf() + this.dayLength);
-        }
-      }
+            }
+          }
+    
+          //Finding maximum # of appointments during a day of the week
+          var maxNum = 1;
+          for (var i=0; i < appointmentsPerDay.length; i++) {
+            const currentListLength = appointmentsPerDay[i].length;
+            if (currentListLength > maxNum) {
+              maxNum = currentListLength;
+            }
+          }
+    
+          //Populate the calendar with the maximum number of rows necessary to hold all appointments
+          for (var i=0; i< this.weekLength; i++) {
+            for (var j=0; j < maxNum; j++) {
+              this.calendarData[i].push({
+                appointment: null,
+                assignment: null,
+                numOfDays: null,
+              });
+            }
+          }
+    
+          // Populate the calendar with the data
+          for (var i=0; i< appointmentsPerDay.length; i++) {
+            for (var j=0; j< appointmentsPerDay[i].length; j++) {
+              this.calendarData[i][j] = appointmentsPerDay[i][j];
+            }
+          }
+          console.log(this.calendarData);
+        });
+    
+      // while (apptsProcessed < appointmentsInRange.length && noErrors) {
+      //   if (!currentlyProcessing) {
+      //     currentlyProcessing = true;
+      //     this.appointmentService.getAppointmentAssignments(appointmentsInRange[apptsProcessed].id).subscribe((response) => {
+      //       apptsAndAssignments.push({
+      //         appointment: appointmentsInRange[apptsProcessed],
+      //         assignments: response,
+      //       });
+      //       apptsProcessed = apptsProcessed + 1;
+      //       currentlyProcessing = false;
+      //     }, (error) => {
+      //       this.alertService.error("Something went wrong", false);
+      //       console.log(error);
+      //       noErrors = false;
+      //     });
+      //   }
+      // }
 
-      //Finding maximum # of appointments during a day of the week
-      var maxNum = 1;
-      for (var i=0; i < appointmentsPerDay.length; i++) {
-        const currentListLength = appointmentsPerDay[i].length;
-        if (currentListLength > maxNum) {
-          maxNum = currentListLength;
-        }
-      }
+      // const appointmentsPerDay = [];
+      // for (var i=0; i<this.weekLength; i++) {
+      //   appointmentsPerDay.push([]);
+      // }
 
-      //Populate the calendar with the maximum number of rows necessary to hold all appointments
-      for (var i=0; i< this.weekLength; i++) {
-        for (var j=0; j < maxNum; j++) {
-          this.calendarData[i].push({
-            appointment: null,
-            dayNumber: null,
-            numOfDays: null,
-            teams: [],
-          });
-        }
-      }
+      // // Add information regarding the appointments to each of the 7 days of the week
+      // for (var i=0; i < apptsAndAssignments.length; i++) {
+      //   const tempAppt = apptsAndAssignments[i].appointment;
+      //   const startDate = new Date(Date.parse(tempAppt.startDate.toString()) + this.dayLength);
+      //   const endDate = new Date(Date.parse(tempAppt.endDate.toString()) + this.dayLength);
+      //   var tempDate = startDate >= this.startOfWeek ? startDate : this.startOfWeek;
+      //   const lengthOfAppointment = Math.ceil((endDate.valueOf() - startDate.valueOf()) / this.dayLength) + 1;
+      //   while (tempDate <= endDate && tempDate <= this.endOfWeek) {
+      //     const dayIndex = Math.floor((tempDate.valueOf() - this.startOfWeek.valueOf()) / this.dayLength);
+      //     const appointmentDayIndex = Math.ceil((tempDate.valueOf() - startDate.valueOf()) / this.dayLength);
+      //     appointmentsPerDay[dayIndex].push({
+      //       appointment: tempAppt,
+      //       assignment: response[appointmentDayIndex],
+      //       numOfDays: lengthOfAppointment,
+      //     });
+      //     tempDate = new Date(tempDate.valueOf() + this.dayLength);
+      //   }
+      // }
 
-      // Populate the calendar with the data
-      for (var i=0; i< appointmentsPerDay.length; i++) {
-        for (var j=0; j< appointmentsPerDay[i].length; j++) {
-          this.calendarData[i][j] = appointmentsPerDay[i][j];
-        }
-      }
-      console.log(this.calendarData);
+      // //Finding maximum # of appointments during a day of the week
+      // var maxNum = 1;
+      // for (var i=0; i < appointmentsPerDay.length; i++) {
+      //   const currentListLength = appointmentsPerDay[i].length;
+      //   if (currentListLength > maxNum) {
+      //     maxNum = currentListLength;
+      //   }
+      // }
+
+      // //Populate the calendar with the maximum number of rows necessary to hold all appointments
+      // for (var i=0; i< this.weekLength; i++) {
+      //   for (var j=0; j < maxNum; j++) {
+      //     this.calendarData[i].push({
+      //       appointment: null,
+      //       assignment: null,
+      //       numOfDays: null,
+      //     });
+      //   }
+      // }
+
+      // // Populate the calendar with the data
+      // for (var i=0; i< appointmentsPerDay.length; i++) {
+      //   for (var j=0; j< appointmentsPerDay[i].length; j++) {
+      //     this.calendarData[i][j] = appointmentsPerDay[i][j];
+      //   }
+      // }
+      // console.log(this.calendarData);
     }, () => {
       this.alertService.error("Appointments could not be loaded.", false);
-    })
+    });
   }
 
   refreshCalendar() {
@@ -270,14 +309,54 @@ export class AssignmentCalendarComponent implements OnInit {
     }
   }
 
-  openInfoDialog(appointmentObject: {appointment: Appointment, dayNumber: number, numOfDays: number, teams: Technician []}) {
+  getAssignmentsForAppointments(appointments: Appointment []) {
+    return new Promise<{appointment: Appointment, assignments: Assignment []}[]>((resolve, reject) => {
+      const returnList = [];
+      var resolved = false;
+      for (var i = 0; i < appointments.length; i++) {
+        const appointment = appointments[i];
+        this.appointmentService.getAppointmentAssignments(appointment.id).subscribe((assignments) => {
+          returnList.push({
+            appointment: appointment,
+            assignments: assignments,
+          });
+          if (returnList.length == appointments.length) {
+            resolve(returnList);
+          }
+        }, (error) => {
+          reject(error);
+        })
+      }
+    });
+  }
+
+  updateAssignments(assignments: Assignment []) {
+    if (assignments.length == 0) {
+      return Promise.resolve(true);
+    }
+    return new Promise<boolean>((resolve, reject) => {
+      for (var i=0; i < assignments.length; i++) {
+        const assignment = assignments[i];
+        this.assignmentService.updateAssignment(assignment.id, assignment).subscribe(() => {
+          if (assignment.id == assignments[assignments.length-1].id) {
+            resolve(true);
+          }
+        }, (error) => {
+          console.log(error);
+          reject(false);
+        });
+      }
+    });
+  }
+
+  openInfoDialog(appointmentObject: {appointment: Appointment, assignment: Assignment, numOfDays: number, teams: Technician []}) {
     let dialogProperties = {
           data: {
             id: appointmentObject.appointment.id,
             title: `Customer: ${appointmentObject.appointment.customer.firstName} ${appointmentObject.appointment.customer.lastName}`,
             start: appointmentObject.appointment.startDate,
             end: appointmentObject.appointment.endDate,
-            dayNumber: appointmentObject.dayNumber,
+            dayNumber: appointmentObject.assignment.dayNumber,
             numOfDays: appointmentObject.numOfDays
           },
         }

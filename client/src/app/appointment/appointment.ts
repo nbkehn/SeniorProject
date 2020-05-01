@@ -21,10 +21,10 @@ export class Appointment {
   rsa: Rsa;
   flooring: Flooring;
 
-  constructor() {
-    this.technicians = [];
-    this.assignments = [];
-  }
+  // constructor() {
+  //   this.technicians = [];
+  //   this.assignments = [];
+  // }
 
   compareAppointments(appointment: Appointment) {
     if (this.id > appointment.id)

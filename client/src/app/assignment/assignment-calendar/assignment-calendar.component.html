@@ -51,12 +51,13 @@
                         <div
                             cdkDropList
                             #dropList="cdkDropList"
-                            [cdkDropListData]="appointmentObject.teams"
+                            id="{{x}},{{y}}"
+                            [cdkDropListData]="appointmentObject?.assignment?.technicians"
                             class="example-list"
                             (cdkDropListDropped)="assign($event, x, y)">
-                            <div class="example-box" *ngFor="let team of appointmentObject.teams" cdkDrag>{{team.firstName}} {{team.lastName}}</div>
+                            <div class="example-box" *ngFor="let team of appointmentObject?.assignment?.technicians" cdkDrag>{{team.firstName}} {{team.lastName}}</div>
                         </div>
-                        <div style="text-align: center;"><input type="button" class="openInfoBox" value="Appt Info {{appointmentObject.dayNumber}}/{{appointmentObject.numOfDays}}" *ngIf="appointmentObject.appointment != null" (click)="openInfoDialog(appointmentObject)"></div>
+                        <div style="text-align: center;"><input type="button" class="openInfoBox" value="Appt Info {{appointmentObject.assignment.dayNumber}}/{{appointmentObject.numOfDays}}" *ngIf="appointmentObject.appointment != null" (click)="openInfoDialog(appointmentObject)"></div>
                         <div style="text-align: center;"><input type="button" class="fillerButton" value="filler button" *ngIf="appointmentObject.appointment == null"></div>
                         <br>
                     </div>

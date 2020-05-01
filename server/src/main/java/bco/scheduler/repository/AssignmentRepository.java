@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import bco.scheduler.model.Assignment;
 
 /**
- * Appointment repository
+ * Assignment repository
  * @author Connor
  *
  */

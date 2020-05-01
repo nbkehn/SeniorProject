@@ -2,6 +2,11 @@ package bco.scheduler.model;
 
 import javax.persistence.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import bco.scheduler.controller.AssignmentController;
+import bco.scheduler.repository.AssignmentRepository;
+
 import java.util.*;
 import java.util.Set;
 import java.time.LocalDate;
@@ -72,9 +77,11 @@ public class Appointment {
         this.startDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         this.endDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         this.assignments = new HashSet<Assignment>();
-        for(int i = 0; i <= getExtraDays(); i++ ) {
-            assignments.add(new Assignment(i + 1));
-         }
+        // for(int i = 0; i <= getExtraDays(); i++ ) {
+        //     AssignmentRepository repo = AssignmentRepository();
+        //     Assignment a = controller.createAssignment(new Assignment(i+1));
+        //     assignments.add(a);
+        //  }
     }
 
     /**
@@ -250,6 +257,17 @@ public class Appointment {
         return map;
     }
 
+    public void addEmptyAssignment(Assignment a) {
+        if (this.assignments == null) {
+            this.assignments = new HashSet<Assignment>();
+        }
+        this.assignments.add(a);
+    }
+
+    public Set<Assignment> getAssignments() {
+        return this.assignments;
+    }
+
     public void assignAll(Set<Technician> technicians) {
 
         for(int i = 0; i < assignments.size(); i++ ) {
@@ -266,13 +284,13 @@ public class Appointment {
         this.endDate = endDate;
         LocalDate temp = startDate;
         assignments.clear();
-        for(int i = 0; i < getExtraDays(); i++ ) {
+        for(int i = 0; i < getExtraDays(this.startDate, this.endDate); i++ ) {
             assignments.add(new Assignment(i+1, technicians));
             temp = temp.plusDays(1);
         }
     }
 
-    public int getExtraDays() {
+    public static int getExtraDays(LocalDate startDate, LocalDate endDate) {
         int year1 = startDate.getYear();
         int year2 = endDate.getYear();
         int month1 = startDate.getMonthValue();

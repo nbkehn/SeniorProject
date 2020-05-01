@@ -196,6 +196,7 @@ export class CalendarComponent implements OnInit {
           this.appointment.endDate = returnedValue.end;
           this.appointment.customer = returnedValue.customer;
           this.appointment.technicians =  returnedValue.technicians;
+          this.appointment.assignments = returnedValue.assignments;
           this.appointment.rsa = returnedValue.rsa;
           this.appointment.flooring = returnedValue.flooring;
           console.log(this.appointment.endDate);
