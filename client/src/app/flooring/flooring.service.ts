@@ -31,6 +31,14 @@ export class FlooringService {
   }
 
   /**
+   * Gets flooring with a given hash code
+   * @param hashCode hash code of the flooring information
+   * @return An observable of the response body as a JSON object. 
+   */
+getFlooringbyHash(hashCode: number): Observable<any> {
+  return this.http.get(`${this.baseUrl}/${hashCode}`)
+}
+  /**
    * Creates a flooring
    * @param flooring Flooring to be created
    * @return newly created flooring

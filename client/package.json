@@ -30,6 +30,7 @@
     "@fullcalendar/list": "^4.3.0",
     "@fullcalendar/timegrid": "^4.3.0",
     "@ng-bootstrap/ng-bootstrap": "^5.3.0",
+    "@zxing/ngx-scanner": "^3.0.0",
     "bootstrap": "^4.4.1",
     "jquery": "^3.4.1",
     "less": "^3.11.1",

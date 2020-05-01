@@ -52,6 +52,10 @@ import { MatOptionModule } from '@angular/material/core';
 import {UploadSampleComponent} from './flooring/upload-sample/upload-sample.component';
 import { OTWDialogComponent } from './otw-dialog/otw-dialog.component';
 import {ViewDialogComponent} from './view-dialog/view-dialog.component';
+import { CheckOutFormComponent } from './check-out/check-out-form/check-out-form.component';
+import { CheckoutLandingComponent } from './checkout-landing/checkout-landing.component';
+import { CheckOutComponent} from './check-out/check-out.component';
+import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 
 
 @NgModule({
@@ -87,6 +91,10 @@ import {ViewDialogComponent} from './view-dialog/view-dialog.component';
     OTWDialogComponent,
     ReminderErrorListComponent,
     ViewDialogComponent,
+    CheckOutFormComponent,
+    CheckoutLandingComponent,
+    CheckOutComponent,
+    ZXingScannerComponent
   ],
   imports: [
     BrowserModule,

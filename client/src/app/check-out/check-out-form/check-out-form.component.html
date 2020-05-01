@@ -74,25 +74,15 @@
                  name="address">
           </textarea>
         </div>
+
+        <div class="form-group">
+          <label for="policy">Privacy Policy</label>
+          <input type="checkbox"  class="form-control" id="policy" [(ngModel)]="customer.address"
+                 name="address"/>
+    
+        </div>
   
         <!-- form component for customer's communication preference -->
-        <div class="form-group">
-          <label for="communicationPreference">Communication</label>
-          <select class="form-control" id="communicationPreference" required #communicationPreference="ngModel"
-                 [(ngModel)]="customer.communicationPreference" name="communicationPreference">
-            <option *ngFor="let key of objectKeys(preferences)"
-                    [value]="key">
-              {{preferences[key]}}
-            </option>
-          </select>
-          <div *ngIf="communicationPreference.invalid &&
-                      (communicationPreference.dirty || communicationPreference.touched || checkoutForm.submitted)"
-               class="alert alert-danger">
-            <div *ngIf="communicationPreference.errors.required">
-              This field is required.
-            </div>
-          </div>
-        </div>
       </form>
     </div>
   </div>

@@ -1,1 +1,36 @@
-<p>check-in works!</p>
+<div class="panel-heading">
+    <h2>Scan Sample QR Code</h2>
+</div>
+<div class="panel-body">
+    <!-- form component for the submit button -->
+    <zxing-scanner (scanSuccess)="onCodeResult($event)"></zxing-scanner>
+    <br>
+    
+    <table  class="table table-striped">
+        <thead>
+            <!--column headers for the table-->
+            <tr>
+              <th> Type</th>
+              <th> Style</th>
+              <th> Color</th>
+              <th> Company</th>
+              <th> Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let flooring of scannedFlooring  ">
+              <td>{{flooring.name}}</td>
+              <td>{{flooring.style}}</td>
+              <td>{{flooring.color}}</td>
+              <td>{{flooring.company}}</td>
+    
+              <td>
+                <!-- button options for each row so that the user can edit/delete that flooring with a click of a button-->
+                <button (click)="checkIn(flooring.id)" class="btn btn-primary">Check Out</button>
+                <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(flooring.id, true).open()"
+                  class="btn btn-danger btn-delete">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+    </table>
+</div>
