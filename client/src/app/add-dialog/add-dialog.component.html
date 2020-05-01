@@ -41,7 +41,7 @@
         <mat-select role="listbox" formControlName="flooring">
             <mat-option  role="option"*ngFor="let flooringOption of flooringOptions"
             [value]="flooringOption">
-                {{flooringOption.name}}
+                {{getFlooringString(flooringOption)}}
             </mat-option>
         </mat-select>
     </mat-form-field>

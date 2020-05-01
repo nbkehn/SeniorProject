@@ -5,7 +5,7 @@
     <div><strong>Phone: </strong>{{formatPhoneString(editApp?.customer.phone)}}</div>
     <div><strong>Day: </strong> {{dayNumber}}/{{numOfDays}}</div>
     <div><strong>RSA: </strong>{{editApp?.rsa.firstName}} {{editApp?.rsa.lastName}}</div>
-    <div><strong>Flooring: </strong>{{editApp?.flooring.name}}</div><br>
+    <div><strong>Flooring: </strong>{{getFlooringString(editApp?.flooring)}}</div><br>
 </mat-dialog-content>
 <mat-dialog-actions>
     <div align="center"><button mat-button (click)="cancel()">Cancel</button></div>

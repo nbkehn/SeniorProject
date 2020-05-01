@@ -90,16 +90,13 @@ public class FlooringTypeController {
             while(scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] tokens = line.split(",");
-                if(type.strip().equalsIgnoreCase("carpet")){
-                    flooring = new FlooringType(type, tokens[0], "", "BCO");
-                
-                } else if(type.equalsIgnoreCase("carpet tile")) {
+                if (type.toLowerCase().contains("carpet tile")) {
                     flooring = new FlooringType(tokens[0], tokens[1], "", "BCO");
-                
+                } else if (type.toLowerCase().contains("carpet")) {
+                    flooring = new FlooringType("Carpet", tokens[0], "", "BCO");
                 } else {
                     flooring = new FlooringType(type, tokens[0], tokens[1], "BCO");
                 }
-
                 if(scanner.hasNextLine()){
                     flooringTypeRepository.save(flooring);
                 } else { 

@@ -4,7 +4,7 @@
     <div><strong>Start Date:</strong> {{editApp?.startDate}}</div>
     <div><strong>End Date:</strong> {{editApp?.endDate}}</div>
     <div><strong>RSA: </strong>{{editApp?.rsa.firstName}} {{editApp?.rsa.lastName}}</div>
-    <div><strong>Flooring: </strong>{{editApp?.flooring.name}}</div><br>
+    <div><strong>Flooring: </strong>{{getFlooringString(editApp?.flooring)}}</div><br>
 </mat-dialog-content>
 <mat-dialog-actions>
     <div align="center"><button mat-button (click)="cancel()">Cancel</button></div>

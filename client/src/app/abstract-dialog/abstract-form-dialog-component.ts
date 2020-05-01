@@ -116,6 +116,20 @@ export abstract class AbstractFormDialogComponent implements OnInit {
     this.flooring = flooring;
   }
 
+  getFlooringString(flooring: Flooring) {
+    if (!flooring) {
+      return "";
+    }
+    var string = flooring.name;
+    if (flooring.style) {
+      string = `${string} ${flooring.style}`;
+    }
+    if (flooring.color) {
+      string = `${string} ${flooring.color}`;
+    }
+    return string;
+  }
+
   getFormGroup() {
     return this.formGroup;
   }

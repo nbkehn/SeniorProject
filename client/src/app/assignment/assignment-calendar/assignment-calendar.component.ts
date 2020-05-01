@@ -82,7 +82,7 @@ export class AssignmentCalendarComponent implements OnInit {
         while (tempIndex <= 6 && appointmentDayIndex <= currentApptObject.numOfDays) {
           for (var i=0; i<this.calendarData[tempIndex].length; i++) {
             const tempObject = this.calendarData[tempIndex][i];
-            if (tempObject.appointment.id == currentApptObject.appointment.id) {
+            if (tempObject.appointment && tempObject.appointment.id == currentApptObject.appointment.id) {
               tempObject.assignment.technicians.push(data);
               updatedAssignments.push(tempObject.assignment);
                 }
@@ -116,12 +116,14 @@ export class AssignmentCalendarComponent implements OnInit {
       }
     for (var i=0; i < this.calendarData[dayIndex].length; i++) {
       const appointmentObject = this.calendarData[dayIndex][i];
-      const matchingAppointments = appointmentObject.assignment.technicians.filter((t) => {
-        return t.id == technician.id;
-      })
-      if (matchingAppointments.length != 0) {
-        technicianAssigned = true;
-        break;
+      if (appointmentObject.assignment) {
+        const matchingAppointments = appointmentObject.assignment.technicians.filter((t) => {
+          return t.id == technician.id;
+        })
+        if (matchingAppointments.length != 0) {
+          technicianAssigned = true;
+          break;
+        }
       }
     } if (technicianAssigned) {
       alert("Error: This team has already been assigned on this day");
@@ -134,8 +136,10 @@ export class AssignmentCalendarComponent implements OnInit {
       const updatedAssignments = [];
       for (var i=0; i < this.calendarData[dayIndex].length; i++) {
         const appointmentObject = this.calendarData[dayIndex][i];
-        appointmentObject.assignment.unavailableTechnicians = this.awayList[dayIndex];
-        updatedAssignments.push(appointmentObject.assignment);
+        if (appointmentObject.assignment) {
+          appointmentObject.assignment.unavailableTechnicians = this.awayList[dayIndex];
+          updatedAssignments.push(appointmentObject.assignment);
+        }
       }
       this.updateAssignments(updatedAssignments).then(() => {
         this.alertService.success("Assignments updated successfully", false);
@@ -256,6 +260,18 @@ export class AssignmentCalendarComponent implements OnInit {
               tempDate = new Date(tempDate.valueOf() + this.dayLength);
             }
           }
+
+          for (var i=0; i < appointmentsPerDay.length; i++) {
+            appointmentsPerDay[i].sort((a, b) => {
+              if (a.numOfDays > b.numOfDays) {
+                return -1;
+              }
+              if (a.numOfDays < b.numOfDays) {
+                return 1;
+              }
+              return 0;
+            });
+          }
     
           //Finding maximum # of appointments during a day of the week
           var maxNum = 1;
@@ -279,15 +295,20 @@ export class AssignmentCalendarComponent implements OnInit {
 
           // Populate the calendar with the data
           for (var i=0; i< appointmentsPerDay.length; i++) {
-            const awayListSet = new Set();
+            const tempList = [];
             for (var j=0; j< appointmentsPerDay[i].length; j++) {
               this.calendarData[i][j] = appointmentsPerDay[i][j];
               const unavailables = appointmentsPerDay[i][j].assignment.unavailableTechnicians;
               for (var k=0; k<unavailables.length; k++) {
-                awayListSet.add(unavailables[k]);
+                const matchingTechnician = tempList.find((value, index, list) => {
+                  return value.id == list[index].id;
+                });
+                if (!matchingTechnician) {
+                  tempList.push(unavailables[k]);
+                }
               }
             }
-            awayListSet.forEach((technician) => {
+            tempList.forEach((technician) => {
               this.awayList[i].push(technician);
             });
           }
