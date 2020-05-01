@@ -145,14 +145,24 @@ public class FlooringTypeController {
         return ResponseEntity.ok(flooring);
     }
 
-    @GetMapping("/flooringtype/{id}")
+    @GetMapping("/flooringtype/createqr/{id}")
     public BufferedImage getQRImg(@PathVariable(value = "id") Long flooringTypeId)
             throws UnsupportedEncodingException, WriterException, ResourceNotFoundException
      {
         FlooringType flooring = flooringTypeRepository.findById(flooringTypeId).orElseThrow(() -> new ResourceNotFoundException("Flooring not found for this id :: " + flooringTypeId));
         return flooring.createQRImg(flooring.hash_code);
 
-        
+    }
 
+    @GetMapping("/flooringtype/createqr")
+    public List<BufferedImage> getQRImgAll()
+         throws UnsupportedEncodingException, WriterException, ResourceNotFoundException
+         {
+            List<FlooringType> all = flooringTypeRepository.findAll();
+            List<BufferedImage> results = new List<BufferedImage>();
+            for(int i = 0; i < all.size(); i++){
+                results.add(all.get(i).createQRImg(all.get(i).hash_code));
+            }
+            return results;
     }
 }
