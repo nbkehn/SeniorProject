@@ -219,26 +219,28 @@ export class CalendarComponent implements OnInit {
             id: this.selectedEvent.id,
             title: `Customer: ${returnedValue.customer.firstName} ${returnedValue.customer.lastName}`,
             start: returnedValue.start,
-            end: returnedValue.end.to,
+            end: returnedValue.end,
           }
-  
+
           //update event on the calendar
           const editedEvent = this.calendarObject.getEventById(appt.id.toString());
-          let newEnd = this.getTomorrow(returnedValue.end);
-          editedEvent.setStart(returnedValue.start);
+          let newEnd = this.getTomorrow(new Date(appt.end));
+          editedEvent.setStart(new Date(appt.start));
           editedEvent.setEnd(newEnd);
-          this.updateSelectedEvent(editedEvent);
+          // this.updateClickedEvent(editedEvent);
 
           //update appointment in the database
           this.appointment = new Appointment();
           this.appointment.id = this.selectedEvent.id;
-          this.appointment.startDate = appt.start;
-          this.appointment.endDate = newEnd;
+          this.appointment.startDate = new Date(appt.start);
+          this.appointment.startDate.setHours(12);
+          this.appointment.endDate = this.getYesterday(new Date(editedEvent.end));
+          this.appointment.endDate.setHours(12);
           this.appointment.customer = returnedValue.customer;
           this.appointment.technicians =  returnedValue.technicians;
           this.appointment.rsa = returnedValue.rsa;
           this.appointment.flooring = returnedValue.flooring;
-          this.update(this.selectedEvent.id);
+          this.updateSelectedEvent(editedEvent);
         }
       });
     }
@@ -313,6 +315,13 @@ export class CalendarComponent implements OnInit {
       this.appointment = data;
       this.appointment.startDate = this.selectedEvent.start;
       this.appointment.endDate = this.getYesterday(this.selectedEvent.end);
+      // this.appointmentService.updateAppointment(this.appointment.id, this.appointment).subscribe((data) => {
+      //   console.log(data);
+      //   this.alertService.success("Updated successfully!", false);
+      // }, (error) => {
+      //   this.alertService.error("Something went wrong", false);
+      //   console.log(error);
+      // })
       this.update(this.selectedEvent.id);
     });
 
@@ -353,6 +362,8 @@ export class CalendarComponent implements OnInit {
   reloadData() {
     this.appointmentService.getAppointmentsList()
     .subscribe( data => {
+      console.log(`Raw Data`);
+      console.log(data);
         this.alertService.success('Appointments loaded successfully.', true);
         if (data.length == 0) {
           console.log("There are no appointments");
@@ -372,6 +383,8 @@ export class CalendarComponent implements OnInit {
           var event = {id: data.id, title: "Customer: " + data.customer.firstName + " " + data.customer.lastName, start: data.startDate, end: newEndString, allDay: true};
           this.calendarObject.addEvent(event);
         });
+        console.log("Calendar Data");
+      console.log(this.calendarObject?.getEvents());
       });
   }
 

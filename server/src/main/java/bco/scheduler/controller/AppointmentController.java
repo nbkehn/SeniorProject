@@ -110,9 +110,7 @@ public class AppointmentController {
             Assignment newAssignment = assignmentController.createAssignment(a);
             appointment.addEmptyAssignment(newAssignment);
         }
-        final Appointment newAppointment = appointmentRepository.saveAndFlush(appointment);
-        System.out.println(appointment.getStartDate());
-        System.out.println(appointment.getStartDate());
+        final Appointment newAppointment = appointmentRepository.saveAndFlush(appointment)
         appointmentRepository.refresh(newAppointment);
         appointmentQueueRepository.addNewAppointment(newAppointment.getId());
 
@@ -175,14 +173,8 @@ public class AppointmentController {
                 index--;
             }
         }
-        appointment.setTechnicians(appointmentDetails.getTechnicians());
-        appointment.setRSA(appointmentDetails.getRSA());
-        appointment.setCustomer(appointmentDetails.getCustomer());
-        appointment.setStartDateTime(appointmentDetails.getStartDate());
-        appointment.setEndDateTime(appointmentDetails.getEndDate());
-        appointment.setFlooring(appointmentDetails.getFlooring());
-
-        return appointmentRepository.save(appointment);
+        Appointment appt = appointmentRepository.saveAndFlush(appointment);
+        return appt;
     }
 
     /**
