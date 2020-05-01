@@ -110,7 +110,7 @@ public class AppointmentController {
             Assignment newAssignment = assignmentController.createAssignment(a);
             appointment.addEmptyAssignment(newAssignment);
         }
-        final Appointment newAppointment = appointmentRepository.saveAndFlush(appointment)
+        final Appointment newAppointment = appointmentRepository.saveAndFlush(appointment);
         appointmentRepository.refresh(newAppointment);
         appointmentQueueRepository.addNewAppointment(newAppointment.getId());
 
