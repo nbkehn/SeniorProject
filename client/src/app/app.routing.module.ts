@@ -22,7 +22,7 @@ import {ModifyTemplateComponent} from "./template/modify-template/modify-templat
 import {ReminderListComponent} from "./reminder/reminder-list/reminder-list.component";
 import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminder.component";
 import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/reminder-error-list.component";
-import {AssignmentCalendarComponent} from "./assignment/assignment/assignment-calendar.component";
+import {AssignmentCalendarComponent} from "./assignment/assignment-calendar/assignment-calendar.component";
 import { CalendarComponent } from './calendar/calendar.component';
 import {UploadSampleComponent} from './flooring/upload-sample/upload-sample.component';
 import { CheckOutComponent } from './check-out/check-out.component';
@@ -66,6 +66,7 @@ const routes: Routes = [
   { path: 'flooring/check-out/create-customer', component: CheckOutFormComponent},
   { path: 'checkout-landing', component: CheckoutLandingComponent},
   { path: 'flooring/check-out/scan', component: CheckOutComponent},
+  { path: 'install/calendar', component: AssignmentCalendarComponent}
 ];
 
 @NgModule({

@@ -47,7 +47,7 @@ import {MatInputModule} from '@angular/material/input';
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/reminder-error-list.component";
 //import { AppointmentCalendarComponent } from './appointment/appointment-calendar/appointment-calendar.component';
-import {AssignmentCalendarComponent} from "./assignment/assignment/assignment-calendar.component";
+import {AssignmentCalendarComponent} from "./assignment/assignment-calendar/assignment-calendar.component";
 import { MatOptionModule } from '@angular/material/core';
 import {UploadSampleComponent} from './flooring/upload-sample/upload-sample.component';
 import { OTWDialogComponent } from './otw-dialog/otw-dialog.component';
@@ -56,6 +56,8 @@ import { CheckOutFormComponent } from './check-out/check-out-form/check-out-form
 import { CheckoutLandingComponent } from './checkout-landing/checkout-landing.component';
 import { CheckOutComponent} from './check-out/check-out.component';
 import { ZXingScannerComponent } from '@zxing/ngx-scanner';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { ViewInstallerDialogComponent } from './view-installer-dialog/view-installer-dialog.component';
 
 
 @NgModule({
@@ -95,6 +97,7 @@ import { ZXingScannerComponent } from '@zxing/ngx-scanner';
     CheckoutLandingComponent,
     CheckOutComponent,
     ZXingScannerComponent
+    ViewInstallerDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -114,6 +117,7 @@ import { ZXingScannerComponent } from '@zxing/ngx-scanner';
     MatOptionModule,
     MatSelectModule,
     MatMomentDateModule,
+    DragDropModule,
   ],
   entryComponents: [
     AddDialogComponent,
@@ -121,6 +125,7 @@ import { ZXingScannerComponent } from '@zxing/ngx-scanner';
     DeleteDialogComponent,
     OTWDialogComponent,
     ViewDialogComponent,
+    ViewInstallerDialogComponent,
   ],
   providers: [
     AlertService

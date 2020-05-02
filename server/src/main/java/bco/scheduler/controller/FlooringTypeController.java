@@ -62,7 +62,8 @@ public class FlooringTypeController {
      */
     @PostMapping("/flooringtype")
     public ResponseEntity<FlooringType> createFlooring(@Valid @RequestBody FlooringType flooring) {
-        return ResponseEntity.ok(flooringTypeRepository.save(flooring));
+        FlooringType tempfloor = new FlooringType(flooring.getName(), flooring.getStyle(), flooring.getColor(), flooring.getCompany());
+        return ResponseEntity.ok(flooringTypeRepository.save(tempfloor));
     }
 
     /**
@@ -89,16 +90,13 @@ public class FlooringTypeController {
             while(scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] tokens = line.split(",");
-                if(type.equalsIgnoreCase("carpet")){
-                    flooring = new FlooringType(type, tokens[0], "", "BCO");
-                
-                } else if(type.equalsIgnoreCase("carpet tile")) {
+                if (type.toLowerCase().contains("carpet tile")) {
                     flooring = new FlooringType(tokens[0], tokens[1], "", "BCO");
-                
+                } else if (type.toLowerCase().contains("carpet")) {
+                    flooring = new FlooringType("Carpet", tokens[0], "", "BCO");
                 } else {
                     flooring = new FlooringType(type, tokens[0], tokens[1], "BCO");
                 }
-
                 if(scanner.hasNextLine()){
                     flooringTypeRepository.save(flooring);
                 } else { 

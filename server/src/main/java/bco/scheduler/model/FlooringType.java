@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -55,15 +53,14 @@ public class FlooringType {
      /**
       * Whether or not the sample has been checked out
       */
-     @Column(name = "sampleChecked", columnDefinition = "boolean default 'false'")
+     @Column(name = "sampleChecked", columnDefinition = "boolean default false")
      public Boolean sampleChecked;
 
      /**
       * To whom the sample as been checked out
       */
-     @ManyToOne
-     @JoinColumn(name = "customer_id")
-     public Customer checkedTo;
+     @Column(name = "customer_identification")
+     public long checkedTo;
 
      /**
       * Hash String for QR code
@@ -116,7 +113,7 @@ public class FlooringType {
        }
        this.hash_code = Integer.toString(hashCode(name, style, color, company));
        this.sampleChecked = false;
-       this.checkedTo = null;
+       this.checkedTo = -1;
 
    }
 
@@ -244,7 +241,7 @@ public class FlooringType {
     */
     public void checkIn(){
         this.sampleChecked = false;
-        this.checkedTo = null;
+        this.checkedTo = -1;
     }
 
     /**
@@ -254,7 +251,7 @@ public class FlooringType {
      */
     public void checkOut(Customer checker){
         this.sampleChecked = true;
-        this.checkedTo = checker;
+        this.checkedTo = checker.getId();
     }
 
     

@@ -11,9 +11,14 @@ import org.springframework.web.bind.annotation.*;
 
 import bco.scheduler.exception.ResourceNotFoundException;
 import bco.scheduler.model.Appointment;
+import bco.scheduler.model.Assignment;
 
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Appointment Controller
@@ -29,6 +34,9 @@ public class AppointmentController {
     /** appointment repository */
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private AssignmentController assignmentController;
 
     /** appointment queue repository */
     @Autowired
@@ -70,6 +78,24 @@ public class AppointmentController {
         return appointment;
     }
 
+    @GetMapping("/appointments/assignments/{id}")
+    public List<Assignment> getAssignmentsForAppointment(@PathVariable(value = "id") Long appointmentId) throws ResourceNotFoundException {
+        Appointment appointment = getAppointmentById(appointmentId);
+        Set<Assignment> assignments = appointment.getAssignments();
+        List<Assignment> returnList = new ArrayList<Assignment>();
+        returnList.addAll(assignments);
+        returnList.sort((a,b) -> {
+            if (a.getDayNumber() < b.getDayNumber()) {
+                return -1;
+            }
+            if (a.getDayNumber() > b.getDayNumber()) {
+                return 1;
+            }
+            return 0;
+        });
+        return returnList;
+    }
+
     /**
      * creates an appointment
      * 
@@ -78,9 +104,13 @@ public class AppointmentController {
      */
     @PostMapping("/appointments")
     public Appointment createAppointment(@Valid @RequestBody Appointment appointment) {
+        int length = Appointment.getExtraDays(appointment.getStartDate(), appointment.getEndDate());
+        for (int i=0; i <= length; i++) {
+            Assignment a = new Assignment(i + 1);
+            Assignment newAssignment = assignmentController.createAssignment(a);
+            appointment.addEmptyAssignment(newAssignment);
+        }
         final Appointment newAppointment = appointmentRepository.saveAndFlush(appointment);
-        System.out.println(appointment.getStartDate());
-        System.out.println(appointment.getStartDate());
         appointmentRepository.refresh(newAppointment);
         appointmentQueueRepository.addNewAppointment(newAppointment.getId());
 
@@ -111,8 +141,40 @@ public class AppointmentController {
         appointment.setStartDateTime(appointmentDetails.getStartDate());
         appointment.setEndDateTime(appointmentDetails.getEndDate());
         appointment.setFlooring(appointmentDetails.getFlooring());
-
-        return appointmentRepository.save(appointment);
+        Set<Assignment> assignments = appointment.getAssignments();
+        ArrayList<Assignment> assignmentsList = new ArrayList<Assignment>();
+        assignmentsList.addAll(assignments);
+        assignmentsList.sort((a,b) -> {
+            if (a.getDayNumber() < b.getDayNumber()) {
+                return -1;
+            }
+            if (a.getDayNumber() > b.getDayNumber()) {
+                return 1;
+            }
+            return 0;
+        });
+        int numDays = Appointment.getExtraDays(appointmentDetails.getStartDate(), appointmentDetails.getEndDate()) + 1;
+        int numMissingAppointments = numDays - assignments.size();
+        if (numMissingAppointments > 0) {
+            int nextDayNumber = assignmentsList.get(assignmentsList.size() - 1).getDayNumber() + 1;
+            for (int i = 0; i < numMissingAppointments; i++) {
+                Assignment a = new Assignment(nextDayNumber);
+                Assignment newAssignment = assignmentController.createAssignment(a);
+                appointment.addEmptyAssignment(newAssignment);
+                nextDayNumber++;
+            }
+        } else if (numMissingAppointments < 0) {
+            long lastId = assignmentsList.get(assignmentsList.size() - 1).getId();
+            int index = assignmentsList.size() - 1;
+            for (int i = 0; i > numMissingAppointments; i--) {
+                appointment.getAssignments().remove(assignmentsList.get(index));
+                assignmentController.deleteAssignment(lastId);
+                assignmentsList.remove(index);
+                index--;
+            }
+        }
+        Appointment appt = appointmentRepository.saveAndFlush(appointment);
+        return appt;
     }
 
     /**
