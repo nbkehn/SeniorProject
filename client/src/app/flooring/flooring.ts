@@ -14,4 +14,5 @@ export class Flooring {
   company: string;
   checkedOut: boolean;
   checkedTo: Customer;
+  hashcode: String;
 }

@@ -1,5 +1,5 @@
 <div class="panel-heading">
-    <h2>Scan Sample QR Code</h2>
+    <h2>Scan Sample QR Code for CheckOut</h2>
 </div>
 <div class="panel-body">
     <!-- form component for the submit button -->
@@ -26,8 +26,8 @@
     
               <td>
                 <!-- button options for each row so that the user can edit/delete that flooring with a click of a button-->
-                <button (click)="checkOut(flooring.id)" class="btn btn-primary">Check Out</button>
-                <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(flooring.id, true).open()"
+                <button (click)="checkOut(flooring)" class="btn btn-primary">Check Out</button>
+                <button (click)="deleteFlooring(flooring.id)"
                   class="btn btn-danger btn-delete">Delete</button>
               </td>
             </tr>

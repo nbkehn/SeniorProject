@@ -13,7 +13,7 @@
   </div>
   <div class="panel-actions">
     <button routerLink="/flooring/add" class="btn btn-primary panel-action">Add Flooring</button>
-    <button class="btn btn-primary panel-action">Print QR Codes</button>
+    <button class="btn btn-primary panel-action" (click)="printQRCode(flooring.id)">Print QR Codes</button>
     <label for="filter">Filter by: </label>
     <label class="radio-inline"><input type="radio" name="type" style="width:20px" [(ngModel)]="filterOption"
         value="type">Type</label>
@@ -24,6 +24,7 @@
     <label><input type="text" name="filterTerm" style="margin-left: 10px;" [(ngModel)]="filterTerm"
         placeholder="{{filterOption}}"></label>
     <button class="btn btn-primary panel-action" (click)="filterList(filterTerm)">Filter</button>
+    
     <button class="btn btn-primary panel-action" (click)="reset()">Reset</button>
   </div>
   <!-- the actual body of the page-->
@@ -51,6 +52,7 @@
             <button (click)="editFlooring(flooring.id)" class="btn btn-primary">Edit</button>
             <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(flooring.id, true).open()"
               class="btn btn-danger btn-delete">Delete</button>
+              <button (click)="printQRCode(flooring.id)" class="btn btn-primary panel-action">Print QR Code</button>
           </td>
         </tr>
       </tbody>
@@ -66,7 +68,7 @@
             <button (click)="editFlooring(flooring.id)" class="btn btn-primary">Edit</button>
             <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(flooring.id, true).open()"
               class="btn btn-danger btn-delete">Delete</button>
-              <button (click)="printQRCodes()" class="btn btn-primary panel-action">Print QR Code</button>
+              <button (click)="printQRCode(flooring.id)" class="btn btn-primary panel-action">Print QR Code</button>
           </td>
         </tr>
       </tbody>

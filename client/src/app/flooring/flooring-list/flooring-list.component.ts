@@ -25,6 +25,8 @@ export class FlooringListComponent implements OnInit {
   filteredFloors: Flooring[];
   resetList : boolean = true;
 
+  printId : number;
+
   /**
    * Constructor for the FlooringListComponent, doesn't really do anything right now
    * @param flooringService the service for the flooring component
@@ -98,6 +100,19 @@ export class FlooringListComponent implements OnInit {
       }
       this.filteredFloors = data;
     })
+  }
+
+  printQRCode(id : number) {
+    console.log(id);
+    this.flooringService.getFlooring(id).subscribe(data => {
+      this.printId = data;
+      this.router.navigate(['/flooring/printQR'], { queryParams: { id: data.id } });
+    });
+
+  }
+
+  printQRCodes() {
+    this.router.navigate(['/flooring/printAllQR'])
   }
 
   reset() {

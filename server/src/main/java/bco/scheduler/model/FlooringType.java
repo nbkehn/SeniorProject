@@ -1,5 +1,9 @@
 package bco.scheduler.model;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,9 +13,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+
 /**
- * The flooring type class used to assign different types of flooring used for 
- * appointments. 
+ * The flooring type class used to assign different types of flooring used for
+ * appointments.
+ * 
  * @author Noah Trimble, Will Duke
  */
 @Entity
@@ -26,8 +37,8 @@ public class FlooringType {
     private long id;
 
     /**
-     * The actual string representation of the flooring type.
-     * This is the name(category) of the type of flooring, not the style or color
+     * The actual string representation of the flooring type. This is the
+     * name(category) of the type of flooring, not the style or color
      */
     @Column(name = "name")
     public String name;
@@ -36,82 +47,59 @@ public class FlooringType {
      * Style name of the flooring type
      *
      */
-     @Column(name = "style", columnDefinition = "varchar(255) default ''")
-     public String style;
+    @Column(name = "style", columnDefinition = "varchar(255) default ''")
+    public String style;
 
-     /**
-      * Color of the flooring type
-      *
-      */
-     @Column(name = "color", columnDefinition = "varchar(255) default ''", nullable = true)
-     public String color;
+    /**
+     * Color of the flooring type
+     *
+     */
+    @Column(name = "color", columnDefinition = "varchar(255) default ''", nullable = true)
+    public String color;
 
-     /**
-      * Company that makes the flooring type
-      */
-     @Column(name = "company", columnDefinition = "varchar(255) default ''")
-     public String company;
+    /**
+     * Company that makes the flooring type
+     */
+    @Column(name = "company", columnDefinition = "varchar(255) default ''")
+    public String company;
 
-     /**
-      * Whether or not the sample has been checked out
-      */
-     @Column(name = "sampleChecked", columnDefinition = "boolean default 'false'")
-     public Boolean sampleChecked;
+    /**
+     * Whether or not the sample has been checked out
+     */
+    @Column(name = "sampleChecked", columnDefinition = "boolean default 'false'")
+    public Boolean sampleChecked;
 
-     /**
-      * To whom the sample as been checked out
-      */
-     @ManyToOne
-     @JoinColumn(name = "customer_id")
-     public Customer checkedTo;
+    /**
+     * To whom the sample as been checked out
+     */
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    public Customer checkedTo;
 
-     /**
-      * Hash String for QR code
-      */
-     @Column(name = "hash_code", nullable = false)
-     public String hash_code;
+    /**
+     * Hash String for QR code
+     */
+    @Column(name = "hash_code", nullable = false)
+    public String hash_code;
 
-   /**
-    * The blank, unused constructor for flooring type.
-    */
-   public FlooringType() {
+    private final int width = 200;
+    private final int height = 200;
 
-   }
+    /**
+     * The blank, unused constructor for flooring type.
+     */
+    public FlooringType() {
 
-   /**
-    * The actual flooring type constructor with a passed floor type to set to. 
-    * @param name the type to set the floor object to.
-    */
-   public FlooringType(String name, String style, String color, String company) {
-       String temp = name.toLowerCase();
-       if(temp.equals("carpet")){
-           this.name = name;
-           this.style = style;
-           this.color = "";
-       } else {
-           this.name = name;
-           this.color = color;
-           this.style = style;
-       }
+    }
 
-       if(company == null) {
-          this.company = "";
-       } else {
-          this.company = company;
-       }
-       this.hash_code = Integer.toString(hashCode(name, style, color, company));
-       this.sampleChecked = false;
-       this.checkedTo = null;
-
-   }
-
-     /**
-    * The actual flooring type constructor with a passed floor type to set to. 
-    * @param name the type to set the floor object to.
-    */
-    public FlooringType(String name, String style, String color, String company, boolean checked, Customer checkedTo) {
+    /**
+     * The actual flooring type constructor with a passed floor type to set to.
+     * 
+     * @param name the type to set the floor object to.
+     */
+    public FlooringType(String name, String style, String color, String company) {
         String temp = name.toLowerCase();
-        if(temp.equals("carpet")){
+        if (temp.equals("carpet")) {
             this.name = name;
             this.style = style;
             this.color = "";
@@ -120,7 +108,35 @@ public class FlooringType {
             this.color = color;
             this.style = style;
         }
-        if(company == null) {
+
+        if (company == null) {
+            this.company = "";
+        } else {
+            this.company = company;
+        }
+        this.hash_code = Integer.toString(hashCode(name, style, color, company));
+        this.sampleChecked = false;
+        this.checkedTo = null;
+
+    }
+
+    /**
+     * The actual flooring type constructor with a passed floor type to set to.
+     * 
+     * @param name the type to set the floor object to.
+     */
+    public FlooringType(String name, String style, String color, String company, boolean checked, Customer checkedTo) {
+        String temp = name.toLowerCase();
+        if (temp.equals("carpet")) {
+            this.name = name;
+            this.style = style;
+            this.color = "";
+        } else {
+            this.name = name;
+            this.color = color;
+            this.style = style;
+        }
+        if (company == null) {
             this.company = "";
         } else {
             this.company = company;
@@ -130,107 +146,141 @@ public class FlooringType {
         this.checkedTo = checkedTo;
     }
 
-   /**
-    * Gets the id of the flooring type as a long 
-    * @return id a long representation of the id 
-    */
-   public long getId() {
-       return id;
-   }
+    /**
+     * Gets the id of the flooring type as a long
+     * 
+     * @return id a long representation of the id
+     */
+    public long getId() {
+        return id;
+    }
 
-   /**
-    * Sets the id of the flooring type to the passed long param. 
-    * @param id a long representation of the id to set the flooring type object to.
-    */
-   public void setId(long id) {
-       this.id = id;
-   }
- 
-   /**
-    * Gets the flooring type of the object represented as a string
-    * @return name string representation of the flooring type
-    */
-   public String getName() {
-       return name;
-   }
+    /**
+     * Sets the id of the flooring type to the passed long param.
+     * 
+     * @param id a long representation of the id to set the flooring type object to.
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
 
-   /**
-    * Sets the flooring type name parameter to the passed string name
-    * @param name string representation of the flooring type to set to
-    */
-   public void setName(String name) {
-       this.name = name;
-   }
+    /**
+     * Gets the flooring type of the object represented as a string
+     * 
+     * @return name string representation of the flooring type
+     */
+    public String getName() {
+        return name;
+    }
 
-   /**
-    * Retrieves the style of the current flooring type
-    */
-   public String getStyle() {
-       return style;
-   }
+    /**
+     * Sets the flooring type name parameter to the passed string name
+     * 
+     * @param name string representation of the flooring type to set to
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-   /**
-    * Sets the flooring type's style to the given value "style"
-    * @param style string representation of the flooring type's style
-    */
-   public void setStyle(String style) {
-       this.style = style;
-   } 
+    /**
+     * Retrieves the style of the current flooring type
+     */
+    public String getStyle() {
+        return style;
+    }
 
-/**
-    * Retrieves the color of the current flooring type
-    */
-   public String getColor() {
-       return color;
-   }
+    /**
+     * Sets the flooring type's style to the given value "style"
+     * 
+     * @param style string representation of the flooring type's style
+     */
+    public void setStyle(String style) {
+        this.style = style;
+    }
 
-/**
-    * Sets the flooring type's color to the given value "color"
-    * @param color string representation of the flooring type's color
-    */
-   public void setColor(String color) {
-       this.color = color;
-   }
+    /**
+     * Retrieves the color of the current flooring type
+     */
+    public String getColor() {
+        return color;
+    }
 
-   /**
-    * @return the company
-    */
-   public String getCompany() {
-       return company;
-   }
+    /**
+     * Sets the flooring type's color to the given value "color"
+     * 
+     * @param color string representation of the flooring type's color
+     */
+    public void setColor(String color) {
+        this.color = color;
+    }
 
-   /**
-    * @param company the company to set
-    */
-   public void setCompany(String company) {
-       this.company = company;
-   }
+    /**
+     * @return the company
+     */
+    public String getCompany() {
+        return company;
+    }
 
-   /**
-    * Checks a sample in. Assigns the sampleChecked value to false
-    */
-    public void checkIn(){
+    /**
+     * @param company the company to set
+     */
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    /**
+     * Checks a sample in. Assigns the sampleChecked value to false
+     */
+    public void checkIn() {
         this.sampleChecked = false;
         this.checkedTo = null;
     }
 
     /**
-     * Checks out a flooring sample and assigns it to the customer
-     * who is checking it out
-     *@param checker the person who is checking out this flooring sample
+     * Checks out a flooring sample and assigns it to the customer who is checking
+     * it out
+     * 
+     * @param checker the person who is checking out this flooring sample
      */
-    public void checkOut(Customer checker){
+    public void checkOut(Customer checker) {
         this.sampleChecked = true;
         this.checkedTo = checker;
     }
 
-    
-    public int hashCode(String name, String style, String color, String company){
+    public int hashCode(String name, String style, String color, String company) {
         int hash = 7;
         hash = 31 * hash + name.hashCode();
         hash = 31 * hash + style.hashCode();
-        hash = 31 * hash + color.hashCode();
+        if (this.color != null)
+            hash = 31 * hash + color.hashCode();
+
         hash = 31 * hash + company.hashCode();
-        return hash;    
+        return hash;
+    }
+
+    /**
+     * @return the hash_code
+     */
+    public String getHash_code() {
+        String hash = Integer.toString(hashCode(this.name, this.style, this.color, this.company));
+        return hash;
+    }
+
+    /**
+     * Generates a qr code for flooring type
+     * 
+     * @throws IOException
+     */
+    // https://www.geeksforgeeks.org/how-to-generate-and-read-qr-code-with-java-using-zxing-library/
+    public byte[] createQRImg(String hashData) throws WriterException, IOException
+    {
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix matrix = qrCodeWriter.encode(hashData, BarcodeFormat.QR_CODE, width , height);
+
+        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+        MatrixToImageWriter.writeToStream(matrix, "PNG", pngOutputStream);
+        byte[] pngData = pngOutputStream.toByteArray(); 
+        return pngData;
+        
     }
 }

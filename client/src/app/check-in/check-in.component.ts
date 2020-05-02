@@ -5,7 +5,6 @@ import { FlooringService } from '../flooring/flooring.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerService } from '../customer/customer.service';
 import { AlertService } from '../alert/alert.service';
-import {CommonModule} from '@angular/common';
 
 
 @Component({
@@ -16,7 +15,7 @@ import {CommonModule} from '@angular/common';
 export class CheckInComponent implements OnInit {
 
   private qrString: string;
-  private hashCode: number;
+  private hashCode: string;
   public flooringOptions: Flooring[];
   public scannedFlooring: Flooring[];
   retrievedSample: any;
@@ -31,7 +30,7 @@ export class CheckInComponent implements OnInit {
 
   onCodeResult(result: string) {
     this.qrString = result;
-    this.hashCode = Number(this.qrString);
+    this.hashCode = (this.qrString);
     console.log(this.qrString);
     //this.findFlooring();
   }
@@ -57,14 +56,18 @@ export class CheckInComponent implements OnInit {
         data => {
           this.alertService.success('Sample successfuly scanned', true);
           this.retrievedSample = data;
-          this.scannedFlooring.push(this.retrievedSample);
+          this.pushSample(this.retrievedSample);
         },
         error => {
           this.alertService.error('Sample is not in database', false);
         }
       )
     }
+  }
 
+  pushSample(flooring : Flooring) {
+    console.log(flooring);
+    this.scannedFlooring.push(flooring);
   }
 
 }

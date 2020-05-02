@@ -56,7 +56,8 @@ import { CheckOutFormComponent } from './check-out/check-out-form/check-out-form
 import { CheckoutLandingComponent } from './checkout-landing/checkout-landing.component';
 import { CheckOutComponent} from './check-out/check-out.component';
 import { ZXingScannerComponent } from '@zxing/ngx-scanner';
-
+import { PrintAllQRComponent } from './print-all-qr/print-all-qr.component';
+import { PrintOneQRComponent } from './print-one-qr/print-one-qr.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +95,9 @@ import { ZXingScannerComponent } from '@zxing/ngx-scanner';
     CheckOutFormComponent,
     CheckoutLandingComponent,
     CheckOutComponent,
-    ZXingScannerComponent
+    ZXingScannerComponent,
+    PrintAllQRComponent,
+    PrintOneQRComponent
   ],
   imports: [
     BrowserModule,

@@ -30,13 +30,17 @@ export class FlooringService {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
+  getFlooringQR(id : number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/createqr/${id}`);
+  }
+
   /**
    * Gets flooring with a given hash code
    * @param hashCode hash code of the flooring information
    * @return An observable of the response body as a JSON object. 
    */
-getFlooringbyHash(hashCode: number): Observable<any> {
-  return this.http.get(`${this.baseUrl}/${hashCode}`)
+getFlooringbyHash(hashCode: string): Observable<any> {
+  return this.http.get(`${this.baseUrl}/qrcode/${hashCode}`)
 }
   /**
    * Creates a flooring
