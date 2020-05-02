@@ -1,0 +1,12 @@
+<h3 mat-dialog-title>Appointment Information</h3><br>
+<mat-dialog-content>
+    <div><strong>Customer: </strong>{{editApp?.customer.firstName}} {{editApp?.customer.lastName}}</div>
+    <div><strong>Address: </strong>{{editApp?.customer.address}}</div>
+    <div><strong>Phone: </strong>{{formatPhoneString(editApp?.customer.phone)}}</div>
+    <div><strong>Day: </strong> {{dayNumber}}/{{numOfDays}}</div>
+    <div><strong>RSA: </strong>{{editApp?.rsa.firstName}} {{editApp?.rsa.lastName}}</div>
+    <div><strong>Flooring: </strong>{{getFlooringString(editApp?.flooring)}}</div><br>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div align="center"><button mat-button (click)="cancel()">Cancel</button></div>
+</mat-dialog-actions>

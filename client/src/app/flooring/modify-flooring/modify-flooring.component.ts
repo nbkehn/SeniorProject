@@ -22,6 +22,19 @@ export class ModifyFlooringComponent implements OnInit {
   // the title for the page
   title: string;
 
+  checkedOption: string;
+
+  //holds flooring type for required fields
+  types = [
+    { value: 'Carpet', viewValue: 'Carpet' },
+    { value: 'Hardwood', viewValue: 'Hardwood' },
+    { value: 'Vinyl Tile', viewValue: 'Vinyl Tile' },
+    { value: 'Carpet Tile', viewValue: 'Carpet Tile' },
+    { value: 'Laminate', viewValue: 'Laminate' },
+  ];
+
+  selectedType: string;
+
   /**
    * Creates the instance of the component
    * @param route
@@ -30,9 +43,9 @@ export class ModifyFlooringComponent implements OnInit {
    * @param alertService
    */
   constructor(private route: ActivatedRoute,
-              private flooringService: FlooringService,
-              private router: Router,
-              private alertService: AlertService) { }
+    private flooringService: FlooringService,
+    private router: Router,
+    private alertService: AlertService) { }
 
   /**
    * initializes the components and populates the form with flooring data if it is being edited (instead of created)
@@ -54,9 +67,9 @@ export class ModifyFlooringComponent implements OnInit {
         .subscribe(data => {
           this.flooring = data;
         },
-            error => {
-          this.alertService.error('Flooring could not be loaded.', false);
-        });
+          error => {
+            this.alertService.error('Flooring could not be loaded.', false);
+          });
     }
   }
 
@@ -86,6 +99,13 @@ export class ModifyFlooringComponent implements OnInit {
    * Calls on the save method to save the entry to the database.
    */
   onSubmit() {
+    console.log(this.checkedOption);
+    if (this.checkedOption == "no")
+      this.flooring.checkedOut = false;
+    else
+      this.flooring.checkedOut = true;
+
+    console.log(this.flooring);
     this.save();
   }
 
@@ -94,5 +114,10 @@ export class ModifyFlooringComponent implements OnInit {
    */
   gotoList() {
     this.router.navigate(['/flooring/index']);
+  }
+
+  changeType() {
+    console.log(this.flooring);
+
   }
 }

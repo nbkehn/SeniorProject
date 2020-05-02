@@ -1,0 +1,57 @@
+<h2 mat-dialog-title>Edit Appointment</h2>
+<form [formGroup]="formGroup">
+    <div><strong>Appointment Title:</strong> {{editApp?.customer.firstName}} {{editApp?.customer.lastName}}</div>
+    <br>
+    <mat-form-field>
+        <mat-label>Start Date</mat-label>
+        <input matInput [min]="minDate" formControlName="start" [matDatepicker]="startPicker">
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+        <mat-error *ngIf="!start">Start date required</mat-error>
+    </mat-form-field>
+    <mat-form-field hintLabel="Set as the start date or leave empty for 1-day appointments">
+        <mat-label>End Date</mat-label>
+        <input matInput [min]="minDate" formControlName="end" [matDatepicker]="endPicker">
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+    <br>
+    <br>
+    <mat-form-field>
+        <mat-label>Customer</mat-label>
+        <mat-select formControlName="customer">
+            <mat-option *ngFor="let customerOption of customerOptions" [value]="editApp.customer"> 
+
+                {{customerOption.firstName}} {{customerOption.lastName}}
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf="!customer">Customer required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>RSA</mat-label>
+        <mat-select role="listbox" formControlName="rsa">
+            <mat-option  role="option"*ngFor="let rsaOption of rsaOptions"
+            [value]="editApp.rsa">
+                {{rsaOption.firstName}} {{rsaOption.lastName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <br>
+    <mat-form-field>
+        <mat-label>Flooring</mat-label>
+        <mat-select role="listbox" formControlName="flooring">
+            <mat-option  role="option"*ngFor="let flooringOption of flooringOptions"
+            [value]="editApp.flooring">
+                {{getFlooringString(flooringOption)}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <br>
+    <br>
+</form>
+<mat-dialog-actions>
+    <button mat-button-raised (click)="cancel()">Cancel</button>
+    <button mat-button-raised (click)="edit()">Update</button>
+</mat-dialog-actions>

@@ -13,35 +13,70 @@
   </div>
   <div class="panel-actions">
     <button routerLink="/flooring/add" class="btn btn-primary panel-action">Add Flooring</button>
+    <button class="btn btn-primary panel-action">Print QR Codes</button>
+    <label for="filter">Filter by: </label>
+    <label class="radio-inline"><input type="radio" name="type" style="width:20px" [(ngModel)]="filterOption"
+        value="type">Type</label>
+    <label class="radio-inline"><input type="radio" name="style" style="width:20px" [(ngModel)]="filterOption"
+        value="style">Style</label>
+    <label class="radio-inline"><input type="radio" name="color" style="width:20px" [(ngModel)]="filterOption"
+        value="color">Color</label>
+    <label><input type="text" name="filterTerm" style="margin-left: 10px;" [(ngModel)]="filterTerm"
+        placeholder="{{filterOption}}"></label>
+    <button class="btn btn-primary panel-action" (click)="filterList(filterTerm)">Filter</button>
+    <button class="btn btn-primary panel-action" (click)="reset()">Reset</button>
   </div>
   <!-- the actual body of the page-->
   <div class="panel-body">
     <table class="table table-striped">
       <thead>
-      <!--column headers for the table-->
-      <tr>
-        <th>Type Name</th>
-        <th>Actions</th>
-      </tr>
+        <!--column headers for the table-->
+        <tr>
+          <th> Type</th>
+          <th> Style</th>
+          <th> Color</th>
+          <th> Company</th>
+          <th> Actions</th>
+        </tr>
       </thead>
-      <tbody>
+      <tbody *ngIf="filteredTerm != '' && !resetList">
+        <tr *ngFor="let flooring of filteredFloors  ">
+          <td>{{flooring.name}}</td>
+          <td>{{flooring.style}}</td>
+          <td>{{flooring.color}}</td>
+          <td>{{flooring.company}}</td>
+
+          <td>
+            <!-- button options for each row so that the user can edit/delete that flooring with a click of a button-->
+            <button (click)="editFlooring(flooring.id)" class="btn btn-primary">Edit</button>
+            <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(flooring.id, true).open()"
+              class="btn btn-danger btn-delete">Delete</button>
+          </td>
+        </tr>
+      </tbody>
       <!-- each row of the table that is populated with data from every flooring (essentially a for loop going through every flooring and printing)-->
-      <tr *ngFor="let flooring of floorings | async">
-        <td>{{flooring.name}}</td>
-        <td>
-          <!-- button options for each row so that the user can edit/delete that flooring with a click of a button-->
-          <button (click)="editFlooring(flooring.id)" class="btn btn-primary">Edit</button>
-          <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(flooring.id, true).open()"
-                  class="btn btn-danger btn-delete">Delete</button>
-        </td>
-      </tr>
+      <tbody *ngIf="resetList">
+        <tr *ngFor="let flooring of floorings | async">
+          <td>{{flooring.name}}</td>
+          <td>{{flooring.style}}</td>
+          <td>{{flooring.color}}</td>
+          <td>{{flooring.company}}</td>
+          <td>
+            <!-- button options for each row so that the user can edit/delete that flooring with a click of a button-->
+            <button (click)="editFlooring(flooring.id)" class="btn btn-primary">Edit</button>
+            <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(flooring.id, true).open()"
+              class="btn btn-danger btn-delete">Delete</button>
+              <button (click)="printQRCodes()" class="btn btn-primary panel-action">Print QR Code</button>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
 </div>
 
 <!-- Delete confirmation modal -->
-<ngx-smart-modal #deleteConfirmation identifier="deleteConfirmation" class="delete-confirmation-modal confirmation-modal">
+<ngx-smart-modal #deleteConfirmation identifier="deleteConfirmation"
+  class="delete-confirmation-modal confirmation-modal">
   <h2>Confirm Delete</h2>
   <p>Are you sure you want to delete this flooring?</p>
   <div class="actions-container">
@@ -49,7 +84,8 @@
       <button (click)="deleteConfirmation.close()" class="btn btn-cancel">No</button>
     </div>
     <div class="btn-container">
-      <button (click)="deleteFlooring(deleteConfirmation.getData()); deleteConfirmation.close()" class="btn btn-confirm">Yes</button>
+      <button (click)="deleteFlooring(deleteConfirmation.getData()); deleteConfirmation.close()"
+        class="btn btn-confirm">Yes</button>
     </div>
   </div>
 </ngx-smart-modal>

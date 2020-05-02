@@ -31,12 +31,16 @@ export class AppointmentService {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
+  getAppointmentAssignments(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/assignments/${id}`);
+  }
+
   /**
    * Creates a appointment
    * @param appointment Appointment to be created
    * @return newly created appointment
    */
-  createAppointment(appointment: Appointment): Observable<object> {
+  createAppointment(appointment: Appointment): Observable<any> {
     return this.http.post(`${this.baseUrl}`, appointment);
   }
 

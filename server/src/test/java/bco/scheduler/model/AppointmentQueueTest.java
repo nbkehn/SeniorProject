@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.time.Month;
 import java.util.Arrays;
-
+import java.util.Date;
 
 import org.junit.Test;
 
@@ -33,19 +33,19 @@ public class AppointmentQueueTest {
     Technician array2[] = { tech2, tech3 };
     Set<Technician> technicians = new HashSet<Technician>(Arrays.asList(array));
     Set<Technician> technicians2 = new HashSet<Technician>(Arrays.asList(array2));
-    FlooringType flooringtype = new FlooringType("hardwood");
-    FlooringType flooringtype2 = new FlooringType("tile");
-    LocalDateTime startDateTime = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
-    LocalDateTime startDateTime2 = LocalDateTime.of(2015, Month.JUNE, 25, 12, 30, 40);
-    LocalDateTime endDateTime = LocalDateTime.of(2015, Month.SEPTEMBER, 29, 19, 30, 40);
-    LocalDateTime endDateTime2 = LocalDateTime.of(2015, Month.DECEMBER, 25, 12, 30, 40);
+    FlooringType flooringtype = new FlooringType("hardwood", "", "", "BCO");
+    FlooringType flooringtype2 = new FlooringType("tile", "", "", "BCO");
+    Date startDateTime = new Date(2015, 7, 29);
+    Date startDateTime2 = new Date(2015, 6, 25);
+    Date endDateTime = new Date(2015, 9, 29);
+    Date endDateTime2 = new Date(2015, 12, 25);
     
     RSA rsa = new RSA(); 
     // rsa.setFirstName("Will");
     // rsa.setLastName("Duke");
     // rsa.setEmail("wfduke@ncsu.edu");
     // rsa.setPhone("3363440576");
-    Appointment testAppointment = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+    Appointment testAppointment = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
     
      // Text in the reminder
      private Template textTemplate = new Template("TestTitle1", "TestSubject1", "TestContent1");

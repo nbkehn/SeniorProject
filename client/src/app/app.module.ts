@@ -6,20 +6,24 @@
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app.routing.module';
 import { AppComponent } from './app.component';
 import { ModifyTechnicianComponent } from './technician/modify-technician/modify-technician.component';
 import { TechnicianListComponent } from './technician/technician-list/technician-list.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 // import alert service and component
 import { AlertComponent } from './alert/alert/alert.component';
 import { AlertService } from './alert/alert.service';
 import {NgxSmartModalModule} from "ngx-smart-modal";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
-import {ModifyAppointmentComponent} from "./appointment/modify-appointment/modify-appointment.component";
-import {AppointmentListComponent} from "./appointment/appointment-list/appointment-list.component";
+// import {ModifyAppointmentComponent} from "./appointment/modify-appointment/modify-appointment.component";
+// import {AppointmentListComponent} from "./appointment/appointment-list/appointment-list.component";
 import {ModifyCustomerComponent} from "./customer/modify-customer/modify-customer.component";
 import {CustomerListComponent} from "./customer/customer-list/customer-list.component";
 import {ModifyRsaComponent} from "./rsa/modify-rsa/modify-rsa.component";
@@ -33,7 +37,27 @@ import {TemplateListComponent} from "./template/template-list/template-list.comp
 import {ModifyTemplateComponent} from "./template/modify-template/modify-template.component";
 import {ReminderListComponent} from "./reminder/reminder-list/reminder-list.component";
 import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminder.component";
+import {CalendarComponent} from './calendar/calendar.component';
+import { AddDialogComponent } from './add-dialog/add-dialog.component';
+import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/reminder-error-list.component";
+//import { AppointmentCalendarComponent } from './appointment/appointment-calendar/appointment-calendar.component';
+import {AssignmentCalendarComponent} from "./assignment/assignment-calendar/assignment-calendar.component";
+import { MatOptionModule } from '@angular/material/core';
+import {UploadSampleComponent} from './flooring/upload-sample/upload-sample.component';
+import { OTWDialogComponent } from './otw-dialog/otw-dialog.component';
+import {ViewDialogComponent} from './view-dialog/view-dialog.component';
+import { CheckOutFormComponent } from './check-out/check-out-form/check-out-form.component';
+import { CheckoutLandingComponent } from './checkout-landing/checkout-landing.component';
+import { CheckOutComponent} from './check-out/check-out.component';
+import { ZXingScannerComponent } from '@zxing/ngx-scanner';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { ViewInstallerDialogComponent } from './view-installer-dialog/view-installer-dialog.component';
 
 
 @NgModule({
@@ -42,8 +66,8 @@ import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/r
     ModifyTechnicianComponent,
     TechnicianListComponent,
     AlertComponent,
-    ModifyAppointmentComponent,
-    AppointmentListComponent,
+    // ModifyAppointmentComponent,
+    // AppointmentListComponent,
     ModifyCustomerComponent,
     CustomerListComponent,
     ModifyRsaComponent,
@@ -57,7 +81,23 @@ import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/r
     ModifyTemplateComponent,
     ReminderListComponent,
     ModifyReminderComponent,
-    ReminderErrorListComponent
+    ReminderErrorListComponent,
+    //AppointmentCalendarComponent,
+    AssignmentCalendarComponent,
+    CalendarComponent,
+    AddDialogComponent,
+    EditDialogComponent,
+    DeleteDialogComponent,
+    ReminderErrorListComponent,
+    UploadSampleComponent,
+    OTWDialogComponent,
+    ReminderErrorListComponent,
+    ViewDialogComponent,
+    CheckOutFormComponent,
+    CheckoutLandingComponent,
+    CheckOutComponent,
+    ZXingScannerComponent
+    ViewInstallerDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,7 +105,27 @@ import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/r
     FormsModule,
     HttpClientModule,
     NgxSmartModalModule.forRoot(),
-    NgbModule
+    NgbModule,
+    MatDialogModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatMomentDateModule,
+    DragDropModule,
+  ],
+  entryComponents: [
+    AddDialogComponent,
+    EditDialogComponent,
+    DeleteDialogComponent,
+    OTWDialogComponent,
+    ViewDialogComponent,
+    ViewInstallerDialogComponent,
   ],
   providers: [
     AlertService

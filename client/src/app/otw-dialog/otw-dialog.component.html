@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Send OTW Message?</h2>
+<form [formGroup]="formGroup">
+<mat-dialog-content>
+    <div><strong>Customer: </strong>{{editApp.customer?.firstName}} {{editApp?.customer?.lastName}}</div>
+    <div><strong>Phone: </strong>{{formatPhoneString(editApp?.customer?.phone)}}</div>
+    <div><strong>Email: </strong>{{editApp?.customer?.email}}</div>
+    <div><strong>Address: </strong>{{editApp?.customer?.address}}</div>
+    <div><strong>Flooring: </strong>{{getFlooringString(editApp?.flooring)}}</div><br>
+</mat-dialog-content>
+</form>
+<mat-dialog-actions>
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-button-raised (click)="send()">Confirm</button>
+</mat-dialog-actions>

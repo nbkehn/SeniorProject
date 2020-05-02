@@ -31,12 +31,30 @@ export class FlooringService {
   }
 
   /**
+   * Gets flooring with a given hash code
+   * @param hashCode hash code of the flooring information
+   * @return An observable of the response body as a JSON object. 
+   */
+getFlooringbyHash(hashCode: number): Observable<any> {
+  return this.http.get(`${this.baseUrl}/${hashCode}`)
+}
+  /**
    * Creates a flooring
    * @param flooring Flooring to be created
    * @return newly created flooring
    */
   createFlooring(flooring: Object): Observable<Object> {
     return this.http.post(`${this.baseUrl}`, flooring);
+  }
+
+  /**
+   * Upload sample file
+   * @param id
+   * @param name 
+   */
+  uploadSampleFile(formData : FormData): Observable<Object> {
+    
+    return this.http.post(`${this.baseUrl}/upload`, formData);
   }
 
   /**
