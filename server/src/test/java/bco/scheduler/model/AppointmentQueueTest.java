@@ -45,7 +45,7 @@ public class AppointmentQueueTest {
     // rsa.setLastName("Duke");
     // rsa.setEmail("wfduke@ncsu.edu");
     // rsa.setPhone("3363440576");
-    Appointment testAppointment = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+    Appointment testAppointment = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
     
      // Text in the reminder
      private Template textTemplate = new Template("TestTitle1", "TestSubject1", "TestContent1");

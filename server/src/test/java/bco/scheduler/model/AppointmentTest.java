@@ -58,7 +58,7 @@ public class AppointmentTest {
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
         assertNotNull(test);
     }
  
@@ -72,7 +72,7 @@ public class AppointmentTest {
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
 
         test.setId(1);
         assertEquals(1, test.getId());
@@ -88,9 +88,7 @@ public class AppointmentTest {
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
-        
-        assertEquals(technicians, test.getTechnicians());
+        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
         test.setTechnicians(technicians2);
         assertEquals(technicians2, test.getTechnicians());
     }
@@ -105,7 +103,7 @@ public class AppointmentTest {
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
 
         RSA rsa2 = new RSA(); 
         rsa2.setFirstName("Connor");
@@ -128,7 +126,7 @@ public class AppointmentTest {
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
         
         assertEquals(customer, test.getCustomer());
         test.setCustomer(customer2);
@@ -145,7 +143,7 @@ public class AppointmentTest {
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
         
         assertEquals(startDateTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), test.getStartDate());
         test.setStartDateTime(startDateTime2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
@@ -162,7 +160,7 @@ public class AppointmentTest {
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
         
         assertEquals(endDateTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), test.getEndDate());
         test.setEndDateTime(endDateTime2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
@@ -179,7 +177,7 @@ public class AppointmentTest {
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
         test.setFlooring(flooringtype2);
         assertEquals(flooringtype2, test.getFlooring());
     }
@@ -218,7 +216,7 @@ public class AppointmentTest {
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
 
         Map<String, String> map = new HashMap<>();
         map.put("${" + "appointment" + ".start_date" + "}", "Appointment Start Date");

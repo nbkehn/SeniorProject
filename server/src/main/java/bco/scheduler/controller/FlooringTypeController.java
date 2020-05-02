@@ -1,9 +1,8 @@
 package bco.scheduler.controller;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 import javax.validation.Valid;
@@ -17,13 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import bco.scheduler.exception.ResourceNotFoundException;
 import bco.scheduler.model.FlooringType;
 import bco.scheduler.repository.FlooringTypeRepository;
-import bco.scheduler.model.CommunicationType;
 
 /**
  * The controller for the flooring type. Handles all actions surrounding the
@@ -68,12 +68,16 @@ public class FlooringTypeController {
     /**
      * Uploads a file and attempts to parse it. If successful saves the data inside
      * to the database.
+     * 
+     * @throws IOException
+     * @throws IllegalStateException
      */
     @PostMapping("/flooringtype/upload")
-    public ResponseEntity<FlooringType> createFlooring(@Valid @RequestBody File file) {
+    public ResponseEntity<FlooringType> createFlooring(@RequestParam("file") MultipartFile file)
+            throws IllegalStateException, IOException {
         String type = "";
         try {
-            Scanner scanner = new Scanner(file);
+            Scanner scanner = new Scanner(file.getInputStream()) ;
             FlooringType flooring = null;
             if(scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -86,13 +90,13 @@ public class FlooringTypeController {
                 String line = scanner.nextLine();
                 String[] tokens = line.split(",");
                 if(type.equalsIgnoreCase("carpet")){
-                    flooring = new FlooringType(tokens[0], "", "", type);
+                    flooring = new FlooringType(type, tokens[0], "", "BCO");
                 
                 } else if(type.equalsIgnoreCase("carpet tile")) {
-                    flooring = new FlooringType(tokens[0], tokens[1], "", type);
+                    flooring = new FlooringType(tokens[0], tokens[1], "", "BCO");
                 
                 } else {
-                    flooring = new FlooringType(tokens[0], "", tokens[1], type);
+                    flooring = new FlooringType(type, tokens[0], tokens[1], "BCO");
                 }
 
                 if(scanner.hasNextLine()){

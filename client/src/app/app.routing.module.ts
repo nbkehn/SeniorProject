@@ -24,6 +24,12 @@ import {ModifyReminderComponent} from "./reminder/modify-reminder/modify-reminde
 import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/reminder-error-list.component";
 import {AssignmentCalendarComponent} from "./assignment/assignment/assignment-calendar.component";
 import { CalendarComponent } from './calendar/calendar.component';
+import {UploadSampleComponent} from './flooring/upload-sample/upload-sample.component';
+import { CheckOutComponent } from './check-out/check-out.component';
+import { CheckoutLandingComponent } from './checkout-landing/checkout-landing.component';
+import { CheckOutFormComponent } from './check-out/check-out-form/check-out-form.component';
+import { CheckInComponent } from './check-in/check-in.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'appointment/index', pathMatch: 'full' },
@@ -55,6 +61,11 @@ const routes: Routes = [
   { path: 'reminderError/index', component: ReminderErrorListComponent },
   { path: 'appointment/calendar', component: CalendarComponent},
   { path: 'install/calendar', component: AssignmentCalendarComponent},
+  { path: 'flooring/upload', component: UploadSampleComponent},
+  { path: 'flooring/check-in', component: CheckInComponent},
+  { path: 'flooring/check-out/create-customer', component: CheckOutFormComponent},
+  { path: 'checkout-landing', component: CheckoutLandingComponent},
+  { path: 'flooring/check-out/scan', component: CheckOutComponent},
 ];
 
 @NgModule({
