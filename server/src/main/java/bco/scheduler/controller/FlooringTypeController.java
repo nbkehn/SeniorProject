@@ -3,6 +3,7 @@ package bco.scheduler.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -165,7 +166,7 @@ public class FlooringTypeController {
          throws UnsupportedEncodingException, WriterException, ResourceNotFoundException
          {
             List<FlooringType> all = flooringTypeRepository.findAll();
-            List<BufferedImage> results = new List<BufferedImage>();
+            List<BufferedImage> results = new ArrayList<BufferedImage>();
             for(int i = 0; i < all.size(); i++){
                 results.add(all.get(i).createQRImg(all.get(i).hash_code));
             }

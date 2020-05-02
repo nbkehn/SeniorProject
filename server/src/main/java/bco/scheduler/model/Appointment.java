@@ -78,10 +78,9 @@ public class Appointment {
         this.startDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         this.endDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         this.assignments = new HashSet<Assignment>();
-        this.technicians = technicians;
         LocalDate temp = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         for(int i = 0; i <= getExtraDays(this.startDate,this.endDate); i++ ) {
-            assignments.add(new Assignment(temp));
+            assignments.add(new Assignment(i));
             temp = temp.plusDays(1);
         }
     }
@@ -110,7 +109,7 @@ public class Appointment {
      * @return technicans set
      */
     public Set<Technician> getTechnicians() {
-        return technicians;
+        return ((Assignment) assignments.toArray()[0]).getTechnicians();
     }
 
     /**

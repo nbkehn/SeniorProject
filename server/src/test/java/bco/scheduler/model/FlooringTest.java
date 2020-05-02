@@ -49,7 +49,7 @@ public class FlooringTest {
         assertEquals(f1_2.getColor(), "Red");
         assertEquals(f1_2.getCompany(), "BCO");
         assertFalse(f1_2.sampleChecked);
-        assertNull(f1_2.checkedTo);
+        assertEquals(f1_2.checkedTo, -1);
 
         //Test with first two parameters
         FlooringType f2 = new FlooringType("Carpet", "Fuzzy", "", "BCO");
@@ -64,7 +64,7 @@ public class FlooringTest {
         assertEquals("",f2_2.getColor());
         assertEquals(f2_2.getCompany(), "BCO");
         assertTrue(f2_2.sampleChecked);
-        assertEquals(f2_2.checkedTo, customer);
+        assertEquals(f2_2.checkedTo, customer.getId());
 
         //Test with all parameters, carpet
         FlooringType f3 = new FlooringType("Carpet", "Fuzzy", "Cream", "BCO");
@@ -114,7 +114,7 @@ public class FlooringTest {
         assertEquals(f6.getColor(), "");
         assertEquals(f6.getCompany(), "BCO");
         assertTrue(f6.sampleChecked);
-        assertEquals(f6.checkedTo, customer);
+        assertEquals(f6.checkedTo, customer.getId());
 
     }
 
