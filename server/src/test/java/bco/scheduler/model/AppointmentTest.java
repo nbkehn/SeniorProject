@@ -7,11 +7,16 @@ package bco.scheduler.model;
 
 import bco.scheduler.model.RSA;
 import bco.scheduler.model.Technician;
+import bco.scheduler.model.Assignment;
 import bco.scheduler.model.FlooringType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.util.Set;
 import org.junit.Test;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;
@@ -35,16 +40,18 @@ public class AppointmentTest {
     Technician tech = new Technician("Bob", "Dylan", "bob@gmail.com", "0192837465", true);
     Technician tech2 = new Technician("Jane", "Doe", "janedoe@gmail.com", "2143658709", false);
     Technician tech3 = new Technician("John", "Doe", "johndoe@gmail.com", "3216549870", false);
-    Technician array[] = { tech, tech2 };
+    Technician array[] = { tech };
     Technician array2[] = { tech2, tech3 };
     Set<Technician> technicians = new HashSet<Technician>(Arrays.asList(array));
     Set<Technician> technicians2 = new HashSet<Technician>(Arrays.asList(array2));
-    FlooringType flooringtype = new FlooringType("hardwood", null, null, "BCO");
-    FlooringType flooringtype2 = new FlooringType("tile", null, null, "BCO");
-    Date startDateTime = new Date(2015, 7, 29);
-    Date startDateTime2 = new Date(2015, 6, 25);
-    Date endDateTime = new Date(2015, 9, 29);
-    Date endDateTime2 = new Date(2015, 12, 25);
+    FlooringType flooringtype = new FlooringType("hardwood", "", "", "BCO");
+    FlooringType flooringtype2 = new FlooringType("tile", "", "", "BCO");
+    Date startDateTime = new Date(115, 7, 29);
+    LocalDate startTest = startDateTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    Date startDateTime2 = new Date(115, 7, 25);
+    Date endDateTime = new Date(115, 8, 29);
+    LocalDate endTest = endDateTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    Date endDateTime2 = new Date(115, 7, 26);
 
 
 
@@ -53,26 +60,26 @@ public class AppointmentTest {
      */
 	@Test
 	public void testConstructor() {
-        RSA rsa = new RSA(); 
+        final RSA rsa = new RSA();
         rsa.setFirstName("Will");
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
+        final Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
         assertNotNull(test);
     }
- 
+
     /**
-     * Tests the getter and setter methods for the id 
+     * Tests the getter and setter methods for the id
      */
     @Test
     public void testGetAndSetId() {
-        RSA rsa = new RSA(); 
+        final RSA rsa = new RSA();
         rsa.setFirstName("Will");
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
+        final Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
 
         test.setId(1);
         assertEquals(1, test.getId());
@@ -83,12 +90,14 @@ public class AppointmentTest {
      */
     @Test
     public void testGetAndSetTechnicians() {
-        RSA rsa = new RSA(); 
+        final RSA rsa = new RSA();
         rsa.setFirstName("Will");
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
+        final Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+
+        assertEquals(technicians, test.getTechnicians());
         test.setTechnicians(technicians2);
         assertEquals(technicians2, test.getTechnicians());
     }
@@ -98,19 +107,19 @@ public class AppointmentTest {
      */
     @Test
     public void testGetAndSetRSA() {
-        RSA rsa = new RSA(); 
+        final RSA rsa = new RSA();
         rsa.setFirstName("Will");
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
+        final Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
 
-        RSA rsa2 = new RSA(); 
+        final RSA rsa2 = new RSA();
         rsa2.setFirstName("Connor");
         rsa2.setLastName("Parke");
         rsa2.setEmail("cjparke@ncsu.edu");
         rsa2.setPhone("1234567890");
-        
+
         assertEquals(rsa, test.getRSA());
         test.setRSA(rsa2);
         assertEquals(rsa2, test.getRSA());
@@ -121,13 +130,13 @@ public class AppointmentTest {
      */
     @Test
     public void testGetAndSetCustomer() {
-        RSA rsa = new RSA(); 
+        final RSA rsa = new RSA();
         rsa.setFirstName("Will");
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
-        
+        final Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+
         assertEquals(customer, test.getCustomer());
         test.setCustomer(customer2);
         assertEquals(customer2, test.getCustomer());
@@ -138,13 +147,13 @@ public class AppointmentTest {
      */
     @Test
     public void testGetAndSetStartDateTime() {
-        RSA rsa = new RSA(); 
+        final RSA rsa = new RSA();
         rsa.setFirstName("Will");
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
-        
+        final Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+
         assertEquals(startDateTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), test.getStartDate());
         test.setStartDateTime(startDateTime2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         assertEquals(startDateTime2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), test.getStartDate());
@@ -155,13 +164,13 @@ public class AppointmentTest {
      */
     @Test
     public void testGetAndSetEndDateTime() {
-        RSA rsa = new RSA(); 
+        final RSA rsa = new RSA();
         rsa.setFirstName("Will");
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
-        
+        final Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+
         assertEquals(endDateTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), test.getEndDate());
         test.setEndDateTime(endDateTime2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         assertEquals(endDateTime2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), test.getEndDate());
@@ -172,53 +181,52 @@ public class AppointmentTest {
      */
     @Test
     public void testGetAndSetFlooring() {
-        RSA rsa = new RSA(); 
+        final RSA rsa = new RSA();
         rsa.setFirstName("Will");
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
+        final Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
         test.setFlooring(flooringtype2);
         assertEquals(flooringtype2, test.getFlooring());
     }
 
-    // // TODO: This is throwing a null pointer right now and I can't figure out why.
-    // /**
-    //  * Tests the getTemplateVariables method of the appointment class.
-    //  */
-    // @Test
-    // public void testGetTemplateVariables() {
-    //     RSA rsa = new RSA(); 
-    //     rsa.setFirstName("Will");
-    //     rsa.setLastName("Duke");
-    //     rsa.setEmail("wfduke@ncsu.edu");
-    //     rsa.setPhone("3363440576");
-    //     Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
-        
-    //     Map<String, String> map = new HashMap<>();
-    //     map.put("appointment" + ".start_date_time", test.getStartDateTime().format(DateTimeFormatter.ofPattern("EEEE MMMM dd K:mm a")));
-    //     map.put("appointment" + ".start_date", test.getStartDateTime().format(DateTimeFormatter.ofPattern("EEEE MMMM dd")));
-    //     map.put("appointment" + ".start_time", test.getStartDateTime().format(DateTimeFormatter.ofPattern("K:mm a")));
-    //     map.put("appointment" + ".customer_name", test.getCustomer().getFirstName() + " " + test.getCustomer().getLastName());
-    //     map.put("appointment" + ".rsa_name", test.getRSA().getFirstName() + " " + test.getRSA().getLastName());
-    //     map.put("appointment" + ".tech_names", "Bob Dylan, Jane Doe");
-    //     map.put("appointment" + ".flooring", "hardwood");
-    //     assertEquals(map, test.getTemplateVariables());
-    // }
+    /**
+     * Tests the getTemplateVariables method of the appointment class.
+     */
+    @Test
+    public void testGetTemplateVariables() {
+        final RSA rsa = new RSA();
+        rsa.setFirstName("Will");
+        rsa.setLastName("Duke");
+        rsa.setEmail("wfduke@ncsu.edu");
+        rsa.setPhone("3363440576");
+        final Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+
+        final Map<String, String> map = new HashMap<>();
+        map.put("appointment" + ".start_date", test.getStartDate().format(DateTimeFormatter.ofPattern("EEEE MMMM dd")));
+        map.put("appointment" + ".end_date", test.getEndDate().format(DateTimeFormatter.ofPattern("EEEE MMMM dd")));
+        map.put("appointment" + ".customer_name",
+                test.getCustomer().getFirstName() + " " + test.getCustomer().getLastName());
+        map.put("appointment" + ".rsa_name", test.getRSA().getFirstName() + " " + test.getRSA().getLastName());
+        map.put("appointment" + ".tech_names", "Bob Dylan");
+        map.put("appointment" + ".flooring", "hardwood");
+        assertEquals(map, test.getTemplateVariables());
+    }
 
     /**
      * Tests the getTemplateVariableDescriptions method of the appointment class.
      */
     @Test
     public void testGetTemplateVariableDescriptions() {
-        RSA rsa = new RSA(); 
+        final RSA rsa = new RSA();
         rsa.setFirstName("Will");
         rsa.setLastName("Duke");
         rsa.setEmail("wfduke@ncsu.edu");
         rsa.setPhone("3363440576");
-        Appointment test = new Appointment(rsa, customer, flooringtype, startDateTime, endDateTime);
+        final Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
 
-        Map<String, String> map = new HashMap<>();
+        final Map<String, String> map = new HashMap<>();
         map.put("${" + "appointment" + ".start_date" + "}", "Appointment Start Date");
         map.put("${" + "appointment" + ".end_date" + "}", "Appointment End Date");
         map.put("${" + "appointment" + ".customer_name" + "}", "Appointment Customer Name");
@@ -226,6 +234,90 @@ public class AppointmentTest {
         map.put("${" + "appointment" + ".tech_names" + "}", "Appointment Technician Names");
         map.put("${" + "appointment" + ".flooring" + "}", "Appointment Flooring Type");
         assertEquals(map, test.getTemplateVariableDescriptions());
+    }
+
+    /**
+     * Tests the getExtraDays method of the appointment class.
+     */
+    @Test
+    public void testGetExtraDays() {
+        final RSA rsa = new RSA();
+        rsa.setFirstName("Will");
+        rsa.setLastName("Duke");
+        rsa.setEmail("wfduke@ncsu.edu");
+        rsa.setPhone("3363440576");
+        final Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime, endDateTime);
+        assertEquals(31, test.getExtraDays());
+    }
+
+    /**
+     * Tests the getExtraDays method of the appointment class.
+     */
+    @Test
+    public void testMoveDate() {
+        final RSA rsa = new RSA();
+        rsa.setFirstName("Will");
+        rsa.setLastName("Duke");
+        rsa.setEmail("wfduke@ncsu.edu");
+        rsa.setPhone("3363440576");
+        final Appointment test = new Appointment(rsa, customer, technicians, flooringtype, startDateTime2, endDateTime2);
+        test.moveDate(startTest, endTest);
+        assertEquals(31, test.getExtraDays());
+    }
+
+    /**
+     * Tests the assignDay method of the appointment class.
+     */
+    @Test
+    public void testAssignDay() {
+        final RSA rsa = new RSA();
+        rsa.setFirstName("Will");
+        rsa.setLastName("Duke");
+        rsa.setEmail("wfduke@ncsu.edu");
+        rsa.setPhone("3363440576");
+        final Appointment test = new Appointment(rsa, customer, technicians2, flooringtype, startDateTime2, endDateTime2);
+        test.assignDay(1, technicians);
+        assertEquals(test.getAssignments().toArray().length, 2);
+        assertEquals(((Assignment)test.getAssignments().toArray()[1]).getTechnicians(), technicians);
+    }
+
+    /**
+     * Tests the assignAll method of the appointment class.
+     */
+    @Test
+    public void testAssignAll() {
+        final RSA rsa = new RSA();
+        rsa.setFirstName("Will");
+        rsa.setLastName("Duke");
+        rsa.setEmail("wfduke@ncsu.edu");
+        rsa.setPhone("3363440576");
+        final Appointment test = new Appointment(rsa, customer, technicians2, flooringtype, startDateTime2, endDateTime2);
+        test.assignAll(technicians);
+        
+        assertEquals(((Assignment)test.getAssignments().toArray()[1]).getTechnicians(), technicians);
+        assertEquals(((Assignment)test.getAssignments().toArray()[0]).getTechnicians(), technicians);
+        assertEquals(test.getAssignments().toArray().length, 2);
+    }
+
+    /**
+     * Tests the Assignment creation and methods
+     */
+    @Test
+    public void testAssignments() {
+        Assignment tester1 = new Assignment();
+        Assignment tester2 = new Assignment(startTest);
+        Assignment tester3 = new Assignment(endTest,technicians);
+
+        assertNull(tester1.getStartDate());
+        assertNull(tester1.getTechnicians());
+
+        assertEquals(tester2.getStartDate(),startTest);
+        assertNull(tester2.getTechnicians());
+
+        assertEquals(tester3.getStartDate(), endTest);
+        assertEquals(tester3.getTechnicians(), technicians);
+        
+        
     }
 	
 }

@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.Set;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 /**
  * Appointment class, stitches together the person components and timeslots, and
  * flooring type
@@ -72,6 +73,7 @@ public class Appointment {
         this.startDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         this.endDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         this.assignments = new HashSet<Assignment>();
+        this.technicians = technicians;
         LocalDate temp = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         for(int i = 0; i <= getExtraDays(); i++ ) {
             assignments.add(new Assignment(temp));
@@ -150,7 +152,13 @@ public class Appointment {
     public void setCustomer(final Customer customer) {
         this.customer = customer;
     }
-
+    /**
+     * gets Assignments
+     */ 
+    public Set<Assignment> getAssignments() {
+        return assignments;
+    }
+    
     /**
      * gets start date time
      * 
@@ -212,10 +220,9 @@ public class Appointment {
      */
     public Map<String, String> getTemplateVariables() {
         final Map<String, String> map = new HashMap<String, String>();
-        map.put(CLASS_NAME + ".start_date", this.getStartDate().toString());
-        map.put(CLASS_NAME + ".end_date", this.getEndDate().toString());
-        map.put(CLASS_NAME + ".customer_name",
-                this.getCustomer().getFirstName() + " " + this.getCustomer().getLastName());
+        map.put(CLASS_NAME + ".start_date", this.getStartDate().format(DateTimeFormatter.ofPattern("EEEE MMMM dd")));
+        map.put(CLASS_NAME + ".end_date", this.getEndDate().format(DateTimeFormatter.ofPattern("EEEE MMMM dd")));
+        map.put(CLASS_NAME + ".customer_name", this.getCustomer().getFirstName() + " " + this.getCustomer().getLastName());
         map.put(CLASS_NAME + ".rsa_name", this.getRSA().getFirstName() + " " + this.getRSA().getLastName());
         map.put(CLASS_NAME + ".tech_names", this.getTechnicianNames());
         map.put(CLASS_NAME + ".flooring", this.getFlooring().getName());
@@ -255,12 +262,12 @@ public class Appointment {
     public void assignAll(Set<Technician> technicians) {
 
         for(int i = 0; i < assignments.size(); i++ ) {
-            ((Appointment) assignments.toArray()[i]).setTechnicians(technicians);
+            ((Assignment) assignments.toArray()[i]).setTechnicians(technicians);
         }
     }
 
     public void assignDay(int day, Set<Technician> technicians) {
-        ((Appointment) assignments.toArray()[day]).setTechnicians(technicians);
+        ((Assignment) assignments.toArray()[day]).setTechnicians(technicians);
     }
 
     public void moveDate(LocalDate startDate, LocalDate endDate) {
