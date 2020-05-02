@@ -2,14 +2,13 @@ package bco.scheduler.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
+
 import javax.validation.Valid;
 
-import com.google.zxing.WriterException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -82,8 +81,8 @@ public class FlooringTypeController {
      */
     @PostMapping("/flooringtype")
     public ResponseEntity<FlooringType> createFlooring(@Valid @RequestBody FlooringType flooring) {
-        FlooringType tempFloor = new FlooringType(flooring.name, flooring.style, flooring.color, flooring.company);
-        return ResponseEntity.ok(flooringTypeRepository.save(tempFloor));
+        FlooringType tempfloor = new FlooringType(flooring.getName(), flooring.getStyle(), flooring.getColor(), flooring.getCompany());
+        return ResponseEntity.ok(flooringTypeRepository.save(tempfloor));
     }
 
     /**
@@ -100,68 +99,66 @@ public class FlooringTypeController {
         try {
             Scanner scanner = new Scanner(file.getInputStream()) ;
             FlooringType flooring = null;
-            if(scanner.hasNextLine()) {
+            if (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] tokens = line.split(",");
                 type = tokens[0];
             } else {
-                //failure state
+                // failure state
             }
-            while(scanner.hasNextLine()) {
+            while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] tokens = line.split(",");
-                if(type.equalsIgnoreCase("carpet")){
-                    flooring = new FlooringType(type, tokens[0], "", "BCO");
-                
-                } else if(type.equalsIgnoreCase("carpet tile")) {
-                    flooring = new FlooringType(tokens[0], tokens[1], "", "BCO");
-                
+                if (type.toLowerCase().contains("carpet tile")) {
+                    flooring = new FlooringType(type, tokens[0], tokens[1], "BCO");
+                } else if (type.toLowerCase().contains("carpet")) {
+                    flooring = new FlooringType("Carpet", tokens[0], "", "BCO");
                 } else {
                     flooring = new FlooringType(type, tokens[0], tokens[1], "BCO");
                 }
 
-                if(scanner.hasNextLine()){
+                if (scanner.hasNextLine()) {
                     flooringTypeRepository.save(flooring);
-                } else { 
+                } else {
                     scanner.close();
-                    return ResponseEntity.ok(flooringTypeRepository.save(flooring)); 
+                    return ResponseEntity.ok(flooringTypeRepository.save(flooring));
                 }
-                
+
             }
             scanner.close();
         } catch (FileNotFoundException e) {
-            
+
             e.printStackTrace();
         }
-        
+
         FlooringType flooring = new FlooringType();
-        
+
         return ResponseEntity.ok(flooringTypeRepository.save(flooring));
     }
 
     /**
-     * Updates the flooring to match the specified fields. 
+     * Updates the flooring to match the specified fields.
      */
     @PutMapping("/flooringtype/{id}")
     public ResponseEntity<FlooringType> updateFlooring(@PathVariable(value = "id") Long flooringTypeId,
-                                                   @Valid @RequestBody FlooringType flooringType) throws ResourceNotFoundException {
-        FlooringType flooring = flooringTypeRepository.findById(flooringTypeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Flooring not found for this id :: " + flooringTypeId));
+            @Valid @RequestBody FlooringType flooringType) throws ResourceNotFoundException {
+        FlooringType flooring = flooringTypeRepository.findById(flooringTypeId).orElseThrow(
+                () -> new ResourceNotFoundException("Flooring not found for this id :: " + flooringTypeId));
 
         flooring.setId(flooringType.getId());
         flooring.setName(flooringType.getName());
-        
+
         return ResponseEntity.ok(flooringTypeRepository.save(flooring));
     }
 
     /**
-     * Deletes the flooring type specified by the id. 
+     * Deletes the flooring type specified by the id.
      */
     @DeleteMapping("/flooringtype/{id}")
     public ResponseEntity<FlooringType> deleteFlooring(@PathVariable(value = "id") Long flooringTypeId)
             throws ResourceNotFoundException {
-        FlooringType flooring = flooringTypeRepository.findById(flooringTypeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Flooring not found for this id :: " + flooringTypeId));
+        FlooringType flooring = flooringTypeRepository.findById(flooringTypeId).orElseThrow(
+                () -> new ResourceNotFoundException("Flooring not found for this id :: " + flooringTypeId));
 
         flooringTypeRepository.delete(flooring);
         return ResponseEntity.ok(flooring);

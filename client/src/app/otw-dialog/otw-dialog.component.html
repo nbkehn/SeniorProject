@@ -5,7 +5,7 @@
     <div><strong>Phone: </strong>{{formatPhoneString(editApp?.customer?.phone)}}</div>
     <div><strong>Email: </strong>{{editApp?.customer?.email}}</div>
     <div><strong>Address: </strong>{{editApp?.customer?.address}}</div>
-    <div><strong>Flooring: </strong>{{editApp?.flooring?.name}}</div><br>
+    <div><strong>Flooring: </strong>{{getFlooringString(editApp?.flooring)}}</div><br>
 </mat-dialog-content>
 </form>
 <mat-dialog-actions>

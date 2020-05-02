@@ -9,8 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.google.zxing.BarcodeFormat;
@@ -28,6 +26,10 @@ import com.google.zxing.qrcode.QRCodeWriter;
 @Entity
 @Table(name = "flooringtype")
 public class FlooringType {
+
+    private final String charset = "UTF-8";
+    private final int height = 200;
+    private final int width = 200;
 
     /**
      * An id generated for the flooring type.
@@ -47,94 +49,118 @@ public class FlooringType {
      * Style name of the flooring type
      *
      */
-    @Column(name = "style", columnDefinition = "varchar(255) default ''")
-    public String style;
+     @Column(name = "style", columnDefinition = "varchar(255) default ''")
+     public String style;
 
-    /**
-     * Color of the flooring type
-     *
-     */
-    @Column(name = "color", columnDefinition = "varchar(255) default ''", nullable = true)
-    public String color;
+     /**
+      * Color of the flooring type
+      *
+      */
+     @Column(name = "color", columnDefinition = "varchar(255) default ''", nullable = true)
+     public String color;
 
-    /**
-     * Company that makes the flooring type
-     */
-    @Column(name = "company", columnDefinition = "varchar(255) default ''")
-    public String company;
+     /**
+      * Company that makes the flooring type
+      */
+     @Column(name = "company", columnDefinition = "varchar(255) default ''")
+     public String company;
 
-    /**
-     * Whether or not the sample has been checked out
-     */
-    @Column(name = "sampleChecked", columnDefinition = "boolean default 'false'")
-    public Boolean sampleChecked;
+     /**
+      * Whether or not the sample has been checked out
+      */
+     @Column(name = "sampleChecked", columnDefinition = "boolean default false")
+     public Boolean sampleChecked;
 
-    /**
-     * To whom the sample as been checked out
-     */
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    public Customer checkedTo;
+     /**
+      * To whom the sample as been checked out
+      */
+     @Column(name = "customer_identification")
+     public long checkedTo;
 
-    /**
-     * Hash String for QR code
-     */
-    @Column(name = "hash_code", nullable = false)
-    public String hash_code;
+     /**
+      * Hash String for QR code
+      */
+     @Column(name = "hash_code", nullable = false)
+     public String hash_code;
 
-    private final int width = 200;
-    private final int height = 200;
+   /**
+    * The blank, unused constructor for flooring type.
+    */
+   public FlooringType() {
 
-    /**
-     * The blank, unused constructor for flooring type.
-     */
-    public FlooringType() {
+   }
 
-    }
-
-    /**
-     * The actual flooring type constructor with a passed floor type to set to.
-     * 
-     * @param name the type to set the floor object to.
-     */
-    public FlooringType(String name, String style, String color, String company) {
-        String temp = name.toLowerCase();
-        if (temp.equals("carpet")) {
-            this.name = name;
+   /**
+    * The actual flooring type constructor with a passed floor type to set to. 
+    * @param name the type to set the floor object to.
+    */
+   public FlooringType(String name, String style, String color, String company) {
+       if(name == null) {
+        throw new IllegalArgumentException("Name can't be null.");
+       }
+       String temp = name.toLowerCase();
+       if(temp.equals("carpet")){
+           this.name = name;
+           if(style != null) {
             this.style = style;
-            this.color = "";
-        } else {
-            this.name = name;
+           } else {
+            throw new IllegalArgumentException("Style can't be null.");
+           }
+           this.color = "";
+       } else {
+           this.name = name;
+           if(color != null) {
             this.color = color;
+           } else {
+             this.color = "";
+           }
+           if(style != null) {
             this.style = style;
-        }
+           } else {
+            throw new IllegalArgumentException("Style can't be null.");
+           }
+       }
 
-        if (company == null) {
-            this.company = "";
-        } else {
-            this.company = company;
-        }
-        this.hash_code = Integer.toString(hashCode(name, style, color, company));
-        this.sampleChecked = false;
-        this.checkedTo = null;
+       if(company == null) {
+          this.company = "";
+       } else {
+          this.company = company;
+       }
+       this.hash_code = Integer.toString(hashCode(name, style, color, company));
+       this.sampleChecked = false;
+       this.checkedTo = -1;
 
-    }
+   }
 
-    /**
-     * The actual flooring type constructor with a passed floor type to set to.
-     * 
-     * @param name the type to set the floor object to.
-     */
+     /**
+    * The actual flooring type constructor with a passed floor type to set to. 
+    * @param name the type to set the floor object to.
+    */
     public FlooringType(String name, String style, String color, String company, boolean checked, Customer checkedTo) {
+        if(name == null) {
+            throw new IllegalArgumentException("Name can't be null.");
+        }
         String temp = name.toLowerCase();
-        if (temp.equals("carpet")) {
-            this.name = name;
+        if(temp.equals("carpet")){
+           this.name = name;
+           if(style != null) {
             this.style = style;
-            this.color = "";
+           } else {
+            throw new IllegalArgumentException("Style can't be null.");
+           }
+          this.color = "";
         } else {
             this.name = name;
-            this.color = color;
-            this.style = style;
+            if(color != null) {
+                this.color = color;
+            } else {
+                this.color = "";
+            }
+            if(style != null) {
+                this.style = style;
+            } else {
+                throw new IllegalArgumentException("Style can't be null.");
+            }
         }
         if (company == null) {
             this.company = "";
@@ -142,8 +168,11 @@ public class FlooringType {
             this.company = company;
         }
         this.hash_code = Integer.toString(hashCode(name, style, color, company));
-        this.sampleChecked = checked;
-        this.checkedTo = checkedTo;
+        if(checked){
+            this.checkOut(checkedTo);
+        } else {
+            this.checkIn();
+        }
     }
 
     /**
@@ -233,7 +262,7 @@ public class FlooringType {
      */
     public void checkIn() {
         this.sampleChecked = false;
-        this.checkedTo = null;
+        this.checkedTo = -1;
     }
 
     /**
@@ -244,7 +273,7 @@ public class FlooringType {
      */
     public void checkOut(Customer checker) {
         this.sampleChecked = true;
-        this.checkedTo = checker;
+        this.checkedTo = checker.getId();
     }
 
     public int hashCode(String name, String style, String color, String company) {

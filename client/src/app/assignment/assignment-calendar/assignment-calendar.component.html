@@ -1,0 +1,95 @@
+<div class="panel-heading">
+    <h2>Installation Team Assignment Calendar</h2>
+</div>
+
+<div class="panel-actions">
+    <button class="btn btn-primary panel-action" (click)="changeWeek(true)">{{">"}}</button>
+    <button class="btn btn-primary panel-action" (click)="changeWeek(false)">{{"<"}}</button>
+  </div>
+<div cdkDropListGroup>
+<div class="row">
+    <div class="col-3">
+        <br>
+        <div style="align-content: space-around;">
+        <label for="listOfTeams"><h4  style="align-content: center;">Installation Teams</h4></label>
+            <div
+            cdkDropList
+            #teamList="cdkDropList"
+            [cdkDropListData]="technicians"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)" id="listOfTeams">
+            <div class="example-box" *ngFor="let item of technicians" cdkDrag>{{item.firstName}} {{item.lastName}}</div>
+            </div>
+        </div>
+            <br><br>
+        <div style="align-content: space-around;">
+            <label for="trashBox"><h4 style="align-content: center;">Remove</h4></label>
+            <div
+            cdkDropList
+            #trashBox="cdkDropList"
+            [cdkDropListData]="listForDeletedItems"
+            class="example-list"
+            (cdkDropListDropped)="toss($event)" id="trashBox">
+            </div>
+        </div>
+    </div>
+    <div class="col-9">
+        <table>
+            <tr><td colspan="7"><h4 style="text-align: center; border-bottom: 1px solid #ccc; padding: 15px;">{{formatDate(startOfWeek)}} - {{formatDate(endOfWeek)}}</h4></td></tr>
+            <tr>
+                <td style="text-align: center;"><strong>Sunday</strong></td>
+                <td style="text-align: center;"><strong>Monday</strong></td>
+                <td style="text-align: center;"><strong>Tuesday</strong></td>
+                <td style="text-align: center;"><strong>Wednesday</strong></td>
+                <td style="text-align: center;"><strong>Thursday</strong></td>
+                <td style="text-align: center;"><strong>Friday</strong></td>
+                <td style="text-align: center;"><strong>Saturday</strong></td>
+            </tr>
+            <tr>
+                <td *ngFor="let dayList of calendarData; let x = index"> <!-- This is like calendarData[0], a list of objects -->
+                    <div *ngFor="let appointmentObject of dayList; let y = index"> <!-- This is like calendarData[0][0], an object -->
+                        <div
+                            cdkDropList
+                            #dropList="cdkDropList"
+                            id="{{x}},{{y}}"
+                            [cdkDropListData]="appointmentObject?.assignment?.technicians"
+                            class="example-list"
+                            (cdkDropListDropped)="assign($event, x, y)">
+                            <div class="example-box" *ngFor="let team of appointmentObject?.assignment?.technicians" cdkDrag>{{team.firstName}} {{team.lastName}}</div>
+                        </div>
+                        <div style="text-align: center;"><input type="button" style="margin-top: 5px;" class="openInfoBox" value="Appt Info {{appointmentObject.assignment.dayNumber}}/{{appointmentObject.numOfDays}}" *ngIf="appointmentObject.appointment != null" (click)="openInfoDialog(appointmentObject)"></div>
+                        <div style="text-align: center;"><input type="button" class="fillerButton" value="filler button" *ngIf="appointmentObject.appointment == null"></div>
+                        <br>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <br>
+                <table>
+                    <tr><td colspan="7"><h4 style="text-align: center; border-bottom: 1px solid #ccc; padding: 15px;">Unavailable Teams</h4></td></tr>
+                    <tr>
+                        <td style="text-align: center;"><strong>Sunday</strong></td>
+                        <td style="text-align: center;"><strong>Monday</strong></td>
+                        <td style="text-align: center;"><strong>Tuesday</strong></td>
+                        <td style="text-align: center;"><strong>Wednesday</strong></td>
+                        <td style="text-align: center;"><strong>Thursday</strong></td>
+                        <td style="text-align: center;"><strong>Friday</strong></td>
+                        <td style="text-align: center;"><strong>Saturday</strong></td>
+                    </tr>
+                    <tr>
+                        <td *ngFor="let appointmentList of awayList; let x = index">
+                                <div
+                                    cdkDropList 
+                                    #dropList="cdkDropList"
+                                    id="{{x}}"
+                                    [cdkDropListData]="appointmentList"
+                                    class="example-list"
+                                    (cdkDropListDropped)="markAsAway($event)">
+                                    <div class="example-box" *ngFor="let item of appointmentList" cdkDrag>{{item.firstName}} {{item.lastName}}</div>
+                                </div>
+                        </td>
+                    </tr>
+                </table>
+    </div>
+</div>
+</div>

@@ -47,7 +47,7 @@ import {MatInputModule} from '@angular/material/input';
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import {ReminderErrorListComponent} from "./reminder-error/reminder-error-list/reminder-error-list.component";
 //import { AppointmentCalendarComponent } from './appointment/appointment-calendar/appointment-calendar.component';
-import {AssignmentCalendarComponent} from "./assignment/assignment/assignment-calendar.component";
+import {AssignmentCalendarComponent} from "./assignment/assignment-calendar/assignment-calendar.component";
 import { MatOptionModule } from '@angular/material/core';
 import {UploadSampleComponent} from './flooring/upload-sample/upload-sample.component';
 import { OTWDialogComponent } from './otw-dialog/otw-dialog.component';
@@ -58,6 +58,9 @@ import { CheckOutComponent} from './check-out/check-out.component';
 import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 import { PrintAllQRComponent } from './print-all-qr/print-all-qr.component';
 import { PrintOneQRComponent } from './print-one-qr/print-one-qr.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { ViewInstallerDialogComponent } from './view-installer-dialog/view-installer-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -97,7 +100,8 @@ import { PrintOneQRComponent } from './print-one-qr/print-one-qr.component';
     CheckOutComponent,
     ZXingScannerComponent,
     PrintAllQRComponent,
-    PrintOneQRComponent
+    PrintOneQRComponent,
+    ViewInstallerDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -117,6 +121,7 @@ import { PrintOneQRComponent } from './print-one-qr/print-one-qr.component';
     MatOptionModule,
     MatSelectModule,
     MatMomentDateModule,
+    DragDropModule,
   ],
   entryComponents: [
     AddDialogComponent,
@@ -124,6 +129,7 @@ import { PrintOneQRComponent } from './print-one-qr/print-one-qr.component';
     DeleteDialogComponent,
     OTWDialogComponent,
     ViewDialogComponent,
+    ViewInstallerDialogComponent,
   ],
   providers: [
     AlertService

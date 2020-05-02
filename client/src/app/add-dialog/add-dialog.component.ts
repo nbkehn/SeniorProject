@@ -72,20 +72,17 @@ export class AddDialogComponent extends AbstractFormDialogComponent implements O
 
     // initialize mapped options
     this.customerOptions = [];
-    this.technicianOptions = [];
     this.rsaOptions = [];
     this.flooringOptions = [];
 
     // populate option data
     this.setCustomers();
-    this.setTechnicians();
     this.setRSAs();
     this.setFloorings();
 
     // initialize a new appointment and aggregates
     this.appointment = new Appointment();
     this.appointment.customer = new Customer();
-    this.appointment.technicians = [new Technician()];
     this.appointment.rsa = new Rsa();
     this.appointment.flooring = new Flooring();
 

@@ -2,10 +2,16 @@ package bco.scheduler.model;
 
 import javax.persistence.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import bco.scheduler.controller.AssignmentController;
+import bco.scheduler.repository.AssignmentRepository;
+
 import java.util.*;
 import java.util.Set;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 /**
  * Appointment class, stitches together the person components and timeslots, and
  * flooring type
@@ -50,7 +56,7 @@ public class Appointment {
     @JoinColumn(name = "flooring_id")
     private FlooringType flooring;
 
-    /** Assignments set */     
+    /** Assignments set */
     @ElementCollection(targetClass = Assignment.class)
     private Set<Assignment> assignments;
     
@@ -67,14 +73,14 @@ public class Appointment {
             final FlooringType flooringtype, final Date startDate, final Date endDate) {
         this.rsa = rsa;
         this.customer = customer;
-        this.technicians = technicians;
+        // this.technicians = technicians;
         this.flooring = flooringtype; 
         this.startDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         this.endDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         this.assignments = new HashSet<Assignment>();
         LocalDate temp = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        for(int i = 0; i <= getExtraDays(); i++ ) {
-            assignments.add(new Assignment(temp));
+        for(int i = 0; i <= getExtraDays(this.startDate,this.endDate); i++ ) {
+            assignments.add(new Assignment(i));
             temp = temp.plusDays(1);
         }
     }
@@ -103,7 +109,7 @@ public class Appointment {
      * @return technicans set
      */
     public Set<Technician> getTechnicians() {
-        return technicians;
+        return ((Assignment) assignments.toArray()[0]).getTechnicians();
     }
 
     /**
@@ -150,7 +156,13 @@ public class Appointment {
     public void setCustomer(final Customer customer) {
         this.customer = customer;
     }
-
+    /**
+     * gets Assignments
+     */ 
+    public Set<Assignment> getAssignments() {
+        return assignments;
+    }
+    
     /**
      * gets start date time
      * 
@@ -212,10 +224,9 @@ public class Appointment {
      */
     public Map<String, String> getTemplateVariables() {
         final Map<String, String> map = new HashMap<String, String>();
-        map.put(CLASS_NAME + ".start_date", this.getStartDate().toString());
-        map.put(CLASS_NAME + ".end_date", this.getEndDate().toString());
-        map.put(CLASS_NAME + ".customer_name",
-                this.getCustomer().getFirstName() + " " + this.getCustomer().getLastName());
+        map.put(CLASS_NAME + ".start_date", this.getStartDate().format(DateTimeFormatter.ofPattern("EEEE MMMM dd")));
+        map.put(CLASS_NAME + ".end_date", this.getEndDate().format(DateTimeFormatter.ofPattern("EEEE MMMM dd")));
+        map.put(CLASS_NAME + ".customer_name", this.getCustomer().getFirstName() + " " + this.getCustomer().getLastName());
         map.put(CLASS_NAME + ".rsa_name", this.getRSA().getFirstName() + " " + this.getRSA().getLastName());
         map.put(CLASS_NAME + ".tech_names", this.getTechnicianNames());
         map.put(CLASS_NAME + ".flooring", this.getFlooring().getName());
@@ -252,15 +263,23 @@ public class Appointment {
         return map;
     }
 
+    public void addEmptyAssignment(Assignment a) {
+        if (this.assignments == null) {
+            this.assignments = new HashSet<Assignment>();
+        }
+        this.assignments.add(a);
+    }
+
+
     public void assignAll(Set<Technician> technicians) {
 
         for(int i = 0; i < assignments.size(); i++ ) {
-            ((Appointment) assignments.toArray()[i]).setTechnicians(technicians);
+            ((Assignment) assignments.toArray()[i]).setTechnicians(technicians);
         }
     }
 
     public void assignDay(int day, Set<Technician> technicians) {
-        ((Appointment) assignments.toArray()[day]).setTechnicians(technicians);
+        ((Assignment) assignments.toArray()[day - 1]).setTechnicians(technicians);
     }
 
     public void moveDate(LocalDate startDate, LocalDate endDate) {
@@ -268,13 +287,13 @@ public class Appointment {
         this.endDate = endDate;
         LocalDate temp = startDate;
         assignments.clear();
-        for(int i = 0; i < getExtraDays(); i++ ) {
-            assignments.add(new Assignment(temp, technicians));
+        for(int i = 0; i < getExtraDays(this.startDate, this.endDate); i++ ) {
+            assignments.add(new Assignment(i+1, technicians));
             temp = temp.plusDays(1);
         }
     }
 
-    public int getExtraDays() {
+    public static int getExtraDays(LocalDate startDate, LocalDate endDate) {
         int year1 = startDate.getYear();
         int year2 = endDate.getYear();
         int month1 = startDate.getMonthValue();

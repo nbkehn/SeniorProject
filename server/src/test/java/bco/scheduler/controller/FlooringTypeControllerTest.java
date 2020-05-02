@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import bco.scheduler.model.FlooringType;
 import java.util.*;
 import java.util.ArrayList;
+
+import bco.scheduler.exception.ResourceNotFoundException;
 import bco.scheduler.model.CommunicationType;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.*;
@@ -32,7 +34,7 @@ public class FlooringTypeControllerTest {
     public void getAllFlooringTypesTest() throws Exception {
      
         // An flooringType object to use.
-        FlooringType testFlooringType = new FlooringType("hardwood", null, null, "BCO");
+        FlooringType testFlooringType = new FlooringType("hardwood", "", "", "BCO");
 
         // An flooringType object list to use.
         List<FlooringType> allFlooringTypes = Arrays.asList(testFlooringType);
@@ -58,7 +60,7 @@ public class FlooringTypeControllerTest {
     public void getFlooringTypeByIdTest() throws Exception {
 
         // A flooringType object to use.
-        FlooringType testFlooringType = new FlooringType("hardwood", null, null, "BCO" );
+        FlooringType testFlooringType = new FlooringType("hardwood", "", "", "BCO" );
 
         // A flooringType object list to use.
         List<FlooringType> allFlooringTypes = Arrays.asList(testFlooringType);
@@ -85,7 +87,7 @@ public class FlooringTypeControllerTest {
     public void createFlooringTest() throws Exception {
         
         // A flooringType object to use.
-        FlooringType testFlooringType = new FlooringType("hardwood", null, null, "BCO");
+        FlooringType testFlooringType = new FlooringType("hardwood", "", "", "BCO");
 
         // Response Entity representation of the desired output
         ResponseEntity<FlooringType> re = ResponseEntity.ok(testFlooringType);
@@ -106,10 +108,10 @@ public class FlooringTypeControllerTest {
     public void updateFlooringTest() throws Exception {
      
         // A flooringType object to use.
-        FlooringType testFlooringType = new FlooringType("hardwood", null, null, "BCO");
+        FlooringType testFlooringType = new FlooringType("hardwood", "", "", "BCO");
 
         // A flooringType object to update to. 
-        FlooringType testFlooringTypeUpdated = new FlooringType("hardwood", null, null, "BCO");
+        FlooringType testFlooringTypeUpdated = new FlooringType("hardwood", "", "", "BCO");
 
         // Response Entity representation of the desired output
         ResponseEntity<FlooringType> re = ResponseEntity.ok(testFlooringType);
@@ -138,10 +140,10 @@ public class FlooringTypeControllerTest {
     public void deleteFlooringTest() throws Exception {
 
         // A flooringType object to use.
-        FlooringType testFlooringType = new FlooringType("hardwood", null, null, "BCO");
+        FlooringType testFlooringType = new FlooringType("hardwood", "", "", "BCO");
 
         // A flooringType object to update to. 
-        FlooringType testFlooringTypeUpdated = new FlooringType("hardwood", null, null, "BCO");
+        FlooringType testFlooringTypeUpdated = new FlooringType("hardwood", "", "", "BCO");
 
         // Response Entity representation of the desired output
         ResponseEntity<FlooringType> re = ResponseEntity.ok(testFlooringType);
@@ -162,5 +164,34 @@ public class FlooringTypeControllerTest {
         assertEquals(flooringTypeController.deleteFlooring(testFlooringType.getId()), deletedRe);
 
     }
+    /**
+     * Tests the get flooring type API
+     */
+    @Test
+    public void getFlooringTypeByHashCodeTest() throws Exception {
+        
+        // A flooringType object to use.
+        FlooringType testFlooringType = new FlooringType("hardwood", "wood", "red", "BCO");
+
+        // A flooringType object to compare against. 
+        FlooringType testFlooringType2 = new FlooringType("hardwood", "style", "green", "BCO");
+
+        // Response Entity representation of the desired output
+        ResponseEntity<FlooringType> re = ResponseEntity.ok(testFlooringType);
+        // Response Entity representation of the desired output for test 2
+        ResponseEntity<FlooringType> re2 = ResponseEntity.ok(testFlooringType);
+        
+
+        //try(flooringTypeController.getFlooringTypeByHashCode(Integer.valueOf(testFlooringType.hash_code)){
+        //    fail();
+       // } catch (ResourceNotFoundException e) {
+            //passes
+        //}
+       // when(flooringTypeController.getFlooringTypeByHashCode(Integer.valueOf(testFlooringType.hash_code))).thenReturn(re);
+        
+        //when(flooringTypeController.getFlooringTypeByHashCode(Integer.valueOf(testFlooringType.hash_code))).thenReturn(re2);
+
+    }
+
 
 }
