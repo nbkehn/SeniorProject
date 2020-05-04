@@ -17,7 +17,7 @@ export class PrintOneQRComponent implements OnInit {
   bufferedImage : any;
 
   constructor(private route: ActivatedRoute,
-    private router: Router,
+  
     private alertService: AlertService, private flooringService: FlooringService) { 
       this.route.queryParams.subscribe(params => {
       this.floorId = params['id'];
