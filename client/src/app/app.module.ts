@@ -58,6 +58,7 @@ import { CheckOutComponent} from './check-out/check-out.component';
 import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 import { PrintAllQRComponent } from './print-all-qr/print-all-qr.component';
 import { PrintOneQRComponent } from './print-one-qr/print-one-qr.component';
+import { CheckInComponent } from './check-in/check-in.component'
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { ViewInstallerDialogComponent } from './view-installer-dialog/view-installer-dialog.component';
 
@@ -83,14 +84,12 @@ import { ViewInstallerDialogComponent } from './view-installer-dialog/view-insta
     ModifyTemplateComponent,
     ReminderListComponent,
     ModifyReminderComponent,
-    ReminderErrorListComponent,
     //AppointmentCalendarComponent,
     AssignmentCalendarComponent,
     CalendarComponent,
     AddDialogComponent,
     EditDialogComponent,
     DeleteDialogComponent,
-    ReminderErrorListComponent,
     UploadSampleComponent,
     OTWDialogComponent,
     ReminderErrorListComponent,
@@ -102,6 +101,7 @@ import { ViewInstallerDialogComponent } from './view-installer-dialog/view-insta
     PrintAllQRComponent,
     PrintOneQRComponent,
     ViewInstallerDialogComponent,
+    CheckInComponent,
   ],
   imports: [
     BrowserModule,
