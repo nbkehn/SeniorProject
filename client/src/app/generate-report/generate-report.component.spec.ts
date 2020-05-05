@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrintOneQRComponent } from './print-one-qr.component';
+import { GenerateReportComponent } from './generate-report.component';
 
-describe('PrintOneQRComponent', () => {
-  let component: PrintOneQRComponent;
-  let fixture: ComponentFixture<PrintOneQRComponent>;
+describe('GenerateReportComponent', () => {
+  let component: GenerateReportComponent;
+  let fixture: ComponentFixture<GenerateReportComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PrintOneQRComponent ]
+      declarations: [ GenerateReportComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PrintOneQRComponent);
+    fixture = TestBed.createComponent(GenerateReportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

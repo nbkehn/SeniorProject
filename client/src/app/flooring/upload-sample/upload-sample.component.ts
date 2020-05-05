@@ -3,7 +3,6 @@ import { FlooringService } from '../flooring.service';
 import { AlertService } from 'src/app/alert/alert.service';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { Router } from '@angular/router';
-import { FlexibleConnectedPositionStrategy } from '@angular/cdk/overlay';
 import { Flooring } from '../flooring';
 
 @Component({

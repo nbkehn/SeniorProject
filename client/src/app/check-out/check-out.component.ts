@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerService } from '../customer/customer.service';
 import { AlertService } from '../alert/alert.service';
 import { Customer } from '../customer/customer';
-import { NgxSmartModalService } from "ngx-smart-modal";
 
 
 @Component({
@@ -57,28 +56,31 @@ export class CheckOutComponent implements OnInit {
     }
 
     pushSample(retrievedSample: Flooring) {
-      console.log(retrievedSample);
       this.scannedFlooring.push(retrievedSample);
     }
 
     deleteFlooring(sampleId: number) {
-      console.log(this.scannedFlooring);
       this.scannedFlooring = this.scannedFlooring.filter(({ id }) => id !== sampleId); 
     }
 
-    checkOut(flooring : Flooring) {
-      flooring.checkedOut = true;
-      this.retrievedCustomer = this.customerService.getCustomer(this.custId);
-      console.log(this.retrievedCustomer);
+    checkOut(flooring : Flooring, sampleid: number) {
+      flooring.sampleChecked = true;
+      flooring.checkedTo = this.custId;
       this.flooringService.updateFlooring(flooring.id, flooring)
       .subscribe(
         data => {
           // Display success message and go back to list
-          this.alertService.success('Flooring saved successfully.', true);
+          console.log(data);
+          this.alertService.success('Sample successfully checked out.', true);
+          this.scannedFlooring = this.scannedFlooring.filter(({ id }) => id !== sampleid); 
         },
         error => {
           // Display error message on error and remain in form
-          this.alertService.error('The flooring could not be saved.', false);
+          this.alertService.error('The sample could not be checked out.', false);
         });
+    }
+
+    finish() {
+      this.router.navigate(["checkout-landing"]);
     }
   }

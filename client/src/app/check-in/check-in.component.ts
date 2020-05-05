@@ -17,7 +17,7 @@ export class CheckInComponent implements OnInit {
   private qrString: string;
   private hashCode: string;
   public flooringOptions: Flooring[];
-  public scannedFlooring: Flooring[];
+  public scannedFlooring: any = [];
   retrievedSample: any;
 
   constructor(private route: ActivatedRoute,
@@ -30,24 +30,20 @@ export class CheckInComponent implements OnInit {
 
   onCodeResult(result: string) {
     this.qrString = result;
-    this.hashCode = (this.qrString);
-    console.log(this.qrString);
-    //this.findFlooring();
-  }
-
-  findFlooring() {
-    this.flooringService.getFlooringsList()
-    .subscribe(
-      data => {
-        this.flooringOptions = data;
-        this.flooringOptions.forEach(this.checkHash)
-      },
-      error => {
-        this.alertService.error('Floorings could not be loaded.', false);
-      });
-
-  
-  }
+    this.hashCode = this.qrString;
+    console.log(this.hashCode);
+    this.flooringService.getFlooringbyHash(this.hashCode)
+      .subscribe(
+        data => {
+          this.alertService.success('Sample successfuly scanned', true);
+          this.retrievedSample = data;
+          this.pushSample(this.retrievedSample);
+        },
+        error => {
+          this.alertService.error('Sample is not in database', false);
+        }
+      )
+    }
 
   checkHash(flooring: any) {
     if (this.hashCode == flooring.hashCode ) {
@@ -65,9 +61,33 @@ export class CheckInComponent implements OnInit {
     }
   }
 
-  pushSample(flooring : Flooring) {
-    console.log(flooring);
-    this.scannedFlooring.push(flooring);
+  pushSample(retrievedSample: Flooring) {
+    this.scannedFlooring.push(retrievedSample);
+  }
+
+  deleteFlooring(sampleId: number) {
+    this.scannedFlooring = this.scannedFlooring.filter(({ id }) => id !== sampleId); 
+  }
+
+  checkIn(flooring : Flooring, sampleid: number) {
+    flooring.sampleChecked = false;
+    flooring.checkedTo = -1;
+    this.flooringService.updateFlooring(flooring.id, flooring)
+    .subscribe(
+      data => {
+        // Display success message and go back to list
+        console.log(data);
+        this.alertService.success('Sample successfully checked in.', true);
+        this.scannedFlooring = this.scannedFlooring.filter(({ id }) => id !== sampleid); 
+      },
+      error => {
+        // Display error message on error and remain in form
+        this.alertService.error('The sample could not be checked out.', false);
+      });
+  }
+
+  finish() {
+    this.router.navigate(["checkout-landing"]);
   }
 
 }

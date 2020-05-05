@@ -3,7 +3,6 @@ import { Customer } from 'src/app/customer/customer';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerService } from 'src/app/customer/customer.service';
 import { AlertService } from 'src/app/alert/alert.service';
-import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-check-out-form',

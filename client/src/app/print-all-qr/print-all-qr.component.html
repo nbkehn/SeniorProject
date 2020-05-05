@@ -1,1 +1,28 @@
-<p>print-all-qr works!</p>
+<div class="panel-heading">
+    <h2>All QR Codes</h2>
+</div>
+<div class="panel-actions">
+    <button class="btn btn-primary panel-action" (click)="print()">Print</button>
+</div>
+<!-- the actual body of the page-->
+<div class="panel-body">
+    <table class="table table-striped">
+        <thead>
+            <!--column headers for the table-->
+            <tr>
+                <th> Style</th>
+                <th> Color</th>
+                <th> QR Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let img of imgList  ">
+                <td>{{img.style}}</td>
+                <td>{{img.color}}</td>
+                <td><img src="data:Image/png;base64,{{img.qrCode}}"/></td>
+
+            </tr>
+        </tbody>
+        
+    </table>
+</div>

@@ -101,9 +101,9 @@ export class ModifyFlooringComponent implements OnInit {
   onSubmit() {
     console.log(this.checkedOption);
     if (this.checkedOption == "no")
-      this.flooring.checkedOut = false;
+      this.flooring.sampleChecked = false;
     else
-      this.flooring.checkedOut = true;
+      this.flooring.sampleChecked = true;
 
     console.log(this.flooring);
     this.save();

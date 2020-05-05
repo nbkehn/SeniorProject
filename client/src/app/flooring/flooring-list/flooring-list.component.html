@@ -13,7 +13,7 @@
   </div>
   <div class="panel-actions">
     <button routerLink="/flooring/add" class="btn btn-primary panel-action">Add Flooring</button>
-    <button class="btn btn-primary panel-action" (click)="printQRCode(flooring.id)">Print QR Codes</button>
+    <button class="btn btn-primary panel-action" (click)="printQRCodes()">Print All QR Codes</button>
     <label for="filter">Filter by: </label>
     <label class="radio-inline"><input type="radio" name="type" style="width:20px" [(ngModel)]="filterOption"
         value="type">Type</label>

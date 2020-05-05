@@ -103,10 +103,18 @@ export class FlooringListComponent implements OnInit {
   }
 
   printQRCode(id : number) {
-    console.log(id);
-    this.flooringService.getFlooring(id).subscribe(data => {
-      this.printId = data;
-      this.router.navigate(['/flooring/printQR'], { queryParams: { id: data.id } });
+ this.flooringService.getFlooringQR(id).subscribe(
+      data => {
+        var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(data)));
+        let qrString = base64String;
+        var win = window.open("about:blank", "", 'height=500, width=500'); 
+        
+        win.document.write("<html><head><script>function step1(){\n" +
+        "setTimeout('step2()', 20);}\n" +
+        "function step2(){window.print();window.close()}\n" +
+        "</scri" + "pt></head><body onload='step1()'>\n" +
+        "<img src='" + "data:Image/png;base64," + qrString + "' /></body></html>");
+        win.print(); 
     });
 
   }

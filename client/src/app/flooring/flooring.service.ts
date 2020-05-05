@@ -31,7 +31,7 @@ export class FlooringService {
   }
 
   getFlooringQR(id : number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/createqr/${id}`);
+    return this.http.get(`${this.baseUrl}/createqr/${id}`, { responseType: 'arraybuffer' });
   }
 
   /**

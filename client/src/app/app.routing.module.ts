@@ -29,6 +29,8 @@ import { CheckOutComponent } from './check-out/check-out.component';
 import { CheckoutLandingComponent } from './checkout-landing/checkout-landing.component';
 import { CheckOutFormComponent } from './check-out/check-out-form/check-out-form.component';
 import { CheckInComponent } from './check-in/check-in.component';
+import { PrintAllQRComponent } from './print-all-qr/print-all-qr.component';
+import { GenerateReportComponent} from './generate-report/generate-report.component'
 
 
 const routes: Routes = [
@@ -66,7 +68,10 @@ const routes: Routes = [
   { path: 'flooring/check-out/create-customer', component: CheckOutFormComponent},
   { path: 'checkout-landing', component: CheckoutLandingComponent},
   { path: 'flooring/check-out/scan', component: CheckOutComponent},
-  { path: 'install/calendar', component: AssignmentCalendarComponent}
+  { path: 'install/calendar', component: AssignmentCalendarComponent},
+  { path: 'flooring/printAllQR', component: PrintAllQRComponent},
+  { path: 'generate-report', component: GenerateReportComponent}
+  
 ];
 
 @NgModule({

@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
-
-
 import javax.validation.Valid;
 
+import com.google.zxing.WriterException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -147,6 +149,11 @@ public class FlooringTypeController {
 
         flooring.setId(flooringType.getId());
         flooring.setName(flooringType.getName());
+        flooring.setColor(flooringType.getColor());
+        flooring.setCompany(flooringType.getCompany());
+        flooring.setStyle(flooringType.getStyle());
+        flooring.sampleChecked = flooringType.sampleChecked;
+        flooring.checkedTo = flooringType.checkedTo;
 
         return ResponseEntity.ok(flooringTypeRepository.save(flooring));
     }
@@ -163,16 +170,21 @@ public class FlooringTypeController {
         flooringTypeRepository.delete(flooring);
         return ResponseEntity.ok(flooring);
     }
-    // @GetMapping("/flooringtype/createqr/{id}")
-    // public byte[] getQRImg(@PathVariable(value = "id") Long flooringTypeId)
-    //         throws WriterException, ResourceNotFoundException, IOException
-    //  {
-    //     FlooringType flooring = flooringTypeRepository.findById(flooringTypeId).orElseThrow(() -> new ResourceNotFoundException("Flooring not found for this id :: " + flooringTypeId));
-    //     FlooringType tempFloor = new FlooringType(flooring.name, flooring.style, flooring.color, flooring.company);
-    //     tempFloor.setId(flooring.getId());
-    //     return flooring.createQRImg(flooring.getHash_code());
+    @GetMapping("/flooringtype/createqr/{id}")
+    public ResponseEntity<byte[]> getQRImg(@PathVariable(value = "id") Long flooringTypeId)
+            throws WriterException, ResourceNotFoundException, IOException
+     {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+        FlooringType flooring = flooringTypeRepository.findById(flooringTypeId).orElseThrow(() -> new ResourceNotFoundException("Flooring not found for this id :: " + flooringTypeId));
+        FlooringType tempFloor = new FlooringType(flooring.name, flooring.style, flooring.color, flooring.company);
+        tempFloor.setId(flooring.getId());
+        byte[] image = flooring.createQRImg(flooring.getHash_code());
+        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(image, headers, HttpStatus.OK);
+        return responseEntity;
+        
 
-    // }
+    }
 
     // @GetMapping("/flooringtype/createqr")
     // public List<byte[]> getQRImgAll()
