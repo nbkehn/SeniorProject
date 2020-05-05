@@ -96,7 +96,7 @@ import { ViewInstallerDialogComponent } from './view-installer-dialog/view-insta
     CheckOutFormComponent,
     CheckoutLandingComponent,
     CheckOutComponent,
-    ZXingScannerComponent
+    ZXingScannerComponent,
     ViewInstallerDialogComponent,
   ],
   imports: [
