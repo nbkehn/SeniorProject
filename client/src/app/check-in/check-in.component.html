@@ -1,5 +1,5 @@
 <div class="panel-heading">
-  <h2>Scan Sample QR Code for CheckIn</h2>
+  <h2>Scan Sample QR Code for Check In</h2>
   <zxing-scanner (scanSuccess)="onCodeResult($event)"></zxing-scanner>
 </div>
 
@@ -29,7 +29,7 @@
     
               <td>
                 <!-- button options for each row so that the user can edit/delete that flooring with a click of a button-->
-                <button (click)="checkIn(flooring, flooring.id)" class="btn btn-primary">Check Out</button>
+                <button (click)="checkIn(flooring, flooring.id)" class="btn btn-primary">Check In</button>
                 <button (click)="ngxSmartModalService.getModal('deleteConfirmation').setData(flooring.id, true).open()"
                   class="btn btn-danger btn-delete">Delete</button>
               </td>
