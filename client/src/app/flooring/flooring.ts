@@ -12,6 +12,7 @@ export class Flooring {
   style: string;
   color: string;
   company: string;
-  checkedOut: boolean;
-  checkedTo: Customer;
+  sampleChecked: boolean;
+  checkedTo: number;
+  hashcode: String;
 }

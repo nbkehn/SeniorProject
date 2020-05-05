@@ -1,6 +1,7 @@
 package bco.scheduler.model;
 
-import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import javax.persistence.Column;
@@ -10,9 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.google.zxing.*;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 /**
  * The flooring type class used to assign different types of flooring used for
@@ -277,22 +280,36 @@ public class FlooringType {
         int hash = 7;
         hash = 31 * hash + name.hashCode();
         hash = 31 * hash + style.hashCode();
-        hash = 31 * hash + color.hashCode();
+        if (this.color != null)
+            hash = 31 * hash + color.hashCode();
+
         hash = 31 * hash + company.hashCode();
         return hash;
     }
 
     /**
+     * @return the hash_code
+     */
+    public String getHash_code() {
+        String hash = Integer.toString(hashCode(this.name, this.style, this.color, this.company));
+        return hash;
+    }
+
+    /**
      * Generates a qr code for flooring type
+     * 
+     * @throws IOException
      */
     // https://www.geeksforgeeks.org/how-to-generate-and-read-qr-code-with-java-using-zxing-library/
-    public BufferedImage createQRImg(String hashData)
-            throws UnsupportedEncodingException, WriterException
+    public byte[] createQRImg(String hashData) throws WriterException, IOException
     {
-        BitMatrix matrix = new MultiFormatWriter()
-            .encode(new String(hashData.getBytes(charset), charset), 
-            BarcodeFormat.QR_CODE, width, height);
-        return MatrixToImageWriter.toBufferedImage(matrix);
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix matrix = qrCodeWriter.encode(hashData, BarcodeFormat.QR_CODE, width , height);
+
+        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+        MatrixToImageWriter.writeToStream(matrix, "PNG", pngOutputStream);
+        byte[] pngData = pngOutputStream.toByteArray(); 
+        return pngData;
         
     }
 }
