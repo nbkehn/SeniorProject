@@ -2,19 +2,17 @@ package bco.scheduler.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import java.awt.image.BufferedImage;
-
 
 import javax.validation.Valid;
 
 import com.google.zxing.WriterException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +61,22 @@ public class FlooringTypeController {
                 () -> new ResourceNotFoundException("Flooring type not found for this id :: " + flooringTypeId));
         return ResponseEntity.ok(flooring);
     }
+
+    @GetMapping("/flooringtype/qrcode/{hashCode}")
+    public ResponseEntity<FlooringType> getFlooringTypeByHashCode(@PathVariable(value = "hashCode") String flooringTypeHash)
+        throws ResourceNotFoundException {
+            List<FlooringType> flooring = flooringTypeRepository.findAll();
+            FlooringType floor = new FlooringType();
+            for (int i = 0; i < flooring.size(); i++) {
+                if (flooring.get(i).getHash_code().equals(flooringTypeHash)) {
+                    floor = flooring.get(i);
+                }
+            }
+            return ResponseEntity.ok(floor);
+        }
+
+    
+
 
     /**
      * Creates the flooring type object given a specific flooring
@@ -135,6 +149,11 @@ public class FlooringTypeController {
 
         flooring.setId(flooringType.getId());
         flooring.setName(flooringType.getName());
+        flooring.setColor(flooringType.getColor());
+        flooring.setCompany(flooringType.getCompany());
+        flooring.setStyle(flooringType.getStyle());
+        flooring.sampleChecked = flooringType.sampleChecked;
+        flooring.checkedTo = flooringType.checkedTo;
 
         return ResponseEntity.ok(flooringTypeRepository.save(flooring));
     }
@@ -151,25 +170,33 @@ public class FlooringTypeController {
         flooringTypeRepository.delete(flooring);
         return ResponseEntity.ok(flooring);
     }
-
     @GetMapping("/flooringtype/createqr/{id}")
-    public BufferedImage getQRImg(@PathVariable(value = "id") Long flooringTypeId)
-            throws UnsupportedEncodingException, WriterException, ResourceNotFoundException
+    public ResponseEntity<byte[]> getQRImg(@PathVariable(value = "id") Long flooringTypeId)
+            throws WriterException, ResourceNotFoundException, IOException
      {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setCacheControl(CacheControl.noCache().getHeaderValue());
         FlooringType flooring = flooringTypeRepository.findById(flooringTypeId).orElseThrow(() -> new ResourceNotFoundException("Flooring not found for this id :: " + flooringTypeId));
-        return flooring.createQRImg(flooring.hash_code);
+        FlooringType tempFloor = new FlooringType(flooring.name, flooring.style, flooring.color, flooring.company);
+        tempFloor.setId(flooring.getId());
+        byte[] image = flooring.createQRImg(flooring.getHash_code());
+        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(image, headers, HttpStatus.OK);
+        return responseEntity;
+        
 
     }
 
-    @GetMapping("/flooringtype/createqr")
-    public List<BufferedImage> getQRImgAll()
-         throws UnsupportedEncodingException, WriterException, ResourceNotFoundException
-         {
-            List<FlooringType> all = flooringTypeRepository.findAll();
-            List<BufferedImage> results = new ArrayList<BufferedImage>();
-            for(int i = 0; i < all.size(); i++){
-                results.add(all.get(i).createQRImg(all.get(i).hash_code));
-            }
-            return results;
-    }
+    // @GetMapping("/flooringtype/createqr")
+    // public List<byte[]> getQRImgAll()
+    //      throws WriterException, ResourceNotFoundException, IOException
+    //      {
+    //         List<FlooringType> all = flooringTypeRepository.findAll();
+    //         List<byte[]> results = new ArrayList<byte[]>();
+    //         for(int i = 0; i < all.size(); i++){
+    //             results.add(all.get(i).createQRImg(all.get(i).hash_code));
+    //         }
+    //         return results;
+    // }
+
+
 }

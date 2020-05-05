@@ -35,7 +35,7 @@ export class CustomerService {
    * @param customer Customer to be created
    * @return newly created customer
    */
-  createCustomer(customer: Object): Observable<Object> {
+  createCustomer(customer: Object): Observable<any> {
     return this.http.post(`${this.baseUrl}`, customer);
   }
 
