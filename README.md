@@ -1,12 +1,14 @@
-# 2019FallTeam16
+# 2020SpringTeam26
+
+### Final Hand-off
+https://drive.google.com/drive/folders/1QtN2Oa74vN7Xd7fSljdwvOoBuBzrf44x?usp=sharing
+
 
 #### Installation Guide
-https://docs.google.com/document/d/1aGu12buIZTNJnn7fNOxdgwTg1J77rqqljW7XI-Ffb9E/edit
+https://drive.google.com/open?id=1bR2dkBTls1DGDJhYG5tqegVHhJOpzqplQfQ9kZ6wgD8
 
 #### User Guide
-https://docs.google.com/document/d/1tAU5woQeU89tGyTWUUmPRo9iWO74TeZk2sJk38QIC2g/edit
+https://drive.google.com/open?id=1scotH2EhJgqRLWMUAymUz7jOs6b-IFyY
 
 #### Developer's Guide
-https://docs.google.com/document/d/1b4_VcF0rz8ulJH5QF9JDGUjnRcVzrgzLF26uvxz3Ge8/edit
-
-##TDB
+https://drive.google.com/open?id=1hoH288zJivDC_v7I__LwljqZoI1vyriF4J9ZjnDaykg
