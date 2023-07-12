@@ -32,7 +32,7 @@
     "@ng-bootstrap/ng-bootstrap": "^5.3.0",
     "@zxing/ngx-scanner": "^3.0.0",
     "bootstrap": "^4.4.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "less": "^3.11.1",
     "moment": "^2.24.0",
     "ngx-smart-modal": "^7.4.0",
